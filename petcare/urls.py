@@ -23,6 +23,7 @@ from django.db import connection
 import json
 from django.shortcuts import render, redirect
 from core.models import *
+from django.utils.timezone import now
 
 
 @csrf_exempt
@@ -101,10 +102,49 @@ def owner_dashboard(request):
     return render(request, 'owner.html')
 
 
+
+
+@csrf_exempt
+def register_owner(request):
+    if request.method != "POST":
+        return JsonResponse({"error": "Phương thức không được hỗ trợ"}, status=405)
+
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+
+        required_fields = ["username", "password", "fullname", "gender", "email", "phonenumber"]
+        for field in required_fields:
+            if not data.get(field):
+                return JsonResponse({"error": f"Trường '{field}' là bắt buộc"}, status=400)
+
+        if User.objects.filter(username=data["username"]).exists():
+            return JsonResponse({"error": "Tên đăng nhập đã tồn tại"}, status=400)
+
+        user = User.objects.create(
+            username=data["username"],
+            password_hash=data["password"],  # giữ nguyên mật khẩu gốc
+            role=UserRole.OWNER.value,
+            gender=data["gender"],
+            fullname=data["fullname"],
+            email=data["email"],
+            phonenumber=data["phonenumber"],
+            created_at=now(),
+            updated_at=now()
+        )
+
+        return JsonResponse({"message": "Đăng ký thành công"}, status=201)
+
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Dữ liệu không hợp lệ"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
 def logout_view(request):
     request.session.flush()
     return redirect('/login')
 
+def register_page(request):
+    return render(request, 'register.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -113,5 +153,7 @@ urlpatterns = [
     path('staff/', staff_dashboard, name='staff_dashboard'),
     path('owner/', owner_dashboard, name='owner_dashboard'),
     path('logout/', logout_view, name='logout'),
+    path('register/', register_page, name='register'),
+    path('api/register/owner/', register_owner, name='register_owner'),
 
 ]
