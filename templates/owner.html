@@ -686,11 +686,7 @@
             
             if (petName && service && date) {
                 alert(`Đặt lịch thành công!\n\nThú cưng: ${petName}\nDịch vụ: ${getServiceName(service)}\nThời gian: ${new Date(date).toLocaleString('vi-VN')}`);
-                
-                // Add to history table
                 addToHistory(petName, service, date);
-                
-                // Reset form
                 this.reset();
             }
         });
@@ -718,7 +714,6 @@
             `;
         }
 
-        // Profile editing
         function editProfile() {
             document.getElementById('profileModal').style.display = 'block';
         }
