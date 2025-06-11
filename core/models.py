@@ -1,6 +1,36 @@
 from django.db import models
 import uuid
 from enum import Enum
+from django.contrib import admin
+from django.urls import path
+from django.shortcuts import render
+from core.models import *  # sửa lại path import theo app của bạn
+from django.utils import timezone
+from django.db.models import Sum, Q, OuterRef, Exists, F, Value, Min, DecimalField
+from django.db.models.functions import Coalesce
+from datetime import datetime, time, timedelta, date
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+#from core.forms import FeeForm
+import calendar
+from openpyxl import Workbook 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.shortcuts import redirect, get_object_or_404
+import json
+from django.db import connection
+from django.shortcuts import redirect
+from django.conf import settings
+import stripe
+import traceback
+from django.utils.timezone import now
+import logging
+from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
+import io
+from collections import defaultdict
+from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
+from django.db.models import Count
 
 # Enum types
 class AppointmentType(Enum):
@@ -43,7 +73,7 @@ class UserRole(Enum):
 
 # Models
 class User(models.Model):
-    """Custom user model"""
+    "Custom user model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="user_id")
     username = models.CharField(max_length=50, unique=True)
     password_hash = models.TextField()
@@ -54,7 +84,7 @@ class User(models.Model):
     phonenumber = models.CharField(max_length=20)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    
     class Meta:
         db_table = 'users'
 
@@ -62,7 +92,7 @@ class User(models.Model):
         return f"{self.fullname} ({self.username})"
 
 class Pet(models.Model):
-    """Pet model"""
+    "Pet model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="pet_id")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pets', db_column="owner_id")
     name = models.CharField(max_length=50)
@@ -70,19 +100,45 @@ class Pet(models.Model):
     breed = models.CharField(max_length=30)
     gender = models.CharField(max_length=10)
     birth_date = models.DateField()
-    fur_color = models.CharField(max_length=30)  # Assuming 'fun_color' was a typo for 'fur_color'
+    fur_color = models.CharField(max_length=30)
     image_url = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
     class Meta:
         db_table = 'pets'
 
     def __str__(self):
         return f"{self.name} ({self.species})"
+    @property
+    def gender_vi(self):
+        if self.gender == "Male":
+            return "Đực"
+        else:
+            return "Cái"
+
+    @property
+    def age(self):
+        if not self.birth_date:
+            return "Không rõ"
+        
+        today = date.today()
+        years = today.year - self.birth_date.year
+        months = today.month - self.birth_date.month
+        days = today.day - self.birth_date.day
+
+        if days < 0:
+            months -= 1
+        if months < 0:
+            years -= 1
+            months += 12
+
+        if years >= 1:
+            return f"{years} tuổi"
+        else:
+            return f"{months} tháng"
 
 class Appointment(models.Model):
-    """Appointment model"""
+    "Appointment model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="appointment_id")
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, related_name='appointments', db_column="pet_id")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, db_column="owner_id")
@@ -103,13 +159,12 @@ class Appointment(models.Model):
         return f"Appointment {self.id} - {self.get_type_display()}"
 
 class NutritionPlan(models.Model):
-    """Nutrition plan model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="plan_id")
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, db_column="pet_id")
     food_type = models.TextField()
     portion = models.TextField()
     note = models.TextField(blank=True, null=True)
-    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, db_column='created_by')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -120,7 +175,7 @@ class NutritionPlan(models.Model):
         return f"Nutrition Plan for {self.pet.name}"
 
 class BeautyServiceHistory(models.Model):
-    """Beauty service history model"""
+    "Beauty service history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="beauty_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     service_type = models.CharField(max_length=50)
@@ -133,7 +188,7 @@ class BeautyServiceHistory(models.Model):
         return f"Beauty Service {self.service_type}"
 
 class HotelServiceHistory(models.Model):
-    """Hotel service history model"""
+    "Hotel service history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="hotel_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     room_type = models.CharField(max_length=30)
@@ -147,7 +202,7 @@ class HotelServiceHistory(models.Model):
         return f"Hotel Service {self.room_type}"
 
 class MedicalHistory(models.Model):
-    """Medical history model"""
+    "Medical history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="record_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     diagnosis = models.TextField()
@@ -161,7 +216,7 @@ class MedicalHistory(models.Model):
         return f"Medical Record {self.id}"
 
 class VaccinationHistory(models.Model):
-    """Vaccination history model"""
+    "Vaccination history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="vaccination_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     vaccine_name = models.TextField()

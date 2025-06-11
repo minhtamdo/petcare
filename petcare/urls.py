@@ -14,17 +14,35 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.shortcuts import render, redirect
 from django.contrib import admin
 from django.urls import path
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.db import connection
-import json
-from django.shortcuts import render, redirect
 from core.models import *
+from django.utils import timezone
+from django.db.models import Sum, Q, OuterRef, Exists, F, Value, Min, DecimalField
+from django.db.models.functions import Coalesce
+from datetime import datetime, time, timedelta, date
+from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
+import calendar
+from openpyxl import Workbook 
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.shortcuts import redirect, get_object_or_404
+import json
+from django.db import connection
+from django.shortcuts import redirect
+from django.conf import settings
+import stripe
+import traceback
 from django.utils.timezone import now
-
+import logging
+from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_http_methods
+import io
+from collections import defaultdict
+from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
+from django.db.models import Count
 
 @csrf_exempt
 def login_view(request):
@@ -91,18 +109,10 @@ def vet_dashboard(request):
         return redirect('/login')
     return render(request, 'vet.html')
 
-def staff_dashboard(request):
-    if request.session.get('role') != 'Staff':
-        return redirect('/login')
-    return render(request, 'staff.html')
-
 def owner_dashboard(request):
     if request.session.get('role') != 'Owner':
         return redirect('/login')
     return render(request, 'owner.html')
-
-
-
 
 @csrf_exempt
 def register_owner(request):
@@ -146,6 +156,48 @@ def logout_view(request):
 def register_page(request):
     return render(request, 'register.html')
 
+def redirect_to_login(request):
+    return redirect('/login/')
+
+def staff_dashboard(request):
+    if request.session.get('role') != 'Staff':
+        return redirect('/login')
+    pets = Pet.objects.select_related('owner').all().order_by('-created_at')
+    total_pets = pets.count()
+    context = {
+        'pets': pets,
+        'total_pets': total_pets,
+    }
+    return render(request, 'staff.html', context)
+
+def nutrition_view(request, pet_id):
+    plans = NutritionPlan.objects.filter(pet__id=pet_id).select_related('created_by')
+    data = [
+        {
+            "food_type": p.food_type,
+            "portion": p.portion,
+            "note": p.note,
+            "created_by": p.created_by.fullname,
+            "updated_at": p.updated_at.strftime("%d/%m/%Y %H:%M")
+        }
+        for p in plans
+    ]
+    return JsonResponse({"nutrition_plans": data})
+
+# def vaccination_view(request, pet_id):
+#     vaccination = VaccinationHistory.objects.filter(pet__id=pet_id).select_related('created_by')
+#     data = [
+#         {
+#             "food_type": p.food_type,
+#             "portion": p.portion,
+#             "note": p.note,
+#             "created_by": p.created_by.fullname,
+#             "updated_at": p.updated_at.strftime("%d/%m/%Y %H:%M")
+#         }
+#         for p in plans
+#     ]
+#     return JsonResponse({"nutrition_plans": data})
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view, name='login'),
@@ -155,5 +207,6 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('register/', register_page, name='register'),
     path('api/register/owner/', register_owner, name='register_owner'),
-
+    path('nutrition/<uuid:pet_id>/', nutrition_view, name='get_nutrition_plan'),
+    path('', redirect_to_login),
 ]

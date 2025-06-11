@@ -78,14 +78,13 @@ WSGI_APPLICATION = 'petcare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'petclinic',
+        'NAME': 'A',
         'USER': 'postgres',
-        'PASSWORD': 'toughgirlmask2912',
+        'PASSWORD': '_Iris.23_',
         'HOST': 'localhost',
-        'PORT': '5433',
+        'PORT': '5432',
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
