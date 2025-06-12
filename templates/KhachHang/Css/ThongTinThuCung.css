@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f2f5; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+    width: 90%;
+    max-width: 900px; 
+    text-align: center;
+    overflow-y: auto; 
+}
+
+.container h2 {
+    font-size: 36px; 
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #1a202c; 
+    text-transform: uppercase;
+}
+
+.pet-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #ffffff; 
+    transition: box-shadow 0.3s ease; 
+}
+
+.pet-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+}
+
+.pet-info p {
+    margin: 8px 0;
+    font-size: 16px; 
+    color: #2d3748;
+}
+
+.pet-info p strong {
+    color: #2b6cb0; 
+}
+
+.pet-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #4a5568;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #2b6cb0; 
+    outline: none;
+}
+
+.form-group input[type="file"] {
+    width: 100%;
+}
+
+.form-group input::placeholder {
+    color: #a0aec0;
+}
+
+.edit-button,
+.save-button,
+.cancel-button,
+.delete-button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-button {
+    background-color: #f6ad55; 
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #ed8936;
+    transform: translateY(-2px); 
+}
+
+.save-button {
+    background-color: #38a169; 
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #2f855a;
+    transform: translateY(-2px);
+}
+
+.cancel-button {
+    background-color: #e53e3e; 
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #c53030;
+    transform: translateY(-2px);
+}
+
+.delete-button {
+    background-color: #e53e3e;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #c53030;
+    transform: translateY(-2px);
+}
+
+.links {
+    margin-top: 25px;
+}
+
+.links a {
+    color: #2b6cb0;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.links a:hover {
+    text-decoration: underline;
+    color: #2c5282;
+}
