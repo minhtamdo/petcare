@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống quản lý hồ sơ bệnh án thú cưng</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .tab-content {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffa726, #ffb74d);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 0.85rem;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            padding: 12px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        tr:hover {
+            background: rgba(102, 126, 234, 0.05);
+            transform: scale(1.01);
+            transition: all 0.2s ease;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 2% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #667eea;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .detail-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .detail-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .record-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .record-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .record-item h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .record-item p {
+            margin-bottom: 8px;
+            color: #666;
+        }
+
+        .record-item strong {
+            color: #333;
+        }
+
+        .calendar-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .calendar-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
+        .calendar-day {
+            background: white;
+            border: 2px solid #f0f0f0;
+            border-radius: 10px;
+            padding: 15px;
+            min-height: 120px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .calendar-day:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .calendar-day.has-appointment {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #667eea;
+        }
+
+        .appointment-item {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
+        
+        .suggestions-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            width: 100%;
+            background: white;
+            border: 1px solid #ccc;
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .suggestions-list li {
+            padding: 8px;
+            cursor: pointer;
+        }
+        .suggestions-list li:hover {
+            background-color: #f0f0f0;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .calendar-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐾 Hệ thống quản lý hồ sơ bệnh án thú cưng</h1>
+            <p>Quản lý chuyên nghiệp cho bác sĩ thú y</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab" onclick="window.location.href='/vet'">📋 Danh sách bệnh án</button>
+            <button class="nav-tab active" onclick="showTab('vaccination-history')">
+                💉 Lịch sử tiêm phòng
+            </button>
+            <button class="nav-tab" onclick="window.location.href = '/giao-dien-lich/'">>📅 Lịch hẹn</button>
+        </div>
+
+        <!-- Tab Lịch sử tiêm phòng -->
+        <div id="vaccination-history" class="tab-content active">
+            <div class="controls">
+                <button class="btn btn-success" onclick="showAddVaccinationModal()">💉 Thêm lịch tiêm phòng</button>
+                <input type="text" class="search-box" id="search-vaccinations" placeholder="🔍 Tìm kiếm vaccine..." onkeyup="searchVaccinations()">
+            </div>
+            
+            <table class="table-container" id="vaccinationsTable">
+                <thead>
+    <tr>
+        <th>ID</th>
+        <th>Appointment ID</th>
+        <th>Vaccine</th>
+        <th>Next Due</th>
+        <th>Total Doses</th>
+        <th>Batch</th>
+        <th>Completed</th>
+        <th>Note</th>
+        <th>Thao tác</th>
+    </tr>
+</thead>
+<tbody>
+    {% for v in vaccinations %}
+    <tr>
+        <td>{{ v.vaccination_id }}</td>
+        <td>{{ v.appointment_id }}</td>
+        <td>{{ v.vaccine_name }}</td>
+        <td>{{ v.next_due }}</td>
+        <td>{{ v.total_doses }}</td>
+        <td>{{ v.batch_number }}</td>
+        <td>{% if v.is_completed %}✅{% else %}❌{% endif %}</td>
+        <td>{{ v.note }}</td>
+        <td>
+            <button onclick="editVaccination('{{ v.vaccination_id }}')">✏️Sửa</button>
+            <button onclick="deleteVaccination('{{ v.vaccination_id }}')">🗑️Xóa</button>
+        </td>
+    </tr>
+    {% empty %}
+    <tr>
+        <td colspan="9">Không có dữ liệu tiêm phòng.</td>
+    </tr>
+    {% endfor %}
+</tbody>
+    
+            </table>
+
+            </div>
+        </div>
+
+
+       <!-- Modal thêm/sửa tiêm phòng -->
+<div id="vaccination-modal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeVaccinationModal()">&times;</span>
+    <h2 id="vaccination-modal-title">💉 Thêm lịch tiêm phòng</h2>
+    <form id="vaccination-form" onsubmit="submitVaccination(event)">
+      <!-- Trường nhập appointment_id -->
+      <div class="form-row">
+        <div class="form-group">
+          <label>ID cuộc hẹn (Appointment ID):</label>
+          <input type="text" id="vaccination-appointment-id" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tên vaccine:</label>
+          <input type="text" id="vaccination-vaccine-name" required>
+        </div>
+        <div class="form-group">
+          <label>Lịch tiếp theo:</label>
+          <input type="date" id="vaccination-next-due" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Tổng số liều:</label>
+          <input type="number" id="vaccination-total-doses" required>
+        </div>
+        <div class="form-group">
+          <label>Số lô:</label>
+          <input type="text" id="vaccination-batch-number" required>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Trạng thái:</label>
+          <select id="vaccination-is-completed" required>
+            <option value="false">Chưa hoàn thành</option>
+            <option value="true">Đã hoàn thành</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Ghi chú:</label>
+        <textarea id="vaccination-note" rows="2"></textarea>
+      </div>
+
+      <!-- Trường ẩn nếu là cập nhật -->
+      <input type="hidden" id="vaccination-id">
+
+      <button type="submit" class="btn btn-primary">💾 Lưu</button>
+    </form>
+  </div>
+</div>
+
+
+
+    <script>
+    
+        function showTab(tabId) {
+                // Ẩn tất cả tab
+                const tabs = document.querySelectorAll('.tab-content'); // hoặc .your-tab-class nếu bạn đặt khác
+                tabs.forEach(tab => tab.style.display = 'none');
+
+                // Hiển thị tab được chọn
+                const selectedTab = document.getElementById(tabId);
+                if (selectedTab) {
+                selectedTab.style.display = 'block';
+            }
+        }
+
+        // Mở modal
+function showAddVaccinationModal() {
+    document.getElementById('vaccination-form').reset();
+    document.getElementById('vaccination-id').value = '';
+    document.getElementById('vaccination-modal-title').innerText = '💉 Thêm lịch tiêm phòng';
+    document.getElementById('vaccination-modal').style.display = 'block';
+}
+
+// Đóng modal
+function closeVaccinationModal() {
+    document.getElementById('vaccination-modal').style.display = 'none';
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+function editVaccination(id) {
+
+  // Đổi tiêu đề modal
+  document.getElementById('vaccination-modal-title').textContent = '✏️ Sửa lịch tiêm phòng';
+
+  // Hiện modal
+  document.getElementById('vaccination-modal').style.display = 'block';
+
+  // Gọi API backend để lấy dữ liệu tiêm phòng theo id
+  fetch(`/api/vaccinations/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      // Đổ dữ liệu vào form
+      document.getElementById('vaccination-id').value = data.vaccination_id;
+      document.getElementById('vaccination-appointment-id').value = data.appointment_id;
+      document.getElementById('vaccination-vaccine-name').value = data.vaccine_name;
+      document.getElementById('vaccination-next-due').value = data.next_due;
+      document.getElementById('vaccination-total-doses').value = data.total_doses;
+      document.getElementById('vaccination-batch-number').value = data.batch_number;
+      document.getElementById('vaccination-is-completed').value = data.is_completed ? "true" : "false";
+      document.getElementById('vaccination-note').value = data.note || '';
+    })
+    .catch(error => {
+      alert("Không thể tải dữ liệu tiêm phòng!");
+      console.error(error);
+    });
+}
+function submitVaccination(event, isEdit = false, vaccinationId = null) {
+    event.preventDefault();
+
+    const appointmentId = document.getElementById("vaccination-appointment-id").value;
+
+    const data = {
+        appointment_id: appointmentId,
+        vaccine_name: document.getElementById("vaccination-vaccine-name").value,
+        next_due: document.getElementById("vaccination-next-due").value,
+        total_doses: parseInt(document.getElementById("vaccination-total-doses").value),
+        batch_number: document.getElementById("vaccination-batch-number").value,
+        is_completed: document.getElementById("vaccination-is-completed").value === "true",
+        note: document.getElementById("vaccination-note").value
+    };
+
+    const url = isEdit ? `/api/vaccination/${vaccinationId}/` : '/api/add-vaccination/';
+    const method = isEdit ? 'PUT' : 'POST';
+
+    fetch(url, {
+        method: method,
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+        if (response.success) {
+            alert(isEdit ? "✅ Cập nhật lịch tiêm phòng thành công!" : "✅ Thêm lịch tiêm phòng thành công!");
+            closeVaccinationModal();
+            location.reload();
+        } else {
+            alert("❌ Lỗi: " + (response.message || response.error || "Không rõ lỗi."));
+        }
+    })
+    .catch(err => {
+        console.error("Lỗi khi gửi request:", err);
+        alert("❌ Lỗi khi gửi dữ liệu");
+    });
+}
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (const cookie of cookies) {
+            const trimmed = cookie.trim();
+            if (trimmed.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(trimmed.slice(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
+// Hàm lấy CSRF token từ cookie
+function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        const trimmed = cookie.trim();
+        if (trimmed.startsWith(name + '=')) {
+            return decodeURIComponent(trimmed.slice(name.length + 1));
+        }
+    }
+    return '';
+}
+
+
+    document.getElementById('search-vaccinations').addEventListener('input', function () {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#vaccinationsTable tr');
+
+    rows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const match = Array.from(cells).some(cell =>
+            cell.textContent.toLowerCase().includes(filter)
+        );
+        row.style.display = match ? '' : 'none';
+    });
+});
+
+function deleteVaccination(vaccinationId) {
+    if (!confirm('Bạn có chắc muốn xóa lịch tiêm phòng này?')) return;
+
+    fetch(`/vaccination_history/${vaccinationId}/delete/`, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': getCookie('csrftoken'),
+            'Content-Type': 'application/json',
+        },
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Lỗi khi xóa lịch tiêm phòng');
+        return res.json();
+    })
+    .then(data => {
+        alert(data.message || 'Xóa thành công');
+        location.reload();
+    })
+    .catch(err => alert(err.message));
+}
+
+
+
+</script>

@@ -1,3 +1,9 @@
 from django.shortcuts import render
+from .models import MedicalHistory, Appointment, User 
 
-# Create your views here.
+
+from django.db import connection
+
+from django.db import connection
+from django.shortcuts import render
+

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Hẹn Bác Sĩ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .calendar-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: rgba(79, 172, 254, 0.1);
+            border-bottom: 1px solid rgba(79, 172, 254, 0.2);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
+        }
+
+        .current-month {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background: #e0e0e0;
+            margin: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .day-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .day-cell {
+            background: white;
+            min-height: 120px;
+            padding: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .day-cell:hover {
+            background: rgba(79, 172, 254, 0.05);
+            border-color: rgba(79, 172, 254, 0.3);
+            transform: scale(1.02);
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .appointment-indicator {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-bottom: 4px;
+            display: block;
+            text-align: center;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .other-month {
+            background: #f8f9fa;
+            color: #ccc;
+        }
+
+        .today {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            font-weight: bold;
+        }
+
+        .today .day-number {
+            color: white;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+        .close {
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 50%;
+        }
+
+        .close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        .appointment-item {
+            background: linear-gradient(135deg, #f8f9ff 0%, #e6f3ff 100%);
+            border: 1px solid #e0e6ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .appointment-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
+        }
+
+        .appointment-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 172, 254, 0.2);
+        }
+
+        .appointment-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .appointment-name::before {
+            content: '👤';
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+
+        .appointment-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        .appointment-detail strong {
+            color: #333;
+            margin-right: 8px;
+            min-width: 100px;
+        }
+
+        .appointment-time::before { content: '🕐'; margin-right: 8px; }
+        .appointment-record::before { content: '📋'; margin-right: 8px; }
+        .appointment-pet::before { content: '🐾'; margin-right: 8px; }
+
+        .no-appointments {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                margin: 10px;
+            }
+            
+            .day-cell {
+                min-height: 80px;
+                padding: 5px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 Lịch Hẹn Bác Sĩ</h1>
+            <p>Quản lý cuộc hẹn thú cưng một cách chuyên nghiệp</p>
+        </div>
+        <div class="nav-tabs">
+            <button class="nav-tab" onclick="window.location.href='/vet'">📋 Danh sách bệnh án</button>
+            <button class="nav-tab " onclick="showTab('vaccination-history')">
+                💉 Lịch sử tiêm phòng
+            </button>
+            <button class="nav-tab active" onclick="window.location.href = '/giao-dien-lich/'">>📅 Lịch hẹn</button>
+        </div>
+
+        <div class="calendar-nav">
+            <button class="nav-btn" onclick="changeMonth(-1)">← Tháng trước</button>
+            <div class="current-month" id="currentMonth"></div>
+            <button class="nav-btn" onclick="changeMonth(1)">Tháng sau →</button>
+        </div>
+
+        <div class="calendar-grid" id="calendar">
+            <!-- Calendar will be generated here -->
+        </div>
+    </div>
+
+    <!-- Modal for appointments -->
+    <div id="appointmentModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Cuộc hẹn ngày</h2>
+                <span class="close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Appointment details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample appointment data
+        const appointments = {
+            '2024-12-15': [
+                { name: 'Nguyễn Văn A', time: '09:00', record_id: 'REC001', pet_id: 'PET001' },
+                { name: 'Trần Thị B', time: '10:30', record_id: 'REC002', pet_id: 'PET002' }
+            ],
+            '2024-12-18': [
+                { name: 'Lê Văn C', time: '14:00', record_id: 'REC003', pet_id: 'PET003' }
+            ],
+            '2024-12-22': [
+                { name: 'Phạm Thị D', time: '08:30', record_id: 'REC004', pet_id: 'PET004' },
+                { name: 'Hoàng Văn E', time: '11:00', record_id: 'REC005', pet_id: 'PET005' },
+                { name: 'Vũ Thị F', time: '15:30', record_id: 'REC006', pet_id: 'PET006' }
+            ],
+            '2024-12-25': [
+                { name: 'Đặng Văn G', time: '09:15', record_id: 'REC007', pet_id: 'PET007' }
+            ]
+        };
+
+        let currentDate = new Date();
+        const dayNames = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+        const monthNames = [
+            'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
+            'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+        ];
+
+        function generateCalendar(year, month) {
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const startDate = new Date(firstDay);
+            startDate.setDate(startDate.getDate() - firstDay.getDay());
+
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            // Add day headers
+            dayNames.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
+
+            // Add calendar days
+            for (let i = 0; i < 42; i++) {
+                const cellDate = new Date(startDate);
+                cellDate.setDate(startDate.getDate() + i);
+                
+                const dayCell = document.createElement('div');
+                dayCell.className = 'day-cell';
+                
+                if (cellDate.getMonth() !== month) {
+                    dayCell.classList.add('other-month');
+                }
+                
+                const today = new Date();
+                if (cellDate.toDateString() === today.toDateString()) {
+                    dayCell.classList.add('today');
+                }
+
+                const dayNumber = document.createElement('div');
+                dayNumber.className = 'day-number';
+                dayNumber.textContent = cellDate.getDate();
+                dayCell.appendChild(dayNumber);
+
+                // Check for appointments
+                const dateKey = cellDate.toISOString().split('T')[0];
+                if (appointments[dateKey]) {
+                    appointments[dateKey].forEach(appointment => {
+                        const indicator = document.createElement('div');
+                        indicator.className = 'appointment-indicator';
+                        indicator.textContent = `${appointment.time} - ${appointment.name}`;
+                        dayCell.appendChild(indicator);
+                    });
+                }
+
+                dayCell.addEventListener('click', () => showAppointments(dateKey, cellDate));
+                calendar.appendChild(dayCell);
+            }
+
+            // Update month display
+            document.getElementById('currentMonth').textContent = 
+                `${monthNames[month]} ${year}`;
+        }
+
+        function showAppointments(dateKey, date) {
+            const modal = document.getElementById('appointmentModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+
+            modalTitle.textContent = `Cuộc hẹn ngày ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+
+            if (appointments[dateKey] && appointments[dateKey].length > 0) {
+                modalBody.innerHTML = appointments[dateKey].map(appointment => `
+                    <div class="appointment-item">
+                        <div class="appointment-name">${appointment.name}</div>
+                        <div class="appointment-detail appointment-time">
+                            <strong>Thời gian:</strong> ${appointment.time}
+                        </div>
+                        <div class="appointment-detail appointment-record">
+                            <strong>Record ID:</strong> ${appointment.record_id}
+                        </div>
+                        <div class="appointment-detail appointment-pet">
+                            <strong>Pet ID:</strong> ${appointment.pet_id}
+                        </div>
+                    </div>
+                `).join('');
+            } else {
+                modalBody.innerHTML = '<div class="no-appointments">Không có cuộc hẹn nào trong ngày này</div>';
+            }
+
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('appointmentModal').style.display = 'none';
+        }
+
+        function changeMonth(direction) {
+            currentDate.setMonth(currentDate.getMonth() + direction);
+            generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('appointmentModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        }
+
+        // Initialize calendar
+        generateCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    </script>
+</body>
+</html>
