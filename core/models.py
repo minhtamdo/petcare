@@ -1,4 +1,3 @@
-
 from datetime import date
 from django.db import models
 import uuid
@@ -45,7 +44,7 @@ class UserRole(Enum):
 
 # Models
 class User(models.Model):
-    """Custom user model"""
+    "Custom user model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="user_id")
     username = models.CharField(max_length=50, unique=True)
     password_hash = models.TextField()
@@ -64,7 +63,7 @@ class User(models.Model):
         return f"{self.fullname} ({self.username})"
 
 class Pet(models.Model):
-    """Pet model"""
+    "Pet model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="pet_id")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pets', db_column="owner_id")
     name = models.CharField(max_length=50)
@@ -72,7 +71,7 @@ class Pet(models.Model):
     breed = models.CharField(max_length=30)
     gender = models.CharField(max_length=10)
     birth_date = models.DateField()
-    fur_color = models.CharField(max_length=30)  # Assuming 'fun_color' was a typo for 'fur_color'
+    fur_color = models.CharField(max_length=30)
     image_url = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
