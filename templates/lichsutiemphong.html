@@ -641,6 +641,8 @@ function submitVaccination(event, isEdit = false, vaccinationId = null) {
         note: document.getElementById("vaccination-note").value
     };
 
+    // kfls
+
     const url = isEdit ? `/api/vaccination/${vaccinationId}/` : '/api/add-vaccination/';
     const method = isEdit ? 'PUT' : 'POST';
 
