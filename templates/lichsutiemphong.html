@@ -505,16 +505,17 @@
         </div>
 
 
-       <!-- Modal thêm/sửa tiêm phòng -->
+<!-- Modal thêm/sửa tiêm phòng -->
 <div id="vaccination-modal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeVaccinationModal()">&times;</span>
     <h2 id="vaccination-modal-title">💉 Thêm lịch tiêm phòng</h2>
     <form id="vaccination-form" onsubmit="submitVaccination(event)">
-      <!-- Trường nhập appointment_id -->
+      <input type="hidden" id="vaccination-id"> <!-- ID để xác định đang update -->
+
       <div class="form-row">
         <div class="form-group">
-          <label>ID cuộc hẹn (Appointment ID):</label>
+          <label>ID cuộc hẹn:</label>
           <input type="text" id="vaccination-appointment-id" required>
         </div>
       </div>
@@ -556,14 +557,10 @@
         <textarea id="vaccination-note" rows="2"></textarea>
       </div>
 
-      <!-- Trường ẩn nếu là cập nhật -->
-      <input type="hidden" id="vaccination-id">
-
       <button type="submit" class="btn btn-primary">💾 Lưu</button>
     </form>
   </div>
 </div>
-
 
 
     <script>
@@ -593,46 +590,60 @@ function closeVaccinationModal() {
     document.getElementById('vaccination-modal').style.display = 'none';
 }
 
+
+
+
 function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+        const trimmed = cookie.trim();
+        if (trimmed.startsWith(name + '=')) {
+            return decodeURIComponent(trimmed.slice(name.length + 1));
+        }
+    }
+    return '';
 }
 
-function editVaccination(id) {
-
-  // Đổi tiêu đề modal
-  document.getElementById('vaccination-modal-title').textContent = '✏️ Sửa lịch tiêm phòng';
-
-  // Hiện modal
-  document.getElementById('vaccination-modal').style.display = 'block';
-
-  // Gọi API backend để lấy dữ liệu tiêm phòng theo id
-  fetch(`/api/vaccinations/${id}`)
-    .then(res => res.json())
-    .then(data => {
-      // Đổ dữ liệu vào form
-      document.getElementById('vaccination-id').value = data.vaccination_id;
-      document.getElementById('vaccination-appointment-id').value = data.appointment_id;
-      document.getElementById('vaccination-vaccine-name').value = data.vaccine_name;
-      document.getElementById('vaccination-next-due').value = data.next_due;
-      document.getElementById('vaccination-total-doses').value = data.total_doses;
-      document.getElementById('vaccination-batch-number').value = data.batch_number;
-      document.getElementById('vaccination-is-completed').value = data.is_completed ? "true" : "false";
-      document.getElementById('vaccination-note').value = data.note || '';
-    })
-    .catch(error => {
-      alert("Không thể tải dữ liệu tiêm phòng!");
-      console.error(error);
-    });
+function showAddVaccinationModal() {
+    document.getElementById('vaccination-form').reset();
+    document.getElementById('vaccination-id').value = '';
+    document.getElementById('vaccination-modal-title').innerText = '💉 Thêm lịch tiêm phòng';
+    document.getElementById('vaccination-modal').style.display = 'block';
 }
-function submitVaccination(event, isEdit = false, vaccinationId = null) {
+
+function closeVaccinationModal() {
+    document.getElementById('vaccination-modal').style.display = 'none';
+}
+
+function editVaccination(vaccinationId) {
+    fetch(`/api/vaccination/${vaccinationId}/`)
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('vaccination-modal').style.display = 'block';
+            document.getElementById('vaccination-modal-title').innerText = '✏️ Sửa lịch tiêm phòng';
+            document.getElementById('vaccination-id').value = data.vaccination_id;
+            document.getElementById('vaccination-appointment-id').value = data.appointment_id;
+            document.getElementById('vaccination-vaccine-name').value = data.vaccine_name;
+            document.getElementById('vaccination-next-due').value = data.next_due;
+            document.getElementById('vaccination-total-doses').value = data.total_doses;
+            document.getElementById('vaccination-batch-number').value = data.batch_number;
+            document.getElementById('vaccination-is-completed').value = data.is_completed ? "true" : "false";
+            document.getElementById('vaccination-note').value = data.note || '';
+        })
+        .catch(err => {
+            alert("Lỗi khi lấy dữ liệu!");
+            console.error(err);
+        });
+}
+
+function submitVaccination(event) {
     event.preventDefault();
 
-    const appointmentId = document.getElementById("vaccination-appointment-id").value;
+    const vaccinationId = document.getElementById('vaccination-id').value;
+    const isEdit = vaccinationId !== '';
 
     const data = {
-        appointment_id: appointmentId,
+        appointment_id: document.getElementById("vaccination-appointment-id").value,
         vaccine_name: document.getElementById("vaccination-vaccine-name").value,
         next_due: document.getElementById("vaccination-next-due").value,
         total_doses: parseInt(document.getElementById("vaccination-total-doses").value),
@@ -641,9 +652,7 @@ function submitVaccination(event, isEdit = false, vaccinationId = null) {
         note: document.getElementById("vaccination-note").value
     };
 
-    // kfls
-
-    const url = isEdit ? `/api/vaccination/${vaccinationId}/` : '/api/add-vaccination/';
+    const url = isEdit ? `/api/vaccination/${vaccinationId}/update/` : '/api/add-vaccination/';
     const method = isEdit ? 'PUT' : 'POST';
 
     fetch(url, {
@@ -657,18 +666,23 @@ function submitVaccination(event, isEdit = false, vaccinationId = null) {
     .then(res => res.json())
     .then(response => {
         if (response.success) {
-            alert(isEdit ? "✅ Cập nhật lịch tiêm phòng thành công!" : "✅ Thêm lịch tiêm phòng thành công!");
+            alert(isEdit ? "✅ Cập nhật thành công!" : "✅ Thêm mới thành công!");
             closeVaccinationModal();
             location.reload();
         } else {
-            alert("❌ Lỗi: " + (response.message || response.error || "Không rõ lỗi."));
+            alert("❌ " + (response.message || "Lỗi không xác định"));
         }
     })
     .catch(err => {
-        console.error("Lỗi khi gửi request:", err);
-        alert("❌ Lỗi khi gửi dữ liệu");
+        console.error("Lỗi khi gửi dữ liệu:", err);
+        alert("❌ Gửi dữ liệu thất bại.");
     });
 }
+
+
+
+
+
 
 function getCookie(name) {
     let cookieValue = null;

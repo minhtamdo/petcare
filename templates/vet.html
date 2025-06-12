@@ -500,128 +500,6 @@
             </div>
         </div>
 
-        <!-- Tab Lịch sử tiêm phòng -->
-        <div id="vaccination-history" class="tab-content">
-            <div class="controls">
-                <button class="btn btn-success" onclick="showAddVaccinationModal()">💉 Thêm lịch tiêm phòng</button>
-                <input type="text" class="search-box" id="search-vaccinations" placeholder="🔍 Tìm kiếm vaccine..." onkeyup="searchVaccinations()">
-            </div>
-            
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID Tiêm phòng</th>
-                        
-                            <th>Tên vaccine</th>
-                            <th>Ngày tiêm tiếp theo</th>
-                            <th>Tổng số liều</th>
-                            <th>Số lô</th>
-                            <th>Trạng thái</th>
-                            <th>Ghi chú</th>
-                            <th>Thao tác</th>
-                        </tr>
-                    </thead>
-                    <tbody id="vaccinations-table">
-                        {% for vac in vaccinations %}
-                        <tr>
-                            <td>{{ vac.vaccination_id }}</td>
-                            <td>{{ vac.vaccine_name }}</td>
-                            <td>{{ vac.next_due }}</td>
-                            <td>{{ vac.total_doses }}</td>
-                            <td>{{ vac.batch_number }}</td>
-                            <td>{{ vac.is_completed|yesno:"Hoàn thành,Chưa xong" }}</td>
-                            <td>{{ vac.note }}</td>
-                            <td>
-                                <button onclick="editVaccination('{{ vac.vaccination_id }}')" class="btn btn-sm btn-warning">✏️ Sửa</button>
-                                <button onclick="deleteVaccination('{{ vac.vaccination_id }}')" class="btn btn-delete">Xóa</button>
-                            </td>
-                        </tr>
-                        {% empty %}
-                        <tr><td colspan="8">Không có dữ liệu</td></tr>
-                        {% endfor %}
-                    </tbody>
-
-
-                </table>
-            </div>
-        </div>
-
-        <!-- Tab Lịch hẹn -->
-        <div id="calendar" class="tab-content">
-            <div class="controls">
-                
-                <button class="btn btn-success" onclick="generateCalendar()">🔄 Làm mới lịch</button>
-                <select id="calendar-month" onchange="generateCalendar()">
-                    <option value="0">Tháng 1</option>
-                    <option value="1">Tháng 2</option>
-                    <option value="2">Tháng 3</option>
-                    <option value="3">Tháng 4</option>
-                    <option value="4">Tháng 5</option>
-                    <option value="5">Tháng 6</option>
-                    <option value="6">Tháng 7</option>
-                    <option value="7">Tháng 8</option>
-                    <option value="8">Tháng 9</option>
-                    <option value="9">Tháng 10</option>
-                    <option value="10">Tháng 11</option>
-                    <option value="11">Tháng 12</option>
-                </select>
-                <input type="number" id="calendar-year" value="2024" min="2020" max="2030" onchange="generateCalendar()">
-            </div>
-            
-            <div id="calendar-view">
-                <div class="calendar-container" id="calendar-grid">
-                    <!-- Lịch sẽ được tạo bằng JavaScript -->
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal thêm/sửa thú cưng -->
-    <div id="pet-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closePetModal()">&times;</span>
-            <h2 id="pet-modal-title">➕ Thêm thú cưng mới</h2>
-            <form id="pet-form">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Tên thú cưng:</label>
-                        <input type="text" id="pet-name" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Loại:</label>
-                        <select id="pet-type" required>
-                            <option value="">Chọn loại</option>
-                            <option value="Chó">Chó</option>
-                            <option value="Mèo">Mèo</option>
-                            <option value="Chim">Chim</option>
-                            <option value="Thỏ">Thỏ</option>
-                            <option value="Khác">Khác</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Chủ sở hữu:</label>
-                        <input type="text" id="pet-owner" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Ngày sinh:</label>
-                        <input type="date" id="pet-birth" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Trạng thái:</label>
-                    <select id="pet-status">
-                        <option value="active">Hoạt động</option>
-                        <option value="inactive">Không hoạt động</option>
-                    </select>
-                </div>
-                <input type="hidden" id="pet-id">
-                <button type="submit" class="btn btn-primary">💾 Lưu</button>
-            </form>
-        </div>
-    </div>
 
     <!-- Modal chi tiết bệnh án -->
     <div id="medical-detail-modal" class="modal">
@@ -682,6 +560,31 @@
             </form>
         </div>
     </div>
+
+    <!-- Modal sửa bệnh án -->
+<div id="editRecordBackdrop" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditRecordModal()">&times;</span>
+        <h2>✏️ Sửa bệnh án</h2>
+        <input type="hidden" id="editRecordId">
+
+        <div class="form-group">
+            <label>Chẩn đoán:</label>
+            <textarea id="editDiagnosis" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Phương pháp điều trị:</label>
+            <textarea id="editTreatment" rows="3" required></textarea>
+        </div>
+        <div class="form-group">
+            <label>Ghi chú:</label>
+            <textarea id="editNotes" rows="2"></textarea>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveEditedRecord()">💾 Lưu thay đổi</button>
+    </div>
+</div>
+
 
     <!-- Modal thêm/sửa kế hoạch dinh dưỡng -->
     <div id="nutrition-modal" class="modal">
@@ -826,6 +729,11 @@
             modal.style.display = "none";
         }
     }
+
+    function closeEditRecordModal() {
+    document.getElementById('editRecordBackdrop').style.display = 'none';
+    document.getElementById('editRecordModal').style.display = 'none';
+}
 
     // Xử lý submit form bệnh án
     document.getElementById("medical-record-form").addEventListener("submit", function(event) {
@@ -992,6 +900,31 @@
         row.style.display = match ? '' : 'none';
     });
 })
+
+function saveEditedRecord() {
+    const recordId = document.getElementById('editRecordId').value;
+    const diagnosis = document.getElementById('editDiagnosis').value;
+    const treatment = document.getElementById('editTreatment').value;
+    const notes = document.getElementById('editNotes').value;
+
+    fetch(`/api/medical_history/${recordId}/update/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ diagnosis, treatment, notes })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) throw new Error(data.error);
+        alert("Cập nhật thành công");
+        document.getElementById('editRecordBackdrop').style.display = 'none';
+        document.getElementById('editRecordModal').style.display = 'none';
+        location.reload(); // hoặc tự cập nhật lại danh sách nếu bạn dùng ajax
+    })
+    .catch(err => alert("Lỗi: " + err.message));
+}
+
     
 
 
