@@ -55,9 +55,6 @@ from django.utils import timezone
 from datetime import datetime
 from django.views.decorators.http import require_http_methods
 
-
-
-
 @csrf_exempt
 def login_view(request):
     if request.method == 'GET':
@@ -727,34 +724,6 @@ def vaccination_history_view(request):
     return render(request, 'lichsutiemphong.html', {
         'vaccinations': vaccinations
     })
-
-# @csrf_exempt
-# def add_vaccination_record(request):
-#     try:
-#         if request.method != 'POST':
-#             return JsonResponse({"error": "Phương thức không hợp lệ."}, status=405)
-
-#         data = json.loads(request.body)
-
-#         # Lấy appointment từ ID
-#         appointment_id = data.get("appointment_id")
-#         appointment = get_object_or_404(Appointment, id=appointment_id)
-
-#         VaccinationHistory.objects.create(
-
-#             vaccine_name=data.get("vaccine_name"),
-#             vaccination_date=now().date(),
-#             next_due=data.get("next_due"),
-#             total_doses=data.get("total_doses"),
-#             batch_number=data.get("batch_number"),
-#             is_completed=data.get("is_completed") == True or data.get("is_completed") == "true",
-#             note=data.get("note", "")
-#         )
-
-#         return JsonResponse({"message": "Đã thêm lịch tiêm phòng thành công."})
-
-#     except Exception as e:
-#         return JsonResponse({"error": str(e)}, status=400)
 
 def delete_vaccination_api(request, id):
     if request.method == 'POST':
