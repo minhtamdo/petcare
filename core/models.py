@@ -1,36 +1,7 @@
+from datetime import date
 from django.db import models
 import uuid
 from enum import Enum
-from django.contrib import admin
-from django.urls import path
-from django.shortcuts import render
-from core.models import *  # sửa lại path import theo app của bạn
-from django.utils import timezone
-from django.db.models import Sum, Q, OuterRef, Exists, F, Value, Min, DecimalField
-from django.db.models.functions import Coalesce
-from datetime import datetime, time, timedelta, date
-from django.http import JsonResponse, HttpResponse, HttpResponseBadRequest, HttpResponseNotAllowed
-#from core.forms import FeeForm
-import calendar
-from openpyxl import Workbook 
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from django.shortcuts import redirect, get_object_or_404
-import json
-from django.db import connection
-from django.shortcuts import redirect
-from django.conf import settings
-import stripe
-import traceback
-from django.utils.timezone import now
-import logging
-from django.views.decorators.http import require_POST
-from django.views.decorators.http import require_http_methods
-import io
-from collections import defaultdict
-from django.dispatch import receiver
-from django.db.models.signals import post_save, post_delete
-from django.db.models import Count
 
 # Enum types
 class AppointmentType(Enum):
