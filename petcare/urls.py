@@ -54,6 +54,8 @@ from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from datetime import datetime
 from django.views.decorators.http import require_http_methods
+from django.utils.dateparse import parse_date
+from django.utils.timezone import make_aware
 
 @csrf_exempt
 def login_view(request):
@@ -118,7 +120,19 @@ def get_redirect_url(role):
 def vet_dashboard(request):
     if request.session.get('role') != 'Vet':
         return redirect('/login')
-    return render(request, 'vet.html')
+    user_id = request.session.get('user_id')
+    total_pets = Pet.objects.count()
+    today = date.today()
+    today_appointments = Appointment.objects.filter(
+        staff_id=user_id,
+        check_in=today
+    ).count()
+
+    return render(request, 'vet.html', {
+        'total_pets': total_pets,
+        'today_appointments': today_appointments
+        })
+
 
 def owner_dashboard(request):
     if request.session.get('role') != 'Owner':
@@ -224,7 +238,7 @@ def update_account_info(request):
         user.phonenumber = data.get('phonenumber', user.phonenumber)
         user.save()
 
-        return JsonResponse({'message': 'Thông tin đã được cập nhật.'})
+        return JsonResponse({'success': True, 'message': 'Thông tin đã được cập nhật.'})
     return JsonResponse({'error': 'Phương thức không được hỗ trợ.'}, status=405)
 
 def upcoming_appointments(request):
@@ -402,6 +416,36 @@ def appointment_history_view(request):
     } for a in appointments]
     return JsonResponse(data, safe=False)
 
+@csrf_exempt
+def update_appointment(request, appointment_id):
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Phải là POST'}, status=405)
+
+    try:
+        data = json.loads(request.body)
+
+        appointment = Appointment.objects.get(id=appointment_id)
+
+        # Kiểm tra quyền người dùng
+        if str(appointment.owner_id) != str(request.session.get('user_id')):
+            return JsonResponse({'error': 'Không có quyền chỉnh sửa'}, status=403)
+
+        # Cập nhật dữ liệu
+        appointment.check_in = data['date']
+        appointment.pet_id = uuid.UUID(data['pet_id'])
+        appointment.type = data['service'].upper()  # <-- nên luôn dùng upper() ở backend
+        appointment.save()
+
+        return JsonResponse({'success': True, 'message': 'Cập nhật thành công!'})
+
+    except Appointment.DoesNotExist:
+        return JsonResponse({'error': 'Lịch hẹn không tồn tại'}, status=404)
+
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())  # In stacktrace vào terminal
+        return JsonResponse({'error': f'Lỗi server: {str(e)}'}, status=500)
+
 
 def logout_view(request):
     request.session.flush()
@@ -474,5 +518,6 @@ urlpatterns = [
     path('pets/<uuid:pet_id>/update/', update_pet),
     path('pets/<uuid:pet_id>/', pet_detail_view),
     path('appointments/history/', appointment_history_view),
+    path('appointments/update/<uuid:appointment_id>/', update_appointment, name='update_appointment'),
 
 ]

@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Thú Y</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .logo h1 {
+            color: #4a90e2;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .logo p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .nav-menu {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 5px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            text-decoration: none;
+            color: #555;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(74, 144, 226, 0.3);
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-title {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 25px;
+            border-bottom: 3px solid #4a90e2;
+            padding-bottom: 10px;
+        }
+
+        .pet-search {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #e0e6ed;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 20px rgba(74, 144, 226, 0.2);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .pet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .pet-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            border-color: #4a90e2;
+        }
+
+        .pet-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd89b, #19547b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .pet-info h3 {
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .pet-info p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .status-healthy {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-sick {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .data-table td {
+            padding: 15px;
+            border-bottom: 1px solid #e0e6ed;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 15px rgba(74, 144, 226, 0.2);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e0e6ed;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                order: 2;
+            }
+            
+            .main-content {
+                order: 1;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <h1>🐾 VetCare</h1>
+                <p>Hệ thống quản lý thú y</p>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-page="dashboard">
+                        <span class="nav-icon">📊</span>
+                        Tổng quan
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="pets">
+                        <span class="nav-icon">🐕</span>
+                        Thông tin thú cưng
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="vaccination-schedule">
+                        <span class="nav-icon">💉</span>
+                        Lịch tiêm phòng
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="examinations">
+                        <span class="nav-icon">🩺</span>
+                        Khám bệnh
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="medical-history">
+                        <span class="nav-icon">📋</span>
+                        Lịch sử bệnh án
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="diet">
+                        <span class="nav-icon">🍖</span>
+                        Chế độ ăn uống
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="vaccination-history">
+                        <span class="nav-icon">📝</span>
+                        Lịch sử tiêm phòng
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <!-- Trang tổng quan -->
+            <div id="dashboard" class="page active">
+                <h1 class="page-title">Tổng quan hệ thống</h1>
+                
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="total-pets">{{ total_pets }}</div>
+                        <div class="stat-label">Tổng số thú cưng</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="today-appointments">{{ today_appointments }}</div>
+                        <div class="stat-label">Lịch hẹn hôm nay</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pending-vaccinations">3</div>
+                        <div class="stat-label">Cần tiêm phòng</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="sick-pets">2</div>
+                        <div class="stat-label">Đang điều trị</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 20px;">Hoạt động gần đây</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Thú cưng</th>
+                            <th>Hoạt động</th>
+                            <th>Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>10:30 - 13/06/2025</td>
+                            <td>Buddy (Chó Golden)</td>
+                            <td>Khám tổng quát</td>
+                            <td><span class="status-badge status-healthy">Hoàn thành</span></td>
+                        </tr>
+                        <tr>
+                            <td>09:15 - 13/06/2025</td>
+                            <td>Mimi (Mèo Ba Tư)</td>
+                            <td>Tiêm phòng rabies</td>
+                            <td><span class="status-badge status-healthy">Hoàn thành</span></td>
+                        </tr>
+                        <tr>
+                            <td>14:00 - 12/06/2025</td>
+                            <td>Max (Chó Husky)</td>
+                            <td>Điều trị da liễu</td>
+                            <td><span class="status-badge status-sick">Đang điều trị</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Trang thông tin thú cưng -->
+            <div id="pets" class="page">
+                <h1 class="page-title">Thông tin thú cưng</h1>
+                
+                <div class="pet-search">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm theo tên, loài, chủ sở hữu...">
+                    <button class="btn btn-primary">🔍 Tìm kiếm</button>
+                </div>
+
+                <div class="pet-grid" id="pet-grid">
+                    <!-- Danh sách thú cưng sẽ được tạo bằng JavaScript -->
+                </div>
+            </div>
+
+            <!-- Trang lịch tiêm phòng -->
+            <div id="vaccination-schedule" class="page">
+                <h1 class="page-title">Lịch tiêm phòng</h1>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="showUpdateVaccinationModal()">+ Cập nhật lịch tiêm</button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Thú cưng</th>
+                            <th>Loại vaccine</th>
+                            <th>Ngày hẹn</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vaccination-schedule-tbody">
+                        <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Trang khám bệnh -->
+            <div id="examinations" class="page">
+                <h1 class="page-title">Khám bệnh</h1>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="showAddExaminationModal()">+ Thêm lịch khám</button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Thú cưng</th>
+                            <th>Chủ sở hữu</th>
+                            <th>Loại khám</th>
+                            <th>Trạng thái</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="examinations-tbody">
+                        <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Trang lịch sử bệnh án -->
+            <div id="medical-history" class="page">
+                <h1 class="page-title">Lịch sử bệnh án</h1>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="showAddMedicalRecordModal()">+ Thêm bệnh án mới</button>
+                </div>
+
+                <div class="pet-search">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm bệnh án theo tên thú cưng...">
+                    <button class="btn btn-primary">🔍 Tìm kiếm</button>
+                </div>
+
+                <div id="medical-records-container">
+                    <!-- Dữ liệu bệnh án sẽ được tạo bằng JavaScript -->
+                </div>
+            </div>
+
+            <!-- Trang chế độ ăn uống -->
+            <div id="diet" class="page">
+                <h1 class="page-title">Chế độ ăn uống</h1>
+                
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="showAddDietPlanModal()">+ Thêm chế độ ăn</button>
+                </div>
+
+                <div id="diet-plans-container">
+                    <!-- Dữ liệu chế độ ăn sẽ được tạo bằng JavaScript -->
+                </div>
+            </div>
+
+            <!-- Trang lịch sử tiêm phòng -->
+            <div id="vaccination-history" class="page">
+                <h1 class="page-title">Lịch sử tiêm phòng</h1>
+                
+                <div class="pet-search">
+                    <input type="text" class="search-input" placeholder="Tìm kiếm theo tên thú cưng...">
+                    <button class="btn btn-primary">🔍 Tìm kiếm</button>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Thú cưng</th>
+                            <th>Loại vaccine</th>
+                            <th>Ngày tiêm</th>
+                            <th>Lô vaccine</th>
+                            <th>Bác sĩ thực hiện</th>
+                            <th>Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vaccination-history-tbody">
+                        <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal thêm bệnh án mới -->
+    <div id="addMedicalRecordModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Thêm bệnh án mới</h2>
+                <button class="close-btn" onclick="closeModal('addMedicalRecordModal')">&times;</button>
+            </div>
+            <form id="addMedicalRecordForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Thú cưng</label>
+                        <select class="form-control" required>
+                            <option value="">Chọn thú cưng</option>
+                            <option value="buddy">Buddy (Chó Golden)</option>
+                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
+                            <option value="max">Max (Chó Husky)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ngày khám</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Chẩn đoán</label>
+                    <input type="text" class="form-control" placeholder="Nhập chẩn đoán..." required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Triệu chứng</label>
+                    <textarea class="form-control" rows="3" placeholder="Mô tả triệu chứng..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Điều trị</label>
+                    <textarea class="form-control" rows="3" placeholder="Phương pháp điều trị..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Thuốc kê đơn</label>
+                        <input type="text" class="form-control" placeholder="Tên thuốc...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Liều dùng</label>
+                        <input type="text" class="form-control" placeholder="Liều dùng...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ghi chú</label>
+                    <textarea class="form-control" rows="2" placeholder="Ghi chú thêm..."></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="button" class="btn" onclick="closeModal('addMedicalRecordModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
+                    <button type="submit" class="btn btn-success">Lưu bệnh án</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal cập nhật lịch tiêm phòng -->
+    <div id="updateVaccinationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Cập nhật lịch tiêm phòng</h2>
+                <button class="close-btn" onclick="closeModal('updateVaccinationModal')">&times;</button>
+            </div>
+            <form id="updateVaccinationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Thú cưng</label>
+                        <select class="form-control" required>
+                            <option value="">Chọn thú cưng</option>
+                            <option value="buddy">Buddy (Chó Golden)</option>
+                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
+                            <option value="max">Max (Chó Husky)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Loại vaccine</label>
+                        <select class="form-control" required>
+                            <option value="">Chọn loại vaccine</option>
+                            <option value="rabies">Rabies</option>
+                            <option value="dhpp">DHPP</option>
+                            <option value="fvrcp">FVRCP</option>
+                            <option value="bordetella">Bordetella</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Ngày tiêm</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lô vaccine</label>
+                        <input type="text" class="form-control" placeholder="Số lô vaccine...">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ghi chú</label>
+                    <textarea class="form-control" rows="2" placeholder="Ghi chú..."></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="button" class="btn" onclick="closeModal('updateVaccinationModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
+                    <button type="submit" class="btn btn-success">Cập nhật</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Các modal khác tương tự -->
+    <div id="addExaminationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Thêm lịch khám</h2>
+                <button class="close-btn" onclick="closeModal('addExaminationModal')">&times;</button>
+            </div>
+            <form id="addExaminationForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Thú cưng</label>
+                        <select class="form-control" required>
+                            <option value="">Chọn thú cưng</option>
+                            <option value="buddy">Buddy (Chó Golden)</option>
+                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
+                            <option value="max">Max (Chó Husky)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ngày khám</label>
+                        <input type="datetime-local" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Loại khám</label>
+                    <select class="form-control" required>
+                        <option value="">Chọn loại khám</option>
+                        <option value="general">Khám tổng quát</option>
+                        <option value="emergency">Khám cấp cứu</option>
+                        <option value="followup">Khám tái khám</option>
+                        <option value="surgery">Phẫu thuật</option>
+                        <option value="dental">Khám răng miệng</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Lý do khám</label>
+                    <textarea class="form-control" rows="3" placeholder="Mô tả lý do cần khám..."></textarea>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="button" class="btn" onclick="closeModal('addExaminationModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
+                    <button type="submit" class="btn btn-success">Thêm lịch khám</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal thêm chế độ ăn -->
+    <div id="addDietPlanModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Thêm chế độ ăn uống</h2>
+                <button class="close-btn" onclick="closeModal('addDietPlanModal')">&times;</button>
+            </div>
+            <form id="addDietPlanForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Thú cưng</label>
+                        <select class="form-control" required>
+                            <option value="">Chọn thú cưng</option>
+                            <option value="buddy">Buddy (Chó Golden)</option>
+                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
+                            <option value="max">Max (Chó Husky)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Loại thức ăn</label>
+                        <input type="text" class="form-control" placeholder="Tên thức ăn..." required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Khẩu phần (gram/ngày)</label>
+                        <input type="number" class="form-control" placeholder="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Số bữa/ngày</label>
+                        <input type="number" class="form-control" placeholder="2" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Hướng dẫn đặc biệt</label>
+                    <textarea class="form-control" rows="3" placeholder="Ghi chú về cách cho ăn, thời gian..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Thức ăn cấm</label>
+                        <input type="text" class="form-control" placeholder="Thức ăn không được cho ăn...">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Ngày bắt đầu</label>
+                        <input type="date" class="form-control" required>
+                    </div>
+                </div>
+                <div style="text-align: right; margin-top: 20px;">
+                    <button type="button" class="btn" onclick="closeModal('addDietPlanModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
+                    <button type="submit" class="btn btn-success">Lưu chế độ ăn</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Dữ liệu mẫu
+        const petsData = [
+            {
+                id: 1,
+                name: "Buddy",
+                species: "Chó",
+                breed: "Golden Retriever",
+                age: "3 tuổi",
+                owner: "Nguyễn Văn A",
+                phone: "0901234567",
+                status: "healthy",
+                avatar: "🐕"
+            },
+            {
+                id: 2,
+                name: "Mimi",
+                species: "Mèo",
+                breed: "Mèo Ba Tư",
+                age: "2 tuổi",
+                owner: "Trần Thị B",
+                phone: "0902345678",
+                status: "healthy",
+                avatar: "🐱"
+            },
+            {
+                id: 3,
+                name: "Max",
+                species: "Chó",
+                breed: "Husky",
+                age: "4 tuổi",
+                owner: "Lê Văn C",
+                phone: "0903456789",
+                status: "sick",
+                avatar: "🐺"
+            },
+            {
+                id: 4,
+                name: "Luna",
+                species: "Mèo",
+                breed: "Mèo Anh lông ngắn",
+                age: "1 tuổi",
+                owner: "Phạm Thị D",
+                phone: "0904567890",
+                status: "healthy",
+                avatar: "🐈"
+            },
+            {
+                id: 5,
+                name: "Rocky",
+                species: "Chó",
+                breed: "Bulldog",
+                age: "5 tuổi",
+                owner: "Hoàng Văn E",
+                phone: "0905678901",
+                status: "sick",
+                avatar: "🐶"
+            }
+        ];
+
+        const vaccinationScheduleData = [
+            { pet: "Buddy (Chó Golden)", vaccine: "DHPP", date: "2025-06-20", status: "pending" },
+            { pet: "Mimi (Mèo Ba Tư)", vaccine: "FVRCP", date: "2025-06-25", status: "pending" },
+            { pet: "Max (Chó Husky)", vaccine: "Rabies", date: "2025-06-18", status: "overdue" },
+            { pet: "Luna (Mèo Anh)", vaccine: "FVRCP", date: "2025-07-01", status: "scheduled" }
+        ];
+
+        const examinationData = [
+            { time: "2025-06-13 14:30", pet: "Buddy", owner: "Nguyễn Văn A", type: "Khám tổng quát", status: "scheduled" },
+            { time: "2025-06-13 15:00", pet: "Mimi", owner: "Trần Thị B", type: "Tiêm phòng", status: "completed" },
+            { time: "2025-06-14 09:00", pet: "Max", owner: "Lê Văn C", type: "Tái khám", status: "scheduled" },
+            { time: "2025-06-14 10:30", pet: "Rocky", owner: "Hoàng Văn E", type: "Khám cấp cứu", status: "pending" }
+        ];
+
+        const medicalRecordsData = [
+            {
+                pet: "Max (Chó Husky)",
+                date: "2025-06-10",
+                diagnosis: "Viêm da dị ứng",
+                symptoms: "Ngứa, rụng lông, da đỏ",
+                treatment: "Thuốc kháng histamin, dầu tắm đặc trị",
+                medication: "Cetirizine 10mg",
+                dosage: "1 viên/ngày",
+                notes: "Kiêng tiếp xúc với phấn hoa"
+            },
+            {
+                pet: "Rocky (Chó Bulldog)",
+                date: "2025-06-08",
+                diagnosis: "Rối loạn tiêu hóa",
+                symptoms: "Tiêu chảy, nôn mửa, mệt mỏi",
+                treatment: "Chế độ ăn đặc biệt, thuốc tiêu hóa",
+                medication: "Probiotics",
+                dosage: "1 gói/ngày",
+                notes: "Theo dõi trong 1 tuần"
+            }
+        ];
+
+        const dietPlansData = [
+            {
+                pet: "Buddy (Chó Golden)",
+                food: "Royal Canin Golden Retriever Adult",
+                amount: "400g/ngày",
+                meals: "2 bữa",
+                instructions: "Chia đều sáng và chiều, uống đủ nước",
+                forbidden: "Chocolate, nho, hành tây",
+                startDate: "2025-06-01"
+            },
+            {
+                pet: "Mimi (Mèo Ba Tư)",
+                food: "Hill's Science Diet Indoor Cat",
+                amount: "60g/ngày",
+                meals: "2 bữa",
+                instructions: "Thức ăn khô, luôn có nước sạch",
+                forbidden: "Cá ngừ, sữa bò",
+                startDate: "2025-05-15"
+            }
+        ];
+
+        const vaccinationHistoryData = [
+            { pet: "Buddy", vaccine: "Rabies", date: "2025-01-15", batch: "RAB2025001", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng phụ" },
+            { pet: "Mimi", vaccine: "FVRCP", date: "2025-02-20", batch: "FVR2025002", doctor: "BS. Trần Thị Y", notes: "Phản ứng nhẹ, hết sau 1 ngày" },
+            { pet: "Max", vaccine: "DHPP", date: "2024-12-10", batch: "DHP2024050", doctor: "BS. Lê Văn Z", notes: "Bình thường" },
+            { pet: "Luna", vaccine: "FVRCP", date: "2025-03-05", batch: "FVR2025003", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng" }
+        ];
+
+        // Chuyển đổi trang
+        function showPage(pageId) {
+            // Ẩn tất cả các trang
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Hiển thị trang được chọn
+            document.getElementById(pageId).classList.add('active');
+            
+            // Cập nhật trạng thái menu
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
+        }
+
+        // Render danh sách thú cưng
+        function renderPets() {
+            const petGrid = document.getElementById('pet-grid');
+            petGrid.innerHTML = '';
+            
+            petsData.forEach(pet => {
+                const statusClass = pet.status === 'healthy' ? 'status-healthy' : 'status-sick';
+                const statusText = pet.status === 'healthy' ? 'Khỏe mạnh' : 'Đang điều trị';
+                
+                const petCard = document.createElement('div');
+                petCard.className = 'pet-card';
+                petCard.innerHTML = `
+                    <div class="pet-avatar">${pet.avatar}</div>
+                    <div class="pet-info">
+                        <h3>${pet.name}</h3>
+                        <p><strong>Loài:</strong> ${pet.species} - ${pet.breed}</p>
+                        <p><strong>Tuổi:</strong> ${pet.age}</p>
+                        <p><strong>Chủ:</strong> ${pet.owner}</p>
+                        <p><strong>SĐT:</strong> ${pet.phone}</p>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+                petGrid.appendChild(petCard);
+            });
+        }
+
+        // Render lịch tiêm phòng
+        function renderVaccinationSchedule() {
+            const tbody = document.getElementById('vaccination-schedule-tbody');
+            tbody.innerHTML = '';
+            
+            vaccinationScheduleData.forEach(item => {
+                const statusClass = item.status === 'pending' ? 'status-sick' : 
+                                  item.status === 'overdue' ? 'status-sick' : 'status-healthy';
+                const statusText = item.status === 'pending' ? 'Chờ tiêm' :
+                                 item.status === 'overdue' ? 'Quá hạn' : 'Đã lên lịch';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.pet}</td>
+                    <td>${item.vaccine}</td>
+                    <td>${item.date}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">Cập nhật</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Render lịch khám bệnh
+        function renderExaminations() {
+            const tbody = document.getElementById('examinations-tbody');
+            tbody.innerHTML = '';
+            
+            examinationData.forEach(item => {
+                const statusClass = item.status === 'completed' ? 'status-healthy' : 
+                                  item.status === 'pending' ? 'status-sick' : 'status-healthy';
+                const statusText = item.status === 'completed' ? 'Hoàn thành' :
+                                 item.status === 'pending' ? 'Chờ xử lý' : 'Đã lên lịch';
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.time}</td>
+                    <td>${item.pet}</td>
+                    <td>${item.owner}</td>
+                    <td>${item.type}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">Chi tiết</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Render lịch sử bệnh án
+        function renderMedicalRecords() {
+            const container = document.getElementById('medical-records-container');
+            container.innerHTML = '';
+            
+            medicalRecordsData.forEach(record => {
+                const recordCard = document.createElement('div');
+                recordCard.className = 'pet-card';
+                recordCard.style.marginBottom = '20px';
+                recordCard.innerHTML = `
+                    <h3 style="color: #4a90e2; margin-bottom: 15px;">${record.pet}</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <p><strong>Ngày khám:</strong> ${record.date}</p>
+                        <p><strong>Chẩn đoán:</strong> ${record.diagnosis}</p>
+                    </div>
+                    <p style="margin-bottom: 10px;"><strong>Triệu chứng:</strong> ${record.symptoms}</p>
+                    <p style="margin-bottom: 10px;"><strong>Điều trị:</strong> ${record.treatment}</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px;">
+                        <p><strong>Thuốc:</strong> ${record.medication}</p>
+                        <p><strong>Liều dùng:</strong> ${record.dosage}</p>
+                    </div>
+                    <p style="font-style: italic; color: #666;"><strong>Ghi chú:</strong> ${record.notes}</p>
+                `;
+                container.appendChild(recordCard);
+            });
+        }
+
+        // Render chế độ ăn uống
+        function renderDietPlans() {
+            const container = document.getElementById('diet-plans-container');
+            container.innerHTML = '';
+            
+            dietPlansData.forEach(diet => {
+                const dietCard = document.createElement('div');
+                dietCard.className = 'pet-card';
+                dietCard.style.marginBottom = '20px';
+                dietCard.innerHTML = `
+                    <h3 style="color: #28a745; margin-bottom: 15px;">${diet.pet}</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <p><strong>Thức ăn:</strong> ${diet.food}</p>
+                        <p><strong>Khẩu phần:</strong> ${diet.amount}</p>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px;">
+                        <p><strong>Số bữa:</strong> ${diet.meals}</p>
+                        <p><strong>Ngày bắt đầu:</strong> ${diet.startDate}</p>
+                    </div>
+                    <p style="margin-bottom: 10px;"><strong>Hướng dẫn:</strong> ${diet.instructions}</p>
+                    <p style="color: #dc3545;"><strong>Thức ăn cấm:</strong> ${diet.forbidden}</p>
+                `;
+                container.appendChild(dietCard);
+            });
+        }
+
+        // Render lịch sử tiêm phòng
+        function renderVaccinationHistory() {
+            const tbody = document.getElementById('vaccination-history-tbody');
+            tbody.innerHTML = '';
+            
+            vaccinationHistoryData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${item.pet}</td>
+                    <td>${item.vaccine}</td>
+                    <td>${item.date}</td>
+                    <td>${item.batch}</td>
+                    <td>${item.doctor}</td>
+                    <td>${item.notes}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Xử lý modal
+        function showAddMedicalRecordModal() {
+            document.getElementById('addMedicalRecordModal').classList.add('active');
+        }
+
+        function showUpdateVaccinationModal() {
+            document.getElementById('updateVaccinationModal').classList.add('active');
+        }
+
+        function showAddExaminationModal() {
+            document.getElementById('addExaminationModal').classList.add('active');
+        }
+
+        function showAddDietPlanModal() {
+            document.getElementById('addDietPlanModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Render dữ liệu ban đầu
+            renderPets();
+            renderVaccinationSchedule();
+            renderExaminations();
+            renderMedicalRecords();
+            renderDietPlans();
+            renderVaccinationHistory();
+
+            // Xử lý menu navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                });
+            });
+
+            // Xử lý form submit
+            document.getElementById('addMedicalRecordForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Xử lý thêm bệnh án mới
+                alert('Thêm bệnh án thành công!');
+                closeModal('addMedicalRecordModal');
+            });
+
+            document.getElementById('updateVaccinationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Xử lý cập nhật lịch tiêm phòng
+                alert('Cập nhật lịch tiêm phòng thành công!');
+                closeModal('updateVaccinationModal');
+            });
+
+            document.getElementById('addExaminationForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Xử lý thêm lịch khám
+                alert('Thêm lịch khám thành công!');
+                closeModal('addExaminationModal');
+            });
+
+            document.getElementById('addDietPlanForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                // Xử lý thêm chế độ ăn
+                alert('Thêm chế độ ăn thành công!');
+                closeModal('addDietPlanModal');
+            });
+
+            // Đóng modal khi click bên ngoài
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>

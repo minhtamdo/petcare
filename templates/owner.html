@@ -482,6 +482,92 @@
   color: #555;
 }
 
+#editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Labels */
+#editForm label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+/* Input fields */
+#editForm input[type="date"],
+#editForm select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+#editForm input[type="date"]:focus,
+#editForm select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+/* Buttons container */
+#editForm button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Submit button */
+#editForm button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  margin-top: 8px;
+}
+
+#editForm button[type="submit"]:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+}
+
+/* Cancel button */
+#editForm button[type="button"] {
+  background-color: #f44336;
+  color: white;
+  margin-top: 4px;
+}
+
+#editForm button[type="button"]:hover {
+  background-color: #da190b;
+  transform: translateY(-1px);
+}
+
+/* Button active states */
+#editForm button:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  #editForm button {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+}
     </style>
 </head>
 <body>
@@ -611,15 +697,15 @@
     <form id="accountForm">
         <div class="form-group">
             <label for="userName">Họ và tên:</label>
-            <input type="text" id="userName" name="fullname" required disabled>
+            <input type="text" id="userName" name="fullname" required disabled value="{{ user_fullname }}">
         </div>
         <div class="form-group">
             <label for="userEmail">Email:</label>
-            <input type="email" id="userEmail" name="email" required disabled>
+            <input type="email" id="userEmail" name="email" required disabled value="{{ user_email }}">
         </div>
         <div class="form-group">
             <label for="userPhone">Số điện thoại:</label>
-            <input type="tel" id="userPhone" name="phonenumber" required disabled>
+            <input type="tel" id="userPhone" name="phonenumber" required disabled value="{{ user_phone }}">
         </div>
         <button type="button" class="btn" id="editBtn">Chỉnh sửa</button>
         <button type="submit" class="btn" id="saveBtn" style="display:none;">Lưu</button>
@@ -637,11 +723,34 @@
 
             <!-- Lịch Sử -->
             <section id="history" class="section">
-                <h2>Lịch Sử Dịch Vụ</h2>
+                <h2>Dịch Vụ Đã Đăng Kí</h2>
                 <div id="historyContainer"></div>
             </section>
         </main>
     </div>
+
+<!--Modal chỉnh sửa lịch-->>
+<div id="editModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h3>Chỉnh sửa lịch hẹn</h3>
+    <form id="editForm">
+      <label>Ngày:</label>
+      <input type="date" id="editDate" required>
+      <label>Thú cưng:</label>
+      <select id="editPet" required></select>
+      <label>Dịch vụ:</label>
+      <select id="editService" required>
+        <option value="medical">Khám</option>
+        <option value="vaccine">Tiêm Vaccine</option>
+        <option value="beauty">Chăm sóc</option>
+        <!-- thêm nếu có -->
+      </select>
+      <input type="hidden" id="editId">
+      <button type="submit">Lưu</button>
+      <button type="button" onclick="closeEditModal()">Hủy</button>
+    </form>
+  </div>
+</div>
 
 <!-- Form modal thêm thú cưng -->
 <div id="petModal" class="modal">
@@ -698,15 +807,6 @@
 
 
     <script>
- 
-        // Khởi tạo dữ liệu
-        // function initializeData() {
-        //     //loadUserData();
-        //     loadPetSelect();
-        //     loadPetsDisplay();
-        //     loadBookingHistory();
-        //     updateStats();
-        // }
 
         // Hiển thị section
        function showSection(sectionId, event = null) {
@@ -722,6 +822,7 @@
     document.querySelectorAll('.nav-tab').forEach(tab => {
         tab.classList.remove('active');
     });
+}
 
         // Booking form
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
@@ -739,46 +840,70 @@
         });
 
     // Nút chỉnh sửa
-    document.getElementById('editBtn').addEventListener('click', () => {
-        document.getElementById('userName').disabled = false;
-        document.getElementById('userEmail').disabled = false;
-        document.getElementById('userPhone').disabled = false;
-        document.getElementById('editBtn').style.display = 'none';
-        document.getElementById('saveBtn').style.display = 'inline-block';
+document.getElementById('editBtn').addEventListener('click', () => {
+    document.getElementById('userName').disabled = false;
+    document.getElementById('userEmail').disabled = false;
+    document.getElementById('userPhone').disabled = false;
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('saveBtn').style.display = 'inline-block';
+});
+
+document.getElementById('accountForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const payload = {
+        fullname: document.getElementById('userName').value,
+        email: document.getElementById('userEmail').value,
+        phonenumber: document.getElementById('userPhone').value
+    };
+
+    fetch('/account/update/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Nếu bạn dùng CSRF
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+    console.log('Response:', data);  // 👈 Xem có gì trong response
+
+    if (data.success) {
+        document.getElementById('accountAlert').innerHTML = '<p style="color:green;">Cập nhật thành công!</p>';
+    } else if (data.error) {
+        document.getElementById('accountAlert').innerHTML = `<p style="color:red;">${data.error}</p>`;
+    } else {
+        document.getElementById('accountAlert').innerHTML = `<p style="color:red;">Có lỗi không xác định.</p>`;
+    }
+
+        // Vô hiệu hóa lại form
+        document.getElementById('userName').disabled = true;
+        document.getElementById('userEmail').disabled = true;
+        document.getElementById('userPhone').disabled = true;
+        document.getElementById('editBtn').style.display = 'inline-block';
+        document.getElementById('saveBtn').style.display = 'none';
+    })
+    .catch(err => {
+        document.getElementById('accountAlert').innerHTML = '<p style="color:red;">Lỗi kết nối đến máy chủ.</p>';
+        console.error(err);
     });
+});
 
-    // Nút lưu thông tin
-    document.getElementById('accountForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const payload = {
-            fullname: document.getElementById('userName').value,
-            email: document.getElementById('userEmail').value,
-            phonenumber: document.getElementById('userPhone').value
-        };
-
-        function editProfile() {
-            document.getElementById('profileModal').style.display = 'block';
-        }
-
-    function getCookie(name) {
-        let cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            const cookies = document.cookie.split(';');
-            for (let cookie of cookies) {
-                cookie = cookie.trim();
-                if (cookie.startsWith(name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-        return cookieValue;
     }
-    if (sectionId === 'pets') {
-        loadPets();
-    }
-});
- }
+    return cookieValue;
+}
 
 // Hàm lấy CSRF token từ cookie
 function getCSRFToken() {
@@ -1087,6 +1212,8 @@ function loadPets() {
     });
 }
 
+//lịch sử cuộc hẹn crud//
+
 function loadAppointmentHistory() {
   fetch('/appointments/history/')
     .then(response => response.json())
@@ -1107,6 +1234,16 @@ function loadAppointmentHistory() {
           <p><strong>Thú cưng:</strong> ${appointment.pet_name}</p>
           <p><strong>Ngày:</strong> ${appointment.date}</p>
           <p><strong>Trạng thái:</strong> ${appointment.status_vi}</p>
+          <div class="pet-actions">
+            <button class="edit-btn"
+                    data-id="${appointment.id}"
+                    data-date="${appointment.date}"
+                    data-pet="${appointment.pet_name}"
+                    data-service="${appointment.service_name}">
+            ✏️ Chỉnh sửa
+            </button>
+            <button class="delete-btn">🗑️ Xóa</button>
+          </div>
         `;
         container.appendChild(item);
       });
@@ -1115,6 +1252,72 @@ function loadAppointmentHistory() {
       console.error('Lỗi khi tải lịch sử dịch vụ:', error);
       document.getElementById('historyContainer').innerHTML = '<p style="color:red;">Lỗi khi tải lịch sử dịch vụ.</p>';
     });
+}
+
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('edit-btn')) {
+    const btn = e.target;
+    const statusText = btn.closest('.appointment-item').querySelector('p:nth-child(4)').innerText;
+    if (!statusText.includes("PENDING")) {
+      alert("Chỉ được sửa lịch hẹn đang chờ.");
+      return;
+    }
+
+    document.getElementById('editId').value = btn.dataset.id;
+    document.getElementById('editDate').value = btn.dataset.date;
+    document.getElementById('editService').value = btn.dataset.service.toLowerCase();
+
+    // Tải danh sách thú cưng
+    fetch('/pets/')
+      .then(res => res.json())
+      .then(pets => {
+        const petSelect = document.getElementById('editPet');
+        petSelect.innerHTML = '';
+        pets.forEach(pet => {
+          const option = document.createElement('option');
+          option.value = pet.id;
+          option.textContent = pet.name;
+          if (pet.name === btn.dataset.pet) option.selected = true;
+          petSelect.appendChild(option);
+        });
+      });
+
+    document.getElementById('editModal').style.display = 'block';
+  }
+});
+
+document.getElementById('editForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const id = document.getElementById('editId').value;
+  const date = document.getElementById('editDate').value;
+  const pet_id = document.getElementById('editPet').value;
+  const service = document.getElementById('editService').value;
+
+  fetch(`/appointments/update/${id}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRFToken()  // tự tạo hàm này nếu chưa có
+    },
+    body: JSON.stringify({ date, pet_id, service })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Cập nhật thất bại");
+      return res.json();
+    })
+    .then(data => {
+      alert("Cập nhật thành công!");
+      closeEditModal();
+      loadAppointmentHistory();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Đã có lỗi xảy ra.");
+    });
+});
+
+function closeEditModal() {
+  document.getElementById('editModal').style.display = 'none';
 }
 
 
