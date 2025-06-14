@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập</title>
+    <link rel="stylesheet" href="../Css/DangNhap.css">
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <img src="../images/login.jpg" alt="Mèo đeo kính mát" class="cat-image">
+        </div>
+        <div class="right-side">
+            <div class="form-container sign-in-form active">
+                <h2>Đăng Nhập</h2>
+                <p>Đăng nhập bằng thông tin đã đăng ký</p>
+                <div class="form-group">
+                    <label for="email">ĐỊA CHỈ EMAIL</label>
+                    <input type="email" id="email" placeholder="vidu@vidu.com">
+                </div>
+                <div class="form-group">
+                    <label for="password">MẬT KHẨU</label>
+                    <input type="password" id="password" placeholder="Mật khẩu">
+                </div>
+                <div class="options">
+                    <div class="remember">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">Nhớ mật khẩu</label>
+                    </div>
+                    <a href="#">Quên Mật Khẩu?</a>
+                </div>
+                <button onclick="login()">ĐĂNG NHẬP</button>
+                <div class="links">
+                    <p>Khách hàng mới? <a href="#" onclick="showSignUp()">Tạo tài khoản</a></p>
+                </div>
+                <div class="links">
+                    <p><a href="#" onclick="goBack()">Quay lại trang web</a></p>
+                </div>
+            </div>
+            <div class="form-container sign-up-form">
+                <h2>Đăng Ký</h2>
+                <p>Tạo tài khoản mới</p>
+                <div class="form-group">
+                    <label for="first-name">TÊN</label>
+                    <input type="text" id="first-name" placeholder="Tên của bạn">
+                </div>
+                <div class="form-group">
+                    <label for="full-name">HỌ VÀ TÊN</label>
+                    <input type="text" id="full-name" placeholder="Họ và tên đầy đủ">
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">ĐỊA CHỈ EMAIL</label>
+                    <input type="email" id="signup-email" placeholder="vidu@vidu.com">
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">MẬT KHẨU</label>
+                    <input type="password" id="signup-password" placeholder="Mật khẩu">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">XÁC NHẬN MẬT KHẨU</label>
+                    <input type="password" id="confirm-password" placeholder="Xác nhận mật khẩu">
+                </div>
+                <button class="pet-info-button" onclick="openPetInfoModal()">Nhập thông tin thú cưng</button>
+                <div class="links">
+                    <p>Đã có tài khoản? <a href="#" onclick="showSignIn()">Quay lại Đăng Nhập</a></p>
+                    <p><a href="#" onclick="goBack()">Quay lại trang web</a></p>
+                </div>
+            </div>
+            <!-- Modal nhập thông tin thú cưng -->
+            <div class="modal" id="pet-info-modal">
+                <div class="modal-content">
+                    <h3>Nhập thông tin thú cưng</h3>
+                    <div class="form-group">
+                        <label for="pet-name">TÊN THÚ CƯNG</label>
+                        <input type="text" id="pet-name" placeholder="Tên thú cưng">
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-type">GIỐNG LOÀI</label>
+                        <input type="text" id="pet-type" placeholder="Ví dụ: Chó, Mèo">
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-gender">GIỚI TÍNH</label>
+                        <input type="text" id="pet-gender" placeholder="Giới tính (Đực/Cái)">
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-birthdate">NGÀY SINH</label>
+                        <input type="date" id="pet-birthdate">
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-color">MÀU SẮC</label>
+                        <input type="text" id="pet-color" placeholder="Màu sắc">
+                    </div>
+                    <div class="form-group">
+                        <label for="pet-image">HÌNH ẢNH</label>
+                        <input type="file" id="pet-image" accept="image/*">
+                    </div>
+                    <button class="modal-button" onclick="savePetInfo()">ĐĂNG KÝ</button>
+                    <button class="modal-button cancel-button" onclick="closePetInfoModal()">HỦY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showSignUp() {
+            document.querySelector('.sign-in-form').classList.remove('active');
+            document.querySelector('.sign-up-form').classList.add('active');
+        }
+
+        function showSignIn() {
+            document.querySelector('.sign-up-form').classList.remove('active');
+            document.querySelector('.sign-in-form').classList.add('active');
+        }
+
+        function login() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            if (email && password) {
+                localStorage.setItem('isLoggedIn', 'true'); 
+                localStorage.setItem('username', email.split('@')[0]); 
+                alert(`Đăng nhập thành công với email: ${email}`);
+                window.location.href = 'HomePage.html'; 
+            } else {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+            }
+        }
+
+        function signUp() {
+            const firstName = document.getElementById('first-name').value;
+            const fullName = document.getElementById('full-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            if (firstName && fullName && email && password && confirmPassword) {
+                if (password === confirmPassword) {
+                    localStorage.setItem('isLoggedIn', 'true'); 
+                    localStorage.setItem('username', firstName); 
+                    alert(`Đăng ký thành công với email: ${email}`);
+                    window.location.href = 'HomePage.html'; 
+                } else {
+                    alert('Mật khẩu và xác nhận mật khẩu không khớp!');
+                }
+            } else {
+                alert('Vui lòng nhập đầy đủ thông tin!');
+            }
+        }
+
+        function openPetInfoModal() {
+            document.getElementById('pet-info-modal').style.display = 'block';
+        }
+
+        function closePetInfoModal() {
+            document.getElementById('pet-info-modal').style.display = 'none';
+            document.getElementById('pet-name').value = '';
+            document.getElementById('pet-type').value = '';
+            document.getElementById('pet-gender').value = '';
+            document.getElementById('pet-birthdate').value = '';
+            document.getElementById('pet-color').value = '';
+            document.getElementById('pet-image').value = '';
+        }
+
+        function savePetInfo() {
+            const petName = document.getElementById('pet-name').value;
+            const petType = document.getElementById('pet-type').value;
+            const petGender = document.getElementById('pet-gender').value;
+            const petBirthdate = document.getElementById('pet-birthdate').value;
+            const petColor = document.getElementById('pet-color').value;
+            const petImage = document.getElementById('pet-image').files[0]; 
+
+            if (petName && petType) {
+                if (petImage) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const petInfo = {
+                            name: petName,
+                            type: petType,
+                            gender: petGender,
+                            birthdate: petBirthdate,
+                            color: petColor,
+                            image: e.target.result 
+                        };
+                        let pets = JSON.parse(localStorage.getItem('pets')) || [];
+                        pets.push(petInfo);
+                        localStorage.setItem('pets', JSON.stringify(pets));
+                        alert('Đăng ký thành công');
+                        document.getElementById('pet-info-modal').style.display = 'none'; 
+                        showSignIn(); 
+                    };
+                    reader.readAsDataURL(petImage); 
+                } else {
+                    const petInfo = {
+                        name: petName,
+                        type: petType,
+                        gender: petGender,
+                        birthdate: petBirthdate,
+                        color: petColor,
+                        image: '' 
+                    };
+                    let pets = JSON.parse(localStorage.getItem('pets')) || [];
+                    pets.push(petInfo);
+                    localStorage.setItem('pets', JSON.stringify(pets));
+                    alert('Đăng ký thành công');
+                    document.getElementById('pet-info-modal').style.display = 'none'; 
+                    showSignIn(); 
+                }
+            } else {
+                alert('Vui lòng nhập đầy đủ thông tin thú cưng (Tên và Giống loài)!');
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'HomePage.html';
+        }
+    </script>
+</body>
+</html>
