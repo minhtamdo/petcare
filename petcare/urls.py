@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from itertools import chain
 from django.shortcuts import render, redirect
 from django.contrib import admin
 from django.urls import path
@@ -833,12 +834,28 @@ def redirect_to_login(request):
 def staff_dashboard(request):
     if request.session.get('role') != 'Staff':
         return redirect('/login')
+    
     pets = Pet.objects.select_related('owner').all().order_by('-created_at')
     total_pets = pets.count()
+
+    pending_appointments = Appointment.objects.filter(status='pending').count()
+    appointments = Appointment.objects.all()
+    today = timezone.now().date()
+    current_month = today.month
+    current_year = today.year
+    monthly_appointments = Appointment.objects.filter(
+        check_in__year=current_year,
+        check_in__month=current_month
+    ).count()
+
     context = {
+        'appointments' : appointments,
         'pets': pets,
         'total_pets': total_pets,
+        'pending_appointments': pending_appointments,
+        'monthly_appointments': monthly_appointments,
     }
+
     return render(request, 'staff.html', context)
 
 def nutrition_view(request, pet_id):
@@ -849,25 +866,115 @@ def nutrition_view(request, pet_id):
             "portion": p.portion,
             "note": p.note,
             "created_by": p.created_by.fullname,
-            "updated_at": p.updated_at.strftime("%d/%m/%Y %H:%M")
+            "updated_at": p.updated_at.strftime("%Y-%m-%d %H:%M:%S")
         }
         for p in plans
     ]
     return JsonResponse({"nutrition_plans": data})
 
-# def vaccination_view(request, pet_id):
-#     vaccination = VaccinationHistory.objects.filter(pet__id=pet_id).select_related('created_by')
-#     data = [
-#         {
-#             "food_type": p.food_type,
-#             "portion": p.portion,
-#             "note": p.note,
-#             "created_by": p.created_by.fullname,
-#             "updated_at": p.updated_at.strftime("%d/%m/%Y %H:%M")
-#         }
-#         for p in plans
-#     ]
-#     return JsonResponse({"nutrition_plans": data})
+def vaccination_view(request, pet_id):
+    histories = VaccinationHistory.objects.select_related('appointment__pet')\
+        .filter(appointment__pet_id=pet_id)
+
+    data = [
+        {
+            "vaccine_name": h.vaccine_name,
+            "vaccination_date": h.vaccination_date.isoformat(),
+            "next_due": h.next_due.isoformat(),
+            "total_doses": h.total_doses,
+            "batch_number": h.batch_number,
+            "is_completed": h.is_completed,
+            "note": h.note,
+        }
+        for h in histories
+    ]
+    return JsonResponse(data, safe=False)
+
+def service_view(request, pet_id):
+    appointments = Appointment.objects.filter(pet_id=pet_id)
+    beauty_services = BeautyServiceHistory.objects.filter(appointment__in=appointments).select_related('appointment')
+    hotel_services = HotelServiceHistory.objects.filter(appointment__in=appointments).select_related('appointment')
+
+    for item in beauty_services:
+        item.service_category = 'beauty'
+    for item in hotel_services:
+        item.service_category = 'hotel'
+
+    combined_services = sorted(
+        chain(beauty_services, hotel_services),
+        key=lambda x: x.appointment.check_in,
+        reverse=True
+    )
+
+    data = []
+    for service in combined_services:
+        base = {
+            "type": service.service_category,
+            "check_in": service.appointment.check_in.isoformat(),
+            "check_out": service.appointment.check_out.isoformat(),
+        }
+
+        if service.service_category == "beauty":
+            base.update({
+                "service_type": service.service_type,
+                "notes": service.notes
+            })
+        else:
+            base.update({
+                "room_type": service.room_type,
+                "room_number": service.room_number,
+                "special_needs": service.special_needs
+            })
+
+        data.append(base)
+
+    return JsonResponse(data, safe=False)
+
+def medical_view(request, pet_id):
+    records = MedicalHistory.objects.filter(appointment__pet_id=pet_id) \
+        .select_related('appointment') \
+        .order_by('-appointment__check_in')
+
+    data = [
+        {
+            "diagnosis": record.diagnosis,
+            "treatment": record.treatment,
+            "notes": record.notes,
+            "check_in": record.appointment.check_in.isoformat(),
+            "check_out": record.appointment.check_out.isoformat()
+        }
+        for record in records
+    ]
+
+    return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def update_appointment(request, appointment_id):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            action = data.get('action')
+
+            req = Appointment.objects.get(id=appointment_id)
+
+            if action == 'approve':
+                req.status = 'confirmed'
+            elif action == 'reject':
+                req.status = 'cancelled'
+            elif action == 'complete':
+                req.status = 'completed'
+            else:
+                return JsonResponse({'success': False, 'message': 'Hành động không hợp lệ'})
+
+            req.save()
+            return JsonResponse({'success': True, 'new_status': req.status})
+
+        except Appointment.DoesNotExist:
+            return JsonResponse({'success': False, 'message': 'Cuộc hẹn không tồn tại'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Phương thức không hợp lệ'})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -879,6 +986,10 @@ urlpatterns = [
     path('register/', register_page, name='register'),
     path('api/register/owner/', register_owner, name='register_owner'),
     path('nutrition/<uuid:pet_id>/', nutrition_view, name='get_nutrition_plan'),
+    path('vaccinations/<uuid:pet_id>/', vaccination_view, name='get_vaccination_history'),
+    path('services/<uuid:pet_id>/', service_view, name='get_service_history'),
+    path('medical/<uuid:pet_id>/', medical_view, name='get_medical_history'),
+    path('update-appointment/<uuid:appointment_id>/', update_appointment, name='update_appointment'),
     path('', redirect_to_login),
     path('api/pets/', get_owner_pets, name='get_owner_pets'),
     path('api/appointments/create/', create_appointment, name='create_appointment'),

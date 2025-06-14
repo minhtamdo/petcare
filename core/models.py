@@ -44,7 +44,6 @@ class UserRole(Enum):
 
 # Models
 class User(models.Model):
-    "Custom user model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="user_id")
     username = models.CharField(max_length=50, unique=True)
     password_hash = models.TextField()
@@ -63,7 +62,6 @@ class User(models.Model):
         return f"{self.fullname} ({self.username})"
 
 class Pet(models.Model):
-    "Pet model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="pet_id")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='pets', db_column="owner_id")
     name = models.CharField(max_length=50)
@@ -109,7 +107,6 @@ class Pet(models.Model):
             return f"{months} tháng"
 
 class Appointment(models.Model):
-    "Appointment model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="appointment_id")
     pet = models.ForeignKey(Pet, on_delete=models.CASCADE, related_name='appointments', db_column="pet_id")
     owner = models.ForeignKey(User, on_delete=models.CASCADE, db_column="owner_id")
@@ -146,7 +143,6 @@ class NutritionPlan(models.Model):
         return f"Nutrition Plan for {self.pet.name}"
 
 class BeautyServiceHistory(models.Model):
-    "Beauty service history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="beauty_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     service_type = models.CharField(max_length=50)
@@ -159,7 +155,6 @@ class BeautyServiceHistory(models.Model):
         return f"Beauty Service {self.service_type}"
 
 class HotelServiceHistory(models.Model):
-    "Hotel service history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="hotel_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     room_type = models.CharField(max_length=30)
@@ -173,7 +168,6 @@ class HotelServiceHistory(models.Model):
         return f"Hotel Service {self.room_type}"
 
 class MedicalHistory(models.Model):
-    "Medical history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="record_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     diagnosis = models.TextField()
@@ -187,7 +181,6 @@ class MedicalHistory(models.Model):
         return f"Medical Record {self.id}"
 
 class VaccinationHistory(models.Model):
-    "Vaccination history model"
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="vaccination_id")
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE, db_column="appointment_id")
     vaccine_name = models.TextField()
