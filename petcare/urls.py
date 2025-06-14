@@ -44,6 +44,8 @@ from collections import defaultdict
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.db.models import Count
+from django.utils.dateparse import parse_date
+from . import views
 
 @csrf_exempt
 def login_view(request):
@@ -277,33 +279,6 @@ def medical_view(request, pet_id):
 
     return JsonResponse(data, safe=False)
 
-@csrf_exempt
-def update_appointment(request, appointment_id):
-    if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-            action = data.get('action')
-
-            req = Appointment.objects.get(id=appointment_id)
-
-            if action == 'approve':
-                req.status = 'confirmed'
-            elif action == 'reject':
-                req.status = 'cancelled'
-            elif action == 'complete':
-                req.status = 'completed'
-            else:
-                return JsonResponse({'success': False, 'message': 'Hành động không hợp lệ'})
-
-            req.save()
-            return JsonResponse({'success': True, 'new_status': req.status})
-
-        except Appointment.DoesNotExist:
-            return JsonResponse({'success': False, 'message': 'Cuộc hẹn không tồn tại'})
-        except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
-
-    return JsonResponse({'success': False, 'message': 'Phương thức không hợp lệ'})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -318,6 +293,10 @@ urlpatterns = [
     path('vaccinations/<uuid:pet_id>/', vaccination_view, name='get_vaccination_history'),
     path('services/<uuid:pet_id>/', service_view, name='get_service_history'),
     path('medical/<uuid:pet_id>/', medical_view, name='get_medical_history'),
-    path('update-appointment/<uuid:appointment_id>/', update_appointment, name='update_appointment'),
+    path('appointment/<uuid:appointment_id>/update/', views.update_appointment_status, name='update_status'),
     path('', redirect_to_login),
+    path('api/get-pets/', views.get_pets_by_owner_phone, name='get_pets_by_phone'),
+    path('api/get-users/', views.get_users_by_role, name='get_users_by_role'),
+    path('api/create-appointment/', views.create_appointment, name='create_appointment'),
+
 ]

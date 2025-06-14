@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    {% csrf_token %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hệ Thống Quản Lý Thú Cưng</title>
@@ -499,13 +500,322 @@
             font-weight: bold;
         }
 
+        /* .tab-content {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        } */
+
         .tab-content {
             display: none;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .tab-content.active {
-            display: block ;
+            display: block;
+            animation: fadeInUp 0.5s ease-out;
         }
+
+        /* Tiêu đề */
+        .tab-content h2 {
+            color: #2c5aa0;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Button styles */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* Form Appointment */
+        .appointmentForm {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #e9ecef;
+            margin-top: 20px;
+        }
+
+        /* Labels */
+        .appointmentForm label {
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 20px;
+            font-weight: 600;
+            color: #495057;
+            font-size: 15px;
+        }
+
+        .appointmentForm label:first-of-type {
+            margin-top: 0;
+        }
+
+        /* Input và Select styles */
+        .appointmentForm input[type="text"],
+        .appointmentForm input[type="date"],
+        .appointmentForm select,
+        .appointmentForm textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            background: white;
+        }
+
+        .appointmentForm input[type="text"]:focus,
+        .appointmentForm input[type="date"]:focus,
+        .appointmentForm select:focus,
+        .appointmentForm textarea:focus {
+            border-color: #17a2b8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
+            background: #fff;
+        }
+
+        /* Select specific styling */
+        .appointmentForm select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        /* Textarea */
+        .appointmentForm textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+        }
+
+        /* Submit button */
+        .appointmentForm button[type="submit"] {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 25px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .appointmentForm button[type="submit"]:hover {
+            background: linear-gradient(135deg, #218838, #1ba885);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Pagination Controls */
+        .pagination-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        /* Search Box */
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #dee2e6;
+            border-radius: 25px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: white;
+            box-sizing: border-box;
+        }
+
+        .search-box input:focus {
+            border-color: #17a2b8;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(23, 162, 184, 0.1);
+        }
+
+        /* Items per page */
+        .items-per-page {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .items-per-page label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .items-per-page select {
+            padding: 8px 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .items-per-page span {
+            color: #6c757d;
+            font-size: 14px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .tab-content {
+                margin: 10px;
+                padding: 15px;
+            }
+            
+            .tab-content h2 {
+                font-size: 24px;
+            }
+            
+            .appointmentForm {
+                padding: 20px;
+            }
+            
+            .pagination-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: unset;
+            }
+            
+            .items-per-page {
+                justify-content: center;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .appointmentForm input[type="text"],
+            .appointmentForm input[type="date"],
+            .appointmentForm select,
+            .appointmentForm textarea {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            
+            .appointmentForm button[type="submit"] {
+                padding: 12px 30px;
+                font-size: 15px;
+            }
+        }
+
+        /* Status colors cho select options */
+        .appointmentForm select[name="status"] option[value="PENDING"] {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .appointmentForm select[name="status"] option[value="CONFIRMED"] {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        /* Hover effects cho form elements */
+        .appointmentForm input[type="text"]:hover,
+        .appointmentForm input[type="date"]:hover,
+        .appointmentForm select:hover,
+        .appointmentForm textarea:hover {
+            border-color: #adb5bd;
+        }
+
+        /* Loading state (có thể dùng khi fetch data) */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #dee2e6;
+            border-top: 2px solid #17a2b8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Error state */
+        .error {
+            border-color: #dc3545 !important;
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+        }
+
+        /* Success state */
+        .success {
+            border-color: #28a745 !important;
+            box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1) !important;
+        }
+
         .pet-properties{
             display: none;
         }
@@ -1159,6 +1469,244 @@ body {
                 width: 100%;
             }
         }
+        .appointmentForm {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(245, 247, 250, 0.9));
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Form Labels */
+        .appointmentForm label {
+            display: block;
+            margin-bottom: 8px;
+            margin-top: 20px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .appointmentForm label:first-child {
+            margin-top: 0;
+        }
+
+        /* Input Fields */
+        .appointmentForm input[type="text"],
+        .appointmentForm input[type="date"],
+        .appointmentForm select,
+        .appointmentForm textarea {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.9);
+            color: #2c3e50;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        /* Focus States */
+        .appointmentForm input[type="text"]:focus,
+        .appointmentForm input[type="date"]:focus,
+        .appointmentForm select:focus,
+        .appointmentForm textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 1);
+        }
+
+        /* Select Dropdown */
+        .appointmentForm select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 15px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 45px;
+        }
+
+        .appointmentForm select option {
+            padding: 10px;
+            background: white;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+
+        /* Textarea */
+        .appointmentForm textarea {
+            resize: vertical;
+            min-height: 100px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        /* Submit Button */
+        .appointmentForm button[type="submit"] {
+            width: 100%;
+            padding: 16px 24px;
+            margin-top: 20px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .appointmentForm button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+            background: linear-gradient(135deg, #2980b9, #1f4e79);
+        }
+
+        .appointmentForm button[type="submit"]:active {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        /* Remove default <br> spacing and add proper margins */
+        .appointmentForm br {
+            display: none;
+        }
+
+        /* Placeholder styling */
+        .appointmentForm input::placeholder,
+        .appointmentForm textarea::placeholder {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        /* Required field indicator */
+        .appointmentForm input:required:invalid {
+            border-color: #e74c3c;
+        }
+
+        .appointmentForm input:required:valid {
+            border-color: #27ae60;
+        }
+
+        /* Loading state for button */
+        .appointmentForm button[type="submit"].loading {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            cursor: not-allowed;
+            position: relative;
+            color: transparent;
+        }
+
+        .appointmentForm button[type="submit"].loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Form Title (if you want to add one) */
+        .appointmentForm::before {
+            content: "Đặt Lịch Hẹn";
+            display: block;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .appointmentForm {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .appointmentForm input[type="text"],
+            .appointmentForm input[type="date"],
+            .appointmentForm select,
+            .appointmentForm textarea {
+                padding: 12px 16px;
+                font-size: 14px;
+            }
+            
+            .appointmentForm button[type="submit"] {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Form container background (optional - if you want a full page background) */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .message.success {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .message.error {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        /* Input focus animations */
+        .appointmentForm input[type="text"]:focus,
+        .appointmentForm input[type="date"]:focus,
+        .appointmentForm select:focus,
+        .appointmentForm textarea:focus {
+            animation: focusGlow 0.3s ease;
+        }
+
+        @keyframes focusGlow {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-1px) scale(1.01); }
+            100% { transform: translateY(-2px) scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -1346,55 +1894,67 @@ body {
         <!-- Tab Lịch Hẹn -->
         <div id="appointments" class="tab-content">
         <h2>📅 Quản Lý Lịch Hẹn</h2>
-        
+
         <!-- Switch Button -->
         <div class="form-group" style="margin-bottom: 20px;">
             <button class="btn" onclick="switchListAppointments()" style="background: #17a2b8; margin-bottom: 15px;">
                 🔄 Xem danh sách lịch hẹn
             </button>
         </div>
-        
-        <div class="form-row">
-            <div class="form-group">
-                <label for="appointmentPet">Chọn thú cưng:</label>
-                <select id="appointmentPet">
-                    <option value="">Chọn thú cưng</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="appointmentService">Dịch vụ:</label>
-                <select id="appointmentService">
-                    <option value="">Chọn dịch vụ</option>
-                    <option value="checkup">Khám tổng quát</option>
-                    <option value="vaccination">Tiêm phòng</option>
-                    <option value="grooming">Cắt tỉa lông</option>
-                    <option value="spa">Tắm spa</option>
-                    <option value="dental">Chăm sóc răng miệng</option>
-                    <option value="surgery">Phẫu thuật</option>
-                </select>
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group">
-                <label for="appointmentDate">Ngày hẹn:</label>
-                <input type="date" id="appointmentDate">
-            </div>
-            <div class="form-group">
-                <label for="appointmentTime">Giờ hẹn:</label>
-                <input type="time" id="appointmentTime">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="appointmentNotes">Ghi chú:</label>
-            <textarea id="appointmentNotes" rows="3" placeholder="Ghi chú về cuộc hẹn..."></textarea>
-        </div>
-        <button class="btn" onclick="addAppointment()">📅 Đặt Lịch Hẹn</button>
-        <div class="appointment-list" id="appointmentList">
-            <!-- Danh sách lịch hẹn sẽ được hiển thị ở đây -->
-        </div>
+
+        <form id="appointmentForm" onsubmit="addAppointment(event)" class="appointmentForm">
+            {% csrf_token %}
+
+            <!-- Tìm thú cưng theo SĐT chủ nuôi -->
+            <label for="ownerPhone">📱 SĐT chủ nuôi:</label>
+            <input type="text" id="ownerPhone" name="owner_phone" placeholder="Nhập số điện thoại..." onblur="fetchPetsByPhone()" required><br>
+
+            <!-- Chọn thú cưng -->
+            <label for="appointmentPet">🐾 Thú cưng:</label>
+            <select id="appointmentPet" name="pet_id" required>
+                <option value="">Chọn thú cưng</option>
+            </select><br>
+
+            <!-- Dịch vụ -->
+            <label for="appointmentService">🛠️ Dịch vụ:</label>
+            <select id="appointmentService" name="type" onchange="filterStaffByService()" required>
+                <option value="">Chọn dịch vụ</option>
+                <option value="HOTEL">Lưu trú</option>
+                <option value="BEAUTY">Làm đẹp</option>
+                <option value="MEDICAL">Khám chữa bệnh</option>
+                <option value="VACCINE">Tiêm phòng</option>
+            </select><br>
+
+            <!-- Nhân viên thực hiện -->
+            <label for="staff">👩‍⚕️ Người thực hiện:</label>
+            <select id="staff" name="staff_id" required>
+                <option value="">Chọn nhân viên</option>
+            </select><br>
+
+            <!-- Thời gian -->
+            <label for="check_in">📅 Check-in:</label>
+            <input type="date" id="check_in" name="check_in" required><br>
+
+            <label for="check_out">📅 Check-out:</label>
+            <input type="date" id="check_out" name="check_out" required><br>
+
+            <!-- Trạng thái -->
+            <label for="status">⏳ Trạng thái:</label>
+            <select id="status" name="status" required>
+                <option value="PENDING">Chờ xác nhận</option>
+                <option value="CONFIRMED">Đã xác nhận</option>
+            </select><br>
+
+            <!-- Ghi chú -->
+            <label for="notes">📝 Ghi chú:</label>
+            <textarea id="notes" name="notes" placeholder="Thông tin bổ sung nếu có..."></textarea><br>
+
+            <button type="submit" style="background: #28a745; color: white;">Đặt lịch hẹn</button>
+        </form>
     </div>
 
-     <div id="newAppointmentWindow" class="tab-content">
+
+        <div id="newAppointmentWindow" class="tab-content">
             <h2>📊 Danh sách lịch hẹn</h2>
             
             <!-- Switch Back Button -->
@@ -1471,7 +2031,8 @@ body {
         let itemsPerPage = 10;
         let filteredAppointments = [...sampleAppointments];
         let searchTerm = '';
-
+        let currentAppointments = [];
+        
         function getCsrfToken() {
             const cookieValue = document.cookie
                 .split('; ')
@@ -1516,7 +2077,7 @@ body {
         function renderAppointments() {
             const startIndex = (currentPage - 1) * itemsPerPage;
             const endIndex = startIndex + itemsPerPage;
-            const currentAppointments = filteredAppointments.slice(startIndex, endIndex);
+            currentAppointments = filteredAppointments.slice(startIndex, endIndex);
             
             const listContainer = document.getElementById('list-appointments');
             
@@ -1525,41 +2086,54 @@ body {
                 return;
             }
             
-            listContainer.innerHTML = currentAppointments.map(appointment => `
-                <div class="appointment"
-                    ap-id="${appointment.id}"
-                    ap-pet="${appointment.pet.name}"
-                    ap-owner="${appointment.owner.fullname}"
-                    ap-type="${appointment.type}"
-                    ap-check_in="${appointment.check_in}"
-                    ap-check_out="${appointment.check_out || ''}"
-                    ap-staff="${appointment.staff?.fullname || ''}"
-                    ap-status="${appointment.status}"
-                    ap-approver="${appointment.approver?.fullname || ''}"
-                    ap-notes="${appointment.notes || ''}"
-                    ap-created_at="${appointment.created_at}"
-                    ap-updated_at="${appointment.updated_at}">
-                
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                        <strong style="color: #495057; font-size: 16px;">🐾 ${appointment.pet.name} - ${appointment.owner.fullname}</strong>
-                        <span class="status ${getStatusClass(appointment.status)}">
-                            ${getStatusText(appointment.status)}
-                        </span>
-                    </div>
+            listContainer.innerHTML = currentAppointments.map(appointment => ` 
+                <div class="appointment" 
+                    ap-id="${appointment.id}" 
+                    ap-pet="${appointment.pet.name}" 
+                    ap-owner="${appointment.owner.fullname}" 
+                    ap-type="${appointment.type}" 
+                    ap-check_in="${appointment.check_in}" 
+                    ap-check_out="${appointment.check_out || ''}" 
+                    ap-staff="${appointment.staff?.fullname || ''}" 
+                    ap-status="${appointment.status}" 
+                    ap-approver="${appointment.approver?.fullname || ''}" 
+                    ap-notes="${appointment.notes || ''}" 
+                    ap-created_at="${appointment.created_at}" 
+                    ap-updated_at="${appointment.updated_at}"> 
+                 
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;"> 
+                        <strong style="color: #495057; font-size: 16px;">🐾 ${appointment.pet.name} - ${appointment.owner.fullname}</strong> 
+                        <span class="status ${getStatusClass(appointment.status)}"> 
+                            ${getStatusText(appointment.status)} 
+                        </span> 
+                    </div> 
+                     
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;"> 
+                        <div><strong>🏥 Dịch vụ:</strong> ${appointment.type}</div> 
+                        <div><strong>👨‍⚕️ Nhân viên:</strong> ${appointment.staff?.fullname || 'Chưa phân công'}</div> 
+                        <div><strong>📅 Check-in:</strong> ${appointment.check_in}</div> 
+                        <div><strong>📅 Check-out:</strong> ${appointment.check_out || 'Chưa xác định'}</div> 
+                    </div> 
+                     
+                    ${appointment.notes ? `<div style="margin-top: 10px; padding: 8px; background: #f8f9fa; border-radius: 4px; font-style: italic;">📝 ${appointment.notes}</div>` : ''} 
                     
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                        <div><strong>🏥 Dịch vụ:</strong> ${appointment.type}</div>
-                        <div><strong>👨‍⚕️ Nhân viên:</strong> ${appointment.staff?.fullname || 'Chưa phân công'}</div>
-                        <div><strong>📅 Check-in:</strong> ${appointment.check_in}</div>
-                        <div><strong>📅 Check-out:</strong> ${appointment.check_out || 'Chưa xác định'}</div>
-                    </div>
-                    
-                    ${appointment.notes ? `<div style="margin-top: 10px; padding: 8px; background: #f8f9fa; border-radius: 4px; font-style: italic;">📝 ${appointment.notes}</div>` : ''}
-                    
-                    <div style="margin-top: 10px; font-size: 12px; color: #6c757d;">
-                        Tạo: ${appointment.created_at} | Cập nhật: ${appointment.updated_at}
-                    </div>
-                </div>
+                    ${appointment.status === 'pending' ? `
+                        <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
+                            <button type="button" class="btn-approve" onclick="approveAppointment('${appointment.id}')" 
+                                    style="padding: 8px 16px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                ✅ Chấp nhận
+                            </button>
+                            <button type="button" class="btn-reject" onclick="rejectAppointment('${appointment.id}')" 
+                                    style="padding: 8px 16px; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px;">
+                                ❌ Từ chối
+                            </button>
+                        </div>
+                    ` : ''}
+                     
+                    <div style="margin-top: 10px; font-size: 12px; color: #6c757d;"> 
+                        Tạo: ${appointment.created_at} | Cập nhật: ${appointment.updated_at} 
+                    </div> 
+                </div> 
             `).join('');
         }
 
@@ -1958,10 +2532,6 @@ body {
                 default: return '#6c757d';
             }
         }
-
-        function addAppointment() {
-            // alert('Chức năng đặt lịch hẹn sẽ được triển khai!');
-        }
     
         let petsPerPage = 6;
         let currentPetPage = 1;
@@ -1992,28 +2562,207 @@ body {
             paginatePets();
         }
 
-        function updateAppointmentStatus(appointmentId, action) {
-            fetch(`/update-appointment/${appointmentId}/`, {
+        function sendAppointmentStatusUpdate(appointmentId, newStatus, reason = null) {
+            fetch(`/appointment/${appointmentId}/update/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRFToken': getCsrfToken(),
+                    'X-CSRFToken': getCSRFToken(),
                 },
-                body: JSON.stringify({ action: action })
+                body: JSON.stringify({
+                    status: newStatus,
+                    reason: reason
+                }),
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert(`Cập nhật thành công! Trạng thái mới: ${data.new_status}`);
+            .then(response => {
+                if (response.ok) {
+                    alert('Cập nhật trạng thái thành công!');
+                    
                 } else {
-                    alert(`Thất bại: ${data.message}`);
+                    alert('Cập nhật trạng thái thất bại.');
                 }
             })
             .catch(error => {
                 console.error('Lỗi:', error);
-                alert('Đã xảy ra lỗi khi gửi yêu cầu');
             });
         }
+
+        function approveAppointment(appointmentId) {
+            if (confirm('Bạn có chắc chắn muốn chấp nhận lịch hẹn này?')) {
+                updateAppointmentStatus(appointmentId, 'confirmed');
+                sendAppointmentStatusUpdate(appointmentId, 'confirmed');
+
+            }
+        }
+
+        function rejectAppointment(appointmentId) {
+            const reason = prompt('Vui lòng nhập lý do từ chối lịch hẹn:');
+            if (reason !== null && reason.trim() !== '') {
+                updateAppointmentStatus(appointmentId, 'cancelled', reason);
+                sendAppointmentStatusUpdate(appointmentId, 'cancelled', reason);
+
+            } else if (reason !== null) {
+                alert('Vui lòng nhập lý do từ chối!');
+            }
+        }
+
+        // Helper to get CSRF token from cookies
+        function getCSRFToken() {
+            let cookieValue = null;
+            const name = 'csrftoken';
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let cookie of cookies) {
+                    cookie = cookie.trim();
+                    if (cookie.startsWith(name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+
+        // Helper function to update appointment status in the UI
+        function updateAppointmentStatus(appointmentId, newStatus) {
+            event.preventDefault()
+            const appointmentElement = document.querySelector(`[ap-id="${appointmentId}"]`);
+            if (appointmentElement) {
+                // Update the status attribute
+                appointmentElement.setAttribute('ap-status', newStatus);
+                
+                // Update the status display
+                const statusElement = appointmentElement.querySelector('.status');
+                if (statusElement) {
+                    statusElement.className = `status ${getStatusClass(newStatus)}`;
+                    statusElement.textContent = getStatusText(newStatus);
+                    
+                    // Set background color based on status
+                    if (newStatus == 'cancelled') {
+                        console.log(newStatus)
+                        statusElement.style.backgroundColor = '#dc3545'; // Red background
+                        statusElement.style.color = 'white';
+                    } else {
+                        console.log(newStatus)
+                        statusElement.style.backgroundColor = '#28a745'; // Green background
+                        statusElement.style.color = 'white';
+                    }
+                }
+                
+                // Remove the action buttons
+                const buttonsContainer = appointmentElement.querySelector('.btn-approve, .btn-reject')?.parentElement;
+                if (buttonsContainer) {
+                    buttonsContainer.remove();
+                }
+            }
+        }
+        function fetchPetsByPhone() {
+            const phone = document.getElementById('ownerPhone').value;
+            if (!phone) return;
+
+            fetch(`/api/get-pets/?phone=${phone}`)
+                .then(response => response.json())
+                .then(data => {
+                    const petSelect = document.getElementById('appointmentPet');
+                    petSelect.innerHTML = '<option value="">Chọn thú cưng</option>';
+
+                    data.pets.forEach(pet => {
+                        const option = document.createElement('option');
+                        option.value = pet.id;
+                        option.textContent = pet.name;
+                        petSelect.appendChild(option);
+                    });
+
+                    if (data.pets.length === 0) {
+                        alert("Không tìm thấy thú cưng cho số điện thoại này.");
+                    }
+                })
+                .catch(err => {
+                    console.error('Lỗi khi lấy danh sách thú cưng:', err);
+                });
+        }
+        function filterStaffByService() {
+            const service = document.getElementById('appointmentService').value;
+            const staffSelect = document.getElementById('staff');
+
+            let role = null;
+            if (service === 'HOTEL' || service === 'BEAUTY') {
+                role = 'Staff';
+            } else if (service === 'MEDICAL' || service === 'VACCINE') {
+                role = 'Vet';
+            }
+
+            // Clear previous options
+            staffSelect.innerHTML = '<option value="">Chọn nhân viên</option>';
+
+            if (!role) return; // If no service or invalid, exit
+
+            fetch(`/api/get-users/?role=${role}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.users.forEach(user => {
+                        const option = document.createElement('option');
+                        option.value = user.id;
+                        option.textContent = user.fullname;
+                        staffSelect.appendChild(option);
+                    });
+                })
+                .catch(err => {
+                    console.error('Lỗi khi lấy nhân viên:', err);
+                });
+        }
+        function addAppointment(event) {
+            event.preventDefault(); // 🚫 Stop form from reloading page
+
+            const data = {
+                owner_phone: document.getElementById('ownerPhone').value,
+                pet_id: document.getElementById('appointmentPet').value,
+                type: document.getElementById('appointmentService').value,
+                staff_id: document.getElementById('staff').value,
+                check_in: document.getElementById('check_in').value,
+                check_out: document.getElementById('check_out').value,
+                status: document.getElementById('status').value.toLowerCase(),
+                notes: document.getElementById('notes').value
+            };
+
+            // 👤 If status is "pending", do not send staff_id
+            if (data.status === 'pending') {
+                delete data.staff_id;
+            }
+
+            fetch('/api/create-appointment/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken(),
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Không thể đặt lịch.');
+                    });
+                }
+                return response.json();
+            })
+            .then(newAppointment => {
+                alert('🎉 Đặt lịch thành công!');
+
+                // ✅ Add to top of currentAppointments
+                currentAppointments.unshift(newAppointment);
+
+                // ✅ Reset the form
+                document.getElementById('appointmentForm').reset();
+            })
+            .catch(error => {
+                console.error('Lỗi:', error);
+                alert('❌ Lỗi: ' + error.message);
+            });
+        }
+
+        
 </script>
 </body>
 </html>

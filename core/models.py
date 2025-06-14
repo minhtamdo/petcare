@@ -125,6 +125,14 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment {self.id} - {self.get_type_display()}"
+    @property
+    def status_display(self):
+        return self.get_status_display()
+
+    @property
+    def type_display(self):
+        return self.get_type_display()
+
 
 class NutritionPlan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="plan_id")
