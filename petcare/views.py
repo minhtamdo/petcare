@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404
 import json
 from core.models import Appointment
 from core.models import Status  # if you use Status.choices() or Status.values()
-from core.models import User, Pet
-
+from core.models import User, Pet,Service
+from django.db import connection
 
 @csrf_exempt
 def update_appointment_status(request, appointment_id):
@@ -91,3 +91,61 @@ def create_appointment(request):
             return JsonResponse({'error': str(e)}, status=400)
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+def get_services(request):
+    services = Service.objects.all()
+    data = [
+        {
+            'type': service.type,
+            'description': service.description,
+            'duration': service.duration,
+            'price': service.price
+        }
+        for service in services
+    ]
+    return JsonResponse({'services': data})
+@csrf_exempt
+def update_service_price(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            service_type = data.get('type')
+            new_price = data.get('price')
+
+            service = Service.objects.get(type=service_type)
+            service.price = int(new_price)
+            service.save()
+
+            return JsonResponse({'success': True, 'message': 'Cập nhật giá thành công!'})
+        except Service.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Không tìm thấy dịch vụ.'}, status=404)
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Chỉ hỗ trợ phương thức POST'}, status=405)
+
+def monthly_revenue_chart_data(request):
+    with connection.cursor() as cursor:
+        cursor.execute("""
+            SELECT
+                EXTRACT(MONTH FROM a.check_in) AS month,
+                SUM(
+                    CASE 
+                        WHEN a.type = 'hotel' THEN s.price * GREATEST((a.check_out - a.check_in), 1)
+                        ELSE s.price
+                    END
+                ) AS revenue
+            FROM appointments a
+            JOIN services s ON a.type = s.type
+            WHERE a.status = 'completed'
+              AND EXTRACT(YEAR FROM a.check_in) = EXTRACT(YEAR FROM CURRENT_DATE)
+            GROUP BY month
+            ORDER BY month
+        """)
+        results = cursor.fetchall()
+
+    # Create a list of 12 months initialized to 0
+    revenues = [0] * 12
+    for month, revenue in results:
+        revenues[int(month) - 1] = float(revenue)
+
+    return JsonResponse({'monthly_revenue': revenues})

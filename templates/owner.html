@@ -431,6 +431,10 @@
                     <button class="nav-btn" onclick="showSection('booking')">Đặt lịch</button>
                     <button class="nav-btn" onclick="showSection('profile')">Tài khoản</button>
                     <button class="nav-btn" onclick="showSection('history')">Lịch sử</button>
+                    <form action="{% url 'logout_view' %}" method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-btn logout-btn">🚪 Đăng xuất</button>
+                    </form>
                 </div>
             </nav>
         </header>

@@ -45,13 +45,11 @@ from django.utils.timezone import now
 import logging
 from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
-import io
 from collections import defaultdict
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.db.models import Count
 from django.utils.dateparse import parse_date
-
 from . import views
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -989,7 +987,7 @@ urlpatterns = [
     path('vet/', vet_dashboard, name='vet_dashboard'),
     path('staff/', staff_dashboard, name='staff_dashboard'),
     path('owner/', owner_dashboard, name='owner_dashboard'),
-    path('logout/', logout_view, name='logout'),
+    path('logout/', logout_view, name='logout_view'),
     path('register/', register_page, name='register'),
     path('api/register/owner/', register_owner, name='register_owner'),
     path('nutrition/<uuid:pet_id>/', nutrition_view, name='get_nutrition_plan'),
