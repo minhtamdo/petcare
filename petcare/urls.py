@@ -133,7 +133,6 @@ def vet_dashboard(request):
         staff_id=user_id,
         check_in=today,
         type='vaccine',
-        status='pending'
     ).count()
     return render(request, 'vet.html', {
         'total_pets': total_pets,
