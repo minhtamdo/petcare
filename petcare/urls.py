@@ -51,6 +51,7 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.db.models import Count
 from django.utils.dateparse import parse_date
+
 from . import views
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -58,6 +59,7 @@ from datetime import datetime
 from django.views.decorators.http import require_http_methods
 from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
+
 @csrf_exempt
 def login_view(request):
     if request.method == 'GET':
@@ -1031,5 +1033,4 @@ urlpatterns = [
     path('api/nutrition-plans/<uuid:id>/delete/', delete_nutrition_plan, name='delete_nutrition_plan'),
     path('api/appointments/staff/create/', create_appointment_by_staff, name='create_appointment_by_staff'),
     path('api/pets/all/', list_all_pets, name='list_all_pets'),
-
 ]
