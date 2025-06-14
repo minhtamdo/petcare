@@ -125,6 +125,14 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"Appointment {self.id} - {self.get_type_display()}"
+    @property
+    def status_display(self):
+        return self.get_status_display()
+
+    @property
+    def type_display(self):
+        return self.get_type_display()
+
 
 class NutritionPlan(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, db_column="plan_id")
@@ -196,3 +204,15 @@ class VaccinationHistory(models.Model):
 
     def __str__(self):
         return f"{self.vaccine_name} on {self.vaccination_date}"
+    
+class Service(models.Model):
+    type = models.CharField(max_length=20, primary_key=True)
+    description = models.TextField()
+    duration = models.CharField(max_length=100)
+    price = models.IntegerField()
+
+    class Meta:
+        db_table = 'services'
+
+    def __str__(self):
+        return f"{self.type} - {self.price} VNĐ"
