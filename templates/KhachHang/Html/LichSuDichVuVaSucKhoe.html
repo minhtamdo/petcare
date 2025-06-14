@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch sử dịch vụ &amp; sức khỏe</title>
+    <link rel="stylesheet" href="../CSS/LichSuDichVuVaSucKhoe.css">
+</head>
+<body>
+
+    <div class="header">
+        <h1>Lịch sử dịch vụ &amp; sức khỏe</h1>
+    </div>
+
+    <div class="back-home">
+        <button class="back-btn" onclick="window.location.href='HomePage.html'">
+             Quay lại Trang chủ
+        </button>
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" data-target="residence-history">Lịch sử cư trú</button>
+        <button class="tab-btn" data-target="grooming-history">Lịch sử làm đẹp</button>
+        <button class="tab-btn" data-target="vaccination-history">Lịch sử tiêm phòng</button>
+    </div>
+    <div id="residence-history" class="tab-content active">
+        <table>
+            <thead>
+                <tr>
+                    <th>Thú cưng</th>
+                    <th>Ngày bắt đầu</th>
+                    <th>Ngày kết thúc</th>
+                    <th>Nơi lưu trú</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Milo (Chó)</td>
+                    <td>2024-01-01</td>
+                    <td>2024-01-10</td>
+                    <td>PetCare</td>
+                    <td>Khách VIP, yêu cầu phòng ấm</td>
+                </tr>
+                <tr>
+                    <td>Bella (Mèo)</td>
+                    <td>2024-03-05</td>
+                    <td>2024-03-12</td>
+                    <td>PetCare</td>
+                    <td>Đi cùng đồ chơi yêu thích</td>
+                </tr>
+                <tr>
+                    <td>Luna (Chó)</td>
+                    <td>2024-04-15</td>
+                    <td>2024-04-18</td>
+                    <td>PetCare</td>
+                    <td>Ăn kiêng, không cho ăn xương</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tab Content: Lịch sử làm đẹp -->
+    <div id="grooming-history" class="tab-content">
+        <table>
+            <thead>
+                <tr>
+                    <th>Thú cưng</th>
+                    <th>Ngày</th>
+                    <th>Dịch vụ</th>
+                    <th>Cơ sở</th>
+                    <th>Giá (vnđ)</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Milo (Chó)</td>
+                    <td>2024-02-15</td>
+                    <td>Cắt tỉa lông</td>
+                    <td>PetCare</td>
+                    <td>150.000</td>
+                    <td>Tặng gel dưỡng lông</td>
+                </tr>
+                <tr>
+                    <td>Bella (Mèo)</td>
+                    <td>2024-03-20</td>
+                    <td>Tắm gội</td>
+                    <td>PetCare</td>
+                    <td>100.000</td>
+                    <td>Nhuộm móng chân</td>
+                </tr>
+                <tr>
+                    <td>Luna (Chó)</td>
+                    <td>2024-04-10</td>
+                    <td>Làm đẹp tổng quát</td>
+                    <td>PetCare</td>
+                    <td>200.000</td>
+                    <td>Kháng khuẩn tai</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Tab Content: Lịch sử tiêm phòng -->
+    <div id="vaccination-history" class="tab-content">
+        <table>
+            <thead>
+                <tr>
+                    <th>Thú cưng</th>
+                    <th>Ngày tiêm</th>
+                    <th>Loại vắc-xin</th>
+                    <th>Nhà cung cấp</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Milo (Chó)</td>
+                    <td>2024-01-10</td>
+                    <td>Dại, Parvo</td>
+                    <td>PetCare</td>
+                    <td>Lịch mũi nhắc: 2024-02-10</td>
+                </tr>
+                <tr>
+                    <td>Bella (Mèo)</td>
+                    <td>2024-02-05</td>
+                    <td>Viêm gan, FVRCP</td>
+                    <td>PetCare</td>
+                    <td>Không có biến chứng</td>
+                </tr>
+                <tr>
+                    <td>Luna (Chó)</td>
+                    <td>2024-03-01</td>
+                    <td>Lại, Bordetella</td>
+                    <td>PetCare</td>
+                    <td>Hoàn tất liệu trình</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script src="../JavaScript/LichSuDichVuVaSucKhoe.js"></script>
+</body>
+</html>

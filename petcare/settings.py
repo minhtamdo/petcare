@@ -78,11 +78,11 @@ WSGI_APPLICATION = 'petcare.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'A',
+        'NAME': 'petclinic',
         'USER': 'postgres',
-        'PASSWORD': '_Iris.23_',
+        'PASSWORD': 'toughgirlmask2912',
         'HOST': 'localhost',
-        'PORT': '5432',
+        'PORT': '5433',
     }
 }
 

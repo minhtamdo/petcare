@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PETCARE</title>
+    <link rel="stylesheet" href="../CSS/HomePage.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">PETCARE</div>
+            <div class="nav">
+                <a href="#session1">Trang chủ</a>
+                <a href="#session2">Dịch vụ</a>
+                <a href="#session3">Về chúng tôi</a>
+                <a href="#session4">Liên hệ</a>
+            </div>
+            <div class="login-area">
+                <button class="login-btn" id="login-btn">
+                    <span id="login-text">Đăng nhập</span>
+                </button>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <button class="dropdown-item" onclick="handleLogout()">Đăng xuất</button>
+                    <button class="dropdown-item" onclick="window.location.href='ThongTinThuCung.html'">
+                        Thông tin thú cưng
+                    </button>
+                    <button class="dropdown-item" id="account-info-btn">
+                        Thông tin tài khoản
+                    </button>
+                    <button class="dropdown-item" onclick="window.location.href='LichSuDichVuVaSucKhoe.html'">
+                        Lịch sử dịch vụ &amp; sức khỏe
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Session 1: HomePage -->
+        <div class="main-section" id="session1">
+            <div class="text-content">
+                <h1>Chúng tôi chăm sóc<br>thú cưng của bạn</h1>
+                <p>Chăm sóc sức khỏe thú y tiêu chuẩn, hiện đại và hiệu quả cho thú cưng và các động vật khác của bạn, để bạn không phải tìm kiếm ở nơi khác. Đặt lịch hẹn ngay bây giờ</p>
+                <a href="#session2" class="button">Đặt lịch ngay</a>
+            </div>
+            <div class="image-container">
+                <img src="../images/Bác sĩ.jpg" alt="Bác sĩ thú y với chó">
+            </div>
+            <div class="decor decor-1"></div>
+            <div class="decor decor-2"></div>
+            <div class="decor decor-3"></div>
+        </div>
+
+        <!-- Session 2: Dịch vụ -->
+        <div class="services-section" id="session2">
+            <h2>Dịch vụ của chúng tôi</h2>
+            <div class="services-grid">
+                <!-- Service 1: Khám bệnh -->
+                <div class="service-card">
+                    <h3>Khám bệnh</h3>
+                    <button class="toggle-btn" onclick="toggleSubServices('examination')">Tìm hiểu thêm</button>
+                    <div class="sub-services" id="examination">
+                        <div class="sub-service-item">
+                            <span>Tiêm phòng - 200000vnđ</span>
+                            <button onclick="addToCart('Tiêm phòng', 200000)">Thêm</button>
+                        </div>
+                        <div class="sub-service-item">
+                            <span>Khám tổng quát - 300000vnđ</span>
+                            <button onclick="addToCart('Khám tổng quát', 300000)">Thêm</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Service 2: làm đẹp -->
+                <div class="service-card">
+                    <h3>Làm đẹp</h3>
+                    <button class="toggle-btn" onclick="toggleSubServices('grooming')">Tìm hiểu thêm</button>
+                    <div class="sub-services" id="grooming">
+                        <div class="sub-service-item">
+                            <span>Cắt tỉa lông - 150000vnđ</span>
+                            <button onclick="addToCart('Cắt tỉa lông', 150000)">Thêm</button>
+                        </div>
+                        <div class="sub-service-item">
+                            <span>Nhuộm lông - 250000vnđ</span>
+                            <button onclick="addToCart('Nhuộm lông', 250000)">Thêm</button>
+                        </div>
+                        <div class="sub-service-item">
+                            <span>Làm đẹp tổng quát - 200000vnđ</span>
+                            <button onclick="addToCart('Làm đẹp tổng quát', 200000)">Thêm</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Service 3: Cư trú -->
+                <div class="service-card">
+                    <h3>Cư trú</h3>
+                    <button class="toggle-btn" onclick="toggleResidenceForm()">Đặt lịch</button>
+                    <div class="residence-form" id="residence-form">
+                        <div style="margin-bottom: 10px;">
+                            <label for="residence-start-date" style="display: block; font-weight: bold; margin-bottom: 5px;">Ngày bắt đầu:</label>
+                            <input type="date" id="residence-start-date" placeholder="Chọn ngày bắt đầu" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label for="residence-end-date" style="display: block; font-weight: bold; margin-bottom: 5px;">Ngày kết thúc:</label>
+                            <input type="date" id="residence-end-date" placeholder="Chọn ngày kết thúc" style="width: 100%;">
+                        </div>
+                        <div style="margin-bottom: 10px;">
+                            <label for="pet-count" style="display: block; font-weight: bold; margin-bottom: 5px;">Số lượng thú cưng:</label>
+                            <input type="number" id="pet-count" placeholder="Số lượng thú cưng" min="1" onchange="generatePetForms()" style="width: 100%;">
+                        </div>
+                        <div id="pet-forms" style="margin-bottom: 10px;"></div>
+                        <div style="margin-bottom: 10px;">
+                            <label for="residence-notes" style="display: block; font-weight: bold; margin-bottom: 5px;">Ghi chú:</label>
+                            <textarea id="residence-notes" placeholder="Ghi chú (ví dụ: yêu cầu đặc biệt cho thú cưng)" style="width: 100%; height: 100px;"></textarea>
+                        </div>
+                        <button class="book-appointment-btn" onclick="bookResidence()">Đặt lịch</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Cart Section -->
+            <div class="cart-section">
+                <h3>Giỏ hàng</h3>
+                <div class="cart-items" id="cart-items"></div>
+                <div class="cart-total" id="cart-total">Tổng cộng: 0vnđ</div>
+                <button class="book-appointment-btn" onclick="openBookingModal()">Đặt lịch hẹn</button>
+            </div>
+        </div>
+
+        <!-- Session 3: Team work -->
+        <div class="team-section" id="session3">
+            <h2>Team Work</h2>
+            <div class="team-info">
+                <p>Chúng tôi là một nhóm sinh viên đam mê, tận tâm tạo ra trải nghiệm chăm sóc thú cưng. Dự án của chúng tôi, PET CARE, hướng đến cung cấp các dịch vụ thú y hàng đầu với giao diện thân thiện với người dùng.</p>
+                <p>Thành viên nhóm: Nguyễn Kỳ Anh - 20225783, Phạm Hoàng Minh Châu - 20225697 , Trần Thị Phương Thảo - 202225766, Đỗ Minh Tâm - 20225668</p>
+                <p>Mục tiêu dự án: Đơn giản hóa dịch vụ chăm sóc sức khỏe và làm đẹp cho thú cưng thông qua một nền tảng trực tuyến dễ sử dụng.</p>
+            </div>
+        </div>
+
+        <!-- Session 4: Liên hệ -->
+        <div class="contact-section" id="session4">
+            <h2>Liên hệ với chúng tôi</h2>
+            <div class="contact-links">
+                <a href="mailto:petcare@example.com">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#264653" stroke-width="2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    Email: petcare@example.com
+                </a>
+                <a href="https://facebook.com/petcare" target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#264653" stroke-width="2">
+                        <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+                    </svg>
+                    Facebook: PetCare
+                </a>
+                <a href="https://zalo.me/petcare" target="_blank">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#264653" stroke-width="2">
+                        <path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"/>
+                        <path d="M8 14h8M12 10v8"/>
+                    </svg>
+                    Zalo: PetCare
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- đặt lịch -->
+    <div class="modal" id="booking-modal">
+        <div class="modal-content">
+            <h3>Đặt lịch hẹn</h3>
+            <input type="date" id="appointment-date">
+            <input type="time" id="appointment-time">
+            <input type="number" id="pet-count-modal" placeholder="Số lượng thú cưng" min="1">
+            <button class="button" onclick="confirmBooking()">Đồng ý</button>
+            <button class="button" onclick="closeModal()">Hủy</button>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <script src="../JavaScript/HomePage.js"></script>
+</body>
+</html>
