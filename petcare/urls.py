@@ -133,6 +133,7 @@ def vet_dashboard(request):
         staff_id=user_id,
         check_in=today,
         type='vaccine',
+        status=Status.CONFIRMED.value
     ).count()
     return render(request, 'vet.html', {
         'total_pets': total_pets,
@@ -806,7 +807,7 @@ def update_appointment(request, appointment_id):
         # Cập nhật dữ liệu
         appointment.check_in = data['date']
         appointment.pet_id = uuid.UUID(data['pet_id'])
-        appointment.type = data['service'].upper()  # <-- nên luôn dùng upper() ở backend
+        appointment.type = data['service'] 
         appointment.save()
 
         return JsonResponse({'success': True, 'message': 'Cập nhật thành công!'})

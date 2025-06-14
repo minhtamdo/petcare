@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PetCare - Phòng Khám Thú Cưng</title>
+    <title>PetCare Clinic - Phòng Khám Thú Cưng</title>
     <style>
         * {
             margin: 0;
@@ -25,72 +25,65 @@
             padding: 20px;
         }
 
-        /* Header */
         .header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
-        .nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
+        .header h1 {
             color: #667eea;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
-        .nav-menu {
+        .nav-tabs {
             display: flex;
-            gap: 15px;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
-        .nav-btn {
+        .nav-tab {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 12px 24px;
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .nav-btn:hover {
+        .nav-tab:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
-        .nav-btn.active {
+        .nav-tab.active {
             background: linear-gradient(45deg, #764ba2, #667eea);
+            transform: scale(1.05);
         }
 
-        /* Main Content */
         .main-content {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
             min-height: 600px;
         }
 
         .section {
             display: none;
-            animation: fadeIn 0.5s ease-in-out;
+            animation: fadeIn 0.5s ease-in;
         }
 
         .section.active {
@@ -102,102 +95,45 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .section-title {
-            font-size: 32px;
-            margin-bottom: 30px;
-            color: #667eea;
-            text-align: center;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            border-radius: 2px;
-        }
-
-        /* Services Grid */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            gap: 20px;
+            margin-top: 20px;
         }
 
         .service-card {
             background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
             color: white;
-            padding: 30px;
-            border-radius: 20px;
-            text-align: center;
-            cursor: pointer;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
             transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.1);
-            transform: rotate(45deg);
-            transition: all 0.5s ease;
-            opacity: 0;
-        }
-
-        .service-card:hover::before {
-            opacity: 1;
-            top: -75%;
-            left: -75%;
+            cursor: pointer;
         }
 
         .service-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
         }
 
         .service-card h3 {
-            font-size: 24px;
             margin-bottom: 15px;
-            position: relative;
-            z-index: 1;
+            font-size: 1.3em;
         }
 
         .service-card p {
-            font-size: 16px;
             opacity: 0.9;
-            position: relative;
-            z-index: 1;
         }
 
-        .service-price {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 15px;
-            color: #fff200;
-            position: relative;
-            z-index: 1;
-        }
-
-        /* Forms */
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 600;
             color: #555;
         }
 
@@ -205,11 +141,12 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
+            padding: 12px 16px;
+            border: 2px solid #e1e8ed;
+            border-radius: 12px;
             font-size: 16px;
             transition: all 0.3s ease;
+            background: #fff;
         }
 
         .form-group input:focus,
@@ -220,114 +157,78 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
         .btn {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 30px;
             border-radius: 25px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
-            display: inline-block;
-            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
         .btn-secondary {
-            background: linear-gradient(45deg, #f093fb, #f5576c);
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            margin-left: 10px;
         }
 
-        /* Profile Cards */
-        .profile-grid {
+        .btn-danger {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+        }
+
+        .pets-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            gap: 20px;
+            margin-top: 20px;
         }
 
-        .profile-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        .pet-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .profile-card h3 {
-            margin-bottom: 20px;
-            font-size: 20px;
+        .pet-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
         }
 
-        .profile-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+        .pet-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .pet-info {
+            color: #666;
             margin-bottom: 15px;
         }
 
-        /* History Table */
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        .history-item {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
         }
 
-        .history-table th,
-        .history-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #f0f0f0;
+        .history-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .history-table th {
-            background: linear-gradient(45deg, #667eea, #764ba2);
-            color: white;
-            font-weight: 500;
-        }
-
-        .history-table tr:hover {
-            background: rgba(102, 126, 234, 0.05);
-        }
-
-        .status {
-            padding: 5px 10px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .status.completed {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status.scheduled {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status.cancelled {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Modal */
         .modal {
             display: none;
             position: fixed;
@@ -336,7 +237,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.5);
             backdrop-filter: blur(5px);
         }
 
@@ -347,338 +248,581 @@
             border-radius: 20px;
             width: 90%;
             max-width: 500px;
-            position: relative;
-            animation: slideIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease;
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .close {
-            position: absolute;
-            right: 20px;
-            top: 15px;
+            color: #aaa;
+            float: right;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
-            color: #aaa;
+            transition: color 0.3s ease;
         }
 
         .close:hover {
             color: #667eea;
         }
 
-        /* Responsive */
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .alert-success {
+            background: linear-gradient(135deg, #d4edda, #c3e6cb);
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .user-info {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 10px;
+            .nav-tabs {
+                flex-direction: column;
             }
             
-            .nav {
-                flex-direction: column;
+            .nav-tab {
+                width: 100%;
                 text-align: center;
             }
             
-            .nav-menu {
-                justify-content: center;
-            }
-            
-            .main-content {
-                padding: 20px;
-            }
-            
-            .section-title {
-                font-size: 24px;
-            }
-            
-            .services-grid {
+            .services-grid,
+            .pets-grid {
                 grid-template-columns: 1fr;
             }
         }
 
-        /* Animations */
-        .bounce {
-            animation: bounce 2s infinite;
+        .upcoming-appointments {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
         }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
+        .upcoming-appointments h3 {
+            margin-bottom: 15px;
+            color: #333;
         }
+
+        .upcoming-item {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .upcoming-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .upcoming-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .upcoming-date {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .upcoming-service {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .upcoming-pet {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        #petsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.pet-item {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+}
+
+.pet-item:hover {
+    transform: translateY(-5px);
+}
+
+.pet-item img {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    border-radius: 12px;
+    margin: 15px auto 0;
+    display: block;
+}
+
+
+.pet-item h4 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #4B3F72;
+}
+
+.pet-item p {
+    margin: 3px 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.pet-actions {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.pet-actions button {
+    background: linear-gradient(to right, #7f5af0, #6246ea);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.pet-actions button:hover {
+    background: linear-gradient(to right, #6246ea, #7f5af0);
+    transform: scale(1.05);
+}
+
+.delete-btn {
+    background: linear-gradient(to right, #ff4e50, #f44336);
+}
+
+.delete-btn:hover {
+    background: linear-gradient(to right, #f44336, #ff4e50);
+}
+
+.appointment-item {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  color: #333;
+  line-height: 1.6;
+  transition: transform 0.2s;
+}
+.appointment-item:hover {
+  transform: translateY(-2px);
+}
+.appointment-item h4 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #4f46e5;
+  margin-bottom: 8px;
+}
+.appointment-item p {
+  margin: 4px 0;
+}
+.appointment-item strong {
+  color: #555;
+}
+
+#editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Labels */
+#editForm label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 4px;
+  font-size: 0.9rem;
+}
+
+/* Input fields */
+#editForm input[type="date"],
+#editForm select {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+#editForm input[type="date"]:focus,
+#editForm select:focus {
+  outline: none;
+  border-color: #4CAF50;
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+}
+
+/* Buttons container */
+#editForm button {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+/* Submit button */
+#editForm button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  margin-top: 8px;
+}
+
+#editForm button[type="submit"]:hover {
+  background-color: #45a049;
+  transform: translateY(-1px);
+}
+
+/* Cancel button */
+#editForm button[type="button"] {
+  background-color: #f44336;
+  color: white;
+  margin-top: 4px;
+}
+
+#editForm button[type="button"]:hover {
+  background-color: #da190b;
+  transform: translateY(-1px);
+}
+
+/* Button active states */
+#editForm button:active {
+  transform: translateY(0);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  #editForm button {
+    padding: 14px 20px;
+    font-size: 16px;
+  }
+}
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <header class="header">
-            <nav class="nav">
-                <div class="logo">
-                    <span>🐾</span>
-                    <span>PetCare Clinic</span>
-                </div>
-                <div class="nav-menu">
-                    <button class="nav-btn active" onclick="showSection('home')">Trang chủ</button>
-                    <button class="nav-btn" onclick="showSection('services')">Dịch vụ</button>
-                    <button class="nav-btn" onclick="showSection('booking')">Đặt lịch</button>
-                    <button class="nav-btn" onclick="showSection('profile')">Tài khoản</button>
-                    <button class="nav-btn" onclick="showSection('history')">Lịch sử</button>
-                    <form action="{% url 'logout_view' %}" method="post" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="nav-btn logout-btn">🚪 Đăng xuất</button>
-                    </form>
-                </div>
-            </nav>
+            <h1>🐾 PetCare Clinic</h1>
+            <div class="nav-tabs">
+                <button class="nav-tab active" onclick="showSection('home')">Trang Chủ</button>
+                <button class="nav-tab" onclick="showSection('services')">Dịch Vụ</button>
+                <button class="nav-tab" onclick="showSection('booking')">Đặt Lịch</button>
+                <button class="nav-tab" onclick="showSection('account')">Tài Khoản</button>
+                <button class="nav-tab" onclick="showSection('pets')">Thú Cưng</button>
+                <button class="nav-tab" onclick="showSection('history')">Lịch Sử</button>
+            </div>
         </header>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <!-- Home Section -->
+            <!-- Trang Chủ -->
             <section id="home" class="section active">
-                <h1 class="section-title">Chào mừng đến với PetCare Clinic</h1>
-                <div style="text-align: center; margin: 40px 0;">
-                    <div class="bounce" style="font-size: 80px;">🐕🐱</div>
-                    <p style="font-size: 18px; margin: 20px 0; color: #666;">
-                        Chăm sóc thú cưng của bạn với tình yêu và chuyên nghiệp
-                    </p>
-                    <p style="margin: 20px 0; color: #888;">
-                        Chúng tôi cung cấp dịch vụ chăm sóc sức khỏe toàn diện cho thú cưng của bạn.
-                        Từ khám bệnh, tiêm vaccine đến dịch vụ làm đẹp và cư trú.
-                    </p>
-                    <button class="btn" onclick="showSection('services')">Xem dịch vụ</button>
+                <h2>Chào mừng đến với PetCare Clinic!</h2>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                    <div class="stat-number" id="totalPets">{{ total_pets }}</div>
+                        <div>Thú cưng đã đăng ký</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalBookings">{{ total_bookings }}</div>
+                        <div>Lượt đặt lịch</div>
+                    </div>
+                </div>
+                <div class="user-info">
+                    <h3>Thông tin người dùng</h3>
+                    <p><strong>Tên:</strong> <span id="currentUserName">{{ user_fullname }}</span></p>
+                    <p><strong>Email:</strong> <span id="currentUserEmail">{{ user_email }}</span></p>
+                    <p><strong>Số điện thoại:</strong> <span id="currentUserPhone">{{ user_phone }}</span></p>
+                </div>
+                <div class="upcoming-appointments">
+                    <h3>Lịch Hẹn Sắp Tới</h3>
+                    <div id="upcomingContainer"></div>
                 </div>
             </section>
 
-            <!-- Services Section -->
+            <!-- Dịch Vụ -->
             <section id="services" class="section">
-                <h2 class="section-title">Dịch vụ của chúng tôi</h2>
+                <h2>Dịch Vụ Của Chúng Tôi</h2>
                 <div class="services-grid">
-                    <div class="service-card" onclick="selectService('exam')">
-                        <h3>🩺 Khám bệnh</h3>
-                        <p>Khám tổng quát, chẩn đoán và điều trị các bệnh lý thường gặp</p>
-                        <div class="service-price">300.000 - 500.000 VNĐ</div>
+                    <div class="service-card">
+                        <h3>🏥 Khám Bệnh</h3>
+                        <p>Khám sức khỏe tổng quát, chẩn đoán và điều trị các bệnh thông thường cho thú cưng.</p>
+                        <p><strong>Giá:</strong> 350,000 VNĐ</p>
                     </div>
-                    <div class="service-card" onclick="selectService('vaccine')">
-                        <h3>💉 Tiêm vaccine</h3>
-                        <p>Tiêm phòng đầy đủ các loại vaccine cần thiết</p>
-                        <div class="service-price">200.000 - 800.000 VNĐ</div>
+                    <div class="service-card">
+                        <h3>✨ Làm Đẹp</h3>
+                        <p>Dịch vụ tắm gội, cắt tỉa lông, làm móng và chăm sóc thẩm mỹ cho thú cưng.</p>
+                        <p><strong>Giá:</strong> 250,000 VNĐ</p>
                     </div>
-                    <div class="service-card" onclick="selectService('grooming')">
-                        <h3>✂️ Làm đẹp</h3>
-                        <p>Tắm, cắt tỉa lông, cắt móng và vệ sinh toàn thân</p>
-                        <div class="service-price">150.000 - 400.000 VNĐ</div>
+                    <div class="service-card">
+                        <h3>🏠 Cư Trú</h3>
+                        <p>Dịch vụ lưu trú tạm thời cho thú cưng khi chủ đi vắng, chăm sóc 24/7.</p>
+                        <p><strong>Giá:</strong> 150,000 VNĐ/ngày</p>
                     </div>
-                    <div class="service-card" onclick="selectService('boarding')">
-                        <h3>🏠 Cư trú</h3>
-                        <p>Dịch vụ lưu trú an toàn và thoải mái</p>
-                        <div class="service-price">100.000 VNĐ/ngày</div>
+                    <div class="service-card">
+                        <h3>💉 Tiêm Vaccine</h3>
+                        <p>Tiêm phòng các loại vaccine cần thiết để bảo vệ sức khỏe thú cưng.</p>
+                        <p><strong>Giá:</strong> 250,000 VNĐ</p>
                     </div>
                 </div>
             </section>
 
-            <!-- Booking Section -->
+            <!-- Đặt Lịch -->
             <section id="booking" class="section">
-                <h2 class="section-title">Đặt lịch hẹn</h2>
-                <form id="bookingForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="petName">Tên thú cưng:</label>
-                            <input type="text" id="petName" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="petType">Loại thú cưng:</label>
-                            <select id="petType" required>
-                                <option value="">Chọn loại</option>
-                                <option value="dog">Chó</option>
-                                <option value="cat">Mèo</option>
-                                <option value="bird">Chim</option>
-                                <option value="rabbit">Thỏ</option>
-                                <option value="other">Khác</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="service">Dịch vụ:</label>
-                            <select id="service" required>
-                                <option value="">Chọn dịch vụ</option>
-                                <option value="exam">Khám bệnh</option>
-                                <option value="vaccine">Tiêm vaccine</option>
-                                <option value="grooming">Làm đẹp</option>
-                                <option value="boarding">Cư trú</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="appointmentDate">Ngày hẹn:</label>
-                            <input type="datetime-local" id="appointmentDate" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="notes">Ghi chú:</label>
-                        <textarea id="notes" rows="4" placeholder="Mô tả tình trạng hoặc yêu cầu đặc biệt..."></textarea>
-                    </div>
-                    <button type="submit" class="btn">Đặt lịch hẹn</button>
-                </form>
-            </section>
+    <h2>Đặt Lịch Hẹn</h2>
+    <div id="bookingAlert"></div>
+    <form id="bookingForm">
+    <div class="form-group">
+        <label for="petSelect">Chọn thú cưng:</label>
+        <select id="petSelect" class="form-control" required>
+            <option value="" disabled selected>-- Chọn thú cưng --</option>
+            {% for pet in pets %}
+                <option value="{{ pet.id }}">{{ pet.name }}</option>
+            {% endfor %}
+        </select>
+    </div>
 
-            <!-- Profile Section -->
-            <section id="profile" class="section">
-                <h2 class="section-title">Thông tin tài khoản</h2>
-                <div class="profile-grid">
-                    <div class="profile-card">
-                        <h3>👤 Thông tin chủ nuôi</h3>
-                        <div class="profile-info">
-                            <p><strong>Họ tên:</strong> <span id="ownerName">Nguyễn Văn A</span></p>
-                            <p><strong>Điện thoại:</strong> <span id="ownerPhone">0123456789</span></p>
-                            <p><strong>Email:</strong> <span id="ownerEmail">example@email.com</span></p>
-                            <p><strong>Địa chỉ:</strong> <span id="ownerAddress">123 Đường ABC, Quận 1, TP.HCM</span></p>
-                        </div>
-                        <button class="btn btn-secondary" onclick="editProfile()">Chỉnh sửa</button>
-                    </div>
-                    <div class="profile-card">
-                        <h3>🐾 Thông tin thú cưng</h3>
-                        <div id="petsList">
-                            <div class="profile-info">
-                                <p><strong>Tên:</strong> Buddy</p>
-                                <p><strong>Loại:</strong> Chó Golden Retriever</p>
-                                <p><strong>Tuổi:</strong> 3 năm</p>
-                                <p><strong>Cân nặng:</strong> 25kg</p>
-                            </div>
-                        </div>
-                        <button class="btn btn-secondary" onclick="addPet()">Thêm thú cưng</button>
-                    </div>
-                </div>
-            </section>
+    <div class="form-group">
+        <label for="serviceSelect">Chọn dịch vụ:</label>
+        <select id="serviceSelect" class="form-control" required onchange="toggleStayDates()">
+            <option value="" disabled selected>-- Chọn dịch vụ --</option>
+            <option value="medical">Khám Bệnh</option>
+            <option value="beauty">Làm Đẹp</option>
+            <option value="hotel">Cư Trú</option>
+            <option value="vaccine">Tiêm Vaccine</option>
+        </select>
+    </div>
 
-            <!-- History Section -->
+    <div class="form-group">
+        <label for="bookingDate">Ngày hẹn:</label>
+        <input type="date" id="bookingDate" class="form-control" required>
+    </div>
+
+    <div id="stayDates" style="display: none;">
+        <div class="form-group">
+            <label for="checkInDate">Ngày đến:</label>
+            <input type="date" id="checkInDate" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="checkOutDate">Ngày về:</label>
+            <input type="date" id="checkOutDate" class="form-control">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="bookingNotes">Ghi chú:</label>
+        <textarea id="bookingNotes" class="form-control" rows="3" placeholder="Ghi chú thêm về tình trạng thú cưng..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Đặt Lịch</button>
+</form>
+
+</section>
+
+            <!-- Tài Khoản -->
+            <section id="account" class="section">
+    <h2>Thông Tin Tài Khoản</h2>
+    <div id="accountAlert"></div>
+
+    <form id="accountForm">
+        <div class="form-group">
+            <label for="userName">Họ và tên:</label>
+            <input type="text" id="userName" name="fullname" required disabled value="{{ user_fullname }}">
+        </div>
+        <div class="form-group">
+            <label for="userEmail">Email:</label>
+            <input type="email" id="userEmail" name="email" required disabled value="{{ user_email }}">
+        </div>
+        <div class="form-group">
+            <label for="userPhone">Số điện thoại:</label>
+            <input type="tel" id="userPhone" name="phonenumber" required disabled value="{{ user_phone }}">
+        </div>
+        <button type="button" class="btn" id="editBtn">Chỉnh sửa</button>
+        <button type="submit" class="btn" id="saveBtn" style="display:none;">Lưu</button>
+    </form>
+</section>
+
+            <!-- Thú Cưng -->
+            <section id="pets" class="section my-pets">
+    <h2>Quản Lý Thú Cưng</h2>
+    <div id="petsAlert" ></div>
+    <button class="btn" onclick="openModal('petModal')">Thêm Thú Cưng Mới</button>
+    <div id="petsContainer" class="pets-grid"></div>
+</section>
+
+
+            <!-- Lịch Sử -->
             <section id="history" class="section">
-                <h2 class="section-title">Lịch sử dịch vụ</h2>
-                <table class="history-table">
-                    <thead>
-                        <tr>
-                            <th>Ngày</th>
-                            <th>Thú cưng</th>
-                            <th>Dịch vụ</th>
-                            <th>Trạng thái</th>
-                            <th>Giá</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>15/05/2024</td>
-                            <td>Buddy</td>
-                            <td>Khám bệnh</td>
-                            <td><span class="status completed">Hoàn thành</span></td>
-                            <td>350.000 VNĐ</td>
-                        </tr>
-                        <tr>
-                            <td>10/05/2024</td>
-                            <td>Buddy</td>
-                            <td>Làm đẹp</td>
-                            <td><span class="status completed">Hoàn thành</span></td>
-                            <td>200.000 VNĐ</td>
-                        </tr>
-                        <tr>
-                            <td>20/06/2024</td>
-                            <td>Buddy</td>
-                            <td>Tiêm vaccine</td>
-                            <td><span class="status scheduled">Đã đặt</span></td>
-                            <td>400.000 VNĐ</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h2>Dịch Vụ Đã Đăng Kí</h2>
+                <div id="historyContainer"></div>
             </section>
         </main>
     </div>
 
-    <!-- Modal for editing profile -->
-    <div id="profileModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Chỉnh sửa thông tin</h3>
-            <form id="profileForm">
-                <div class="form-group">
-                    <label for="editName">Họ tên:</label>
-                    <input type="text" id="editName" value="Nguyễn Văn A">
-                </div>
-                <div class="form-group">
-                    <label for="editPhone">Điện thoại:</label>
-                    <input type="tel" id="editPhone" value="0123456789">
-                </div>
-                <div class="form-group">
-                    <label for="editEmail">Email:</label>
-                    <input type="email" id="editEmail" value="example@email.com">
-                </div>
-                <div class="form-group">
-                    <label for="editAddress">Địa chỉ:</label>
-                    <textarea id="editAddress" rows="3">123 Đường ABC, Quận 1, TP.HCM</textarea>
-                </div>
-                <button type="submit" class="btn">Lưu thay đổi</button>
-            </form>
-        </div>
-    </div>
+<!--Modal chỉnh sửa lịch-->>
+<div id="editModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h3>Chỉnh sửa lịch hẹn</h3>
+    <form id="editForm">
+      <label>Ngày:</label>
+      <input type="date" id="editDate" required>
+      <label>Thú cưng:</label>
+      <select id="editPet" required></select>
+      <label>Dịch vụ:</label>
+      <select id="editService" required>
+        <option value="medical">Khám bệnh</option>
+        <option value="vaccine">Tiêm Vaccine</option>
+        <option value="beauty">Chăm sóc làm đẹp</option>
+        <!-- thêm nếu có -->
+      </select>
+      <input type="hidden" id="editId">
+      <button type="submit">Lưu</button>
+      <button type="button" onclick="closeEditModal()">Hủy</button>
+    </form>
+  </div>
+</div>
 
-    <!-- Modal for adding pet -->
-    <div id="petModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <h3>Thêm thú cưng</h3>
-            <form id="petForm">
-                <div class="form-group">
-                    <label for="newPetName">Tên thú cưng:</label>
-                    <input type="text" id="newPetName" required>
-                </div>
-                <div class="form-group">
-                    <label for="newPetType">Loại:</label>
-                    <input type="text" id="newPetType" placeholder="VD: Chó Golden Retriever" required>
-                </div>
-                <div class="form-group">
-                    <label for="newPetAge">Tuổi:</label>
-                    <input type="text" id="newPetAge" placeholder="VD: 2 năm" required>
-                </div>
-                <div class="form-group">
-                    <label for="newPetWeight">Cân nặng:</label>
-                    <input type="text" id="newPetWeight" placeholder="VD: 15kg" required>
-                </div>
-                <button type="submit" class="btn">Thêm thú cưng</button>
-            </form>
-        </div>
-    </div>
+<!-- Form modal thêm thú cưng -->
+<div id="petModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('petModal')">&times;</span>
+    <h2 id="petModalTitle">Thêm Thú Cưng Mới</h2>
+    <form id="petForm">
+      <input type="hidden" id="editPetId">
+      <div class="form-group">
+        <label for="petName">Tên thú cưng:</label>
+        <input type="text" id="petName" required>
+      </div>
+      <div class="form-group">
+        <label for="petSpecies">Loài thú cưng:</label>
+        <select id="petSpecies" required>
+          <option value="">-- Chọn loài --</option>
+          <option value="dog">Chó</option>
+          <option value="cat">Mèo</option>
+          <option value="bird">Chim</option>
+          <option value="rabbit">Thỏ</option>
+          <option value="hamster">Chuột Hamster</option>
+          <option value="other">Khác</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="petBreed">Giống:</label>
+        <input type="text" id="petBreed">
+      </div>
+      <div class="form-group">
+        <label for="petBirthDate">Ngày sinh:</label>
+        <input type="date" id="petBirthDate" required>
+      </div>
+      <div class="form-group">
+        <label for="petFurColor">Màu lông:</label>
+        <input type="text" id="petFurColor">
+      </div>
+      <div class="form-group">
+        <label for="petGender">Giới tính:</label>
+        <select id="petGender" required>
+          <option value="">-- Chọn --</option>
+          <option value="male">Đực</option>
+          <option value="female">Cái</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="petImageUrl">Hình ảnh (URL):</label>
+        <input type="text" id="petImageUrl">
+      </div>
+      <button type="submit" class="btn">Lưu Thông Tin</button>
+      <button type="button" class="btn btn-secondary" onclick="closeModal('petModal')">Hủy</button>
+    </form>
+  </div>
+</div>
+
 
     <script>
-        // Navigation
-        function showSection(sectionId) {
-            // Hide all sections
-            const sections = document.querySelectorAll('.section');
-            sections.forEach(section => section.classList.remove('active'));
-            
-            // Show selected section
-            document.getElementById(sectionId).classList.add('active');
-            
-            // Update navigation buttons
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-        }
 
-        // Service selection
-        function selectService(serviceType) {
-            showSection('booking');
-            document.getElementById('service').value = serviceType;
-            
-            // Update nav button
-            const navBtns = document.querySelectorAll('.nav-btn');
-            navBtns.forEach(btn => btn.classList.remove('active'));
-            navBtns[2].classList.add('active'); // Booking button
-        }
+        // Hiển thị section
+       function showSection(sectionId, event = null) {
+    // Ẩn tất cả sections
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Hiển thị section được chọn
+    document.getElementById(sectionId).classList.add('active');
+    
+    // Cập nhật tab active
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+}
 
         // Booking form
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
@@ -695,79 +839,239 @@
             }
         });
 
-        function getServiceName(serviceCode) {
-            const services = {
-                'exam': 'Khám bệnh',
-                'vaccine': 'Tiêm vaccine',
-                'grooming': 'Làm đẹp',
-                'boarding': 'Cư trú'
-            };
-            return services[serviceCode] || serviceCode;
-        }
+    // Nút chỉnh sửa
+document.getElementById('editBtn').addEventListener('click', () => {
+    document.getElementById('userName').disabled = false;
+    document.getElementById('userEmail').disabled = false;
+    document.getElementById('userPhone').disabled = false;
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('saveBtn').style.display = 'inline-block';
+});
 
-        function addToHistory(petName, service, date) {
-            const historyTable = document.querySelector('.history-table tbody');
-            const newRow = historyTable.insertRow(0);
-            
-            newRow.innerHTML = `
-                <td>${new Date(date).toLocaleDateString('vi-VN')}</td>
-                <td>${petName}</td>
-                <td>${getServiceName(service)}</td>
-                <td><span class="status scheduled">Đã đặt</span></td>
-                <td>Chưa xác định</td>
-            `;
-        }
+document.getElementById('accountForm').addEventListener('submit', function (e) {
+    e.preventDefault();
 
-        function editProfile() {
-            document.getElementById('profileModal').style.display = 'block';
-        }
+    const payload = {
+        fullname: document.getElementById('userName').value,
+        email: document.getElementById('userEmail').value,
+        phonenumber: document.getElementById('userPhone').value
+    };
 
-        function addPet() {
-            document.getElementById('petModal').style.display = 'block';
-        }
+    fetch('/account/update/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken') // Nếu bạn dùng CSRF
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(data => {
+    console.log('Response:', data);  // 👈 Xem có gì trong response
 
-        function closeModal() {
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.style.display = 'none';
+    if (data.success) {
+        document.getElementById('accountAlert').innerHTML = '<p style="color:green;">Cập nhật thành công!</p>';
+    } else if (data.error) {
+        document.getElementById('accountAlert').innerHTML = `<p style="color:red;">${data.error}</p>`;
+    } else {
+        document.getElementById('accountAlert').innerHTML = `<p style="color:red;">Có lỗi không xác định.</p>`;
+    }
+
+        // Vô hiệu hóa lại form
+        document.getElementById('userName').disabled = true;
+        document.getElementById('userEmail').disabled = true;
+        document.getElementById('userPhone').disabled = true;
+        document.getElementById('editBtn').style.display = 'inline-block';
+        document.getElementById('saveBtn').style.display = 'none';
+    })
+    .catch(err => {
+        document.getElementById('accountAlert').innerHTML = '<p style="color:red;">Lỗi kết nối đến máy chủ.</p>';
+        console.error(err);
+    });
+});
+
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Hàm lấy CSRF token từ cookie
+function getCSRFToken() {
+    const name = 'csrftoken';
+    const cookies = document.cookie.split(';');
+    for (let cookie of cookies) {
+        let [key, value] = cookie.trim().split('=');
+        if (key === name) return decodeURIComponent(value);
+    }
+    return '';
+}
+
+
+document.getElementById('bookingForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const petId = document.getElementById('petSelect').value;
+    const type = document.getElementById('serviceSelect').value;
+    const date = document.getElementById('bookingDate').value;
+    const checkIn = document.getElementById('checkInDate').value;
+    const checkOut = document.getElementById('checkOutDate').value;
+    const notes = document.getElementById('bookingNotes').value;
+
+    if (!petId || !type) {
+        alert('Vui lòng chọn thú cưng và dịch vụ!');
+        return;
+    }
+
+    const payload = {
+        pet_id: petId,
+        type: type,
+        notes: notes
+    };
+
+    if (type === 'hotel') {
+        // Dịch vụ cư trú: cần checkIn và checkOut, không cần ngày/giờ hẹn
+        if (!checkIn || !checkOut) {
+            alert('Vui lòng nhập ngày đến và ngày về cho dịch vụ cư trú.');
+            return;
+        }
+        payload.check_in_date = checkIn;
+        payload.check_out_date = checkOut;
+    } else {
+        // Các dịch vụ khác: cần ngày và giờ
+        if (!date) {
+            alert('Vui lòng chọn ngày hẹn.');
+            return;
+        }
+        payload.appointment_date = `${date}`;
+    }
+
+    fetch('/api/appointments/create/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify(payload)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.json().then(data => {
+                throw new Error(data.error || 'Lỗi không xác định');
             });
         }
+        return response.json();
+    })
+    .then(data => {
+        alert('Đặt lịch thành công!');
+        document.getElementById('bookingForm').reset();
+        toggleStayDates(); // Ẩn lại khung ngày nếu là cư trú
+    })
+    .catch(error => {
+        alert('Lỗi đặt lịch: ' + error.message);
+    });
+});
 
-        // Profile form submission
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Update profile display
-            document.getElementById('ownerName').textContent = document.getElementById('editName').value;
-            document.getElementById('ownerPhone').textContent = document.getElementById('editPhone').value;
-            document.getElementById('ownerEmail').textContent = document.getElementById('editEmail').value;
-            document.getElementById('ownerAddress').textContent = document.getElementById('editAddress').value;
-            
-            alert('Cập nhật thông tin thành công!');
-            closeModal();
+// Hiển thị khung ngày ở lại nếu là dịch vụ "cư trú"
+function toggleStayDates() {
+    const service = document.getElementById('serviceSelect').value;
+    const stayDiv = document.getElementById('stayDates');
+    const bookingDate = document.getElementById('bookingDate');
+
+    if (service === 'hotel') {
+        stayDiv.style.display = 'block';
+        // Disable booking date/time khi là cư trú
+        bookingDate.disabled = true;
+    } else {
+        stayDiv.style.display = 'none';
+        bookingDate.disabled = false;
+    }
+}
+
+// CSRF token lấy từ cookie
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Kiểm tra cookie bắt đầu bằng tên mong muốn
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('/appointments/upcoming/')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('upcomingContainer');
+            container.innerHTML = '';
+
+            if (data.length === 0) {
+                container.innerHTML = '<p>Không có lịch hẹn nào sắp tới.</p>';
+                return;
+            }
+
+            data.forEach(appt => {
+                const div = document.createElement('div');
+                div.classList.add('upcoming-item');
+                div.innerHTML = `
+                    <div class="upcoming-date">${appt.time}</div>
+                    <div class="upcoming-service">Dịch vụ: ${appt.type}</div>
+                    <div class="upcoming-pet">Thú cưng: ${appt.pet_name}</div>
+                    <div class="upcoming-notes">Ghi chú: ${appt.notes || 'Không có'}</div>
+                `;
+                container.appendChild(div);
+            });
+        })
+        .catch(err => {
+            document.getElementById('upcomingContainer').innerHTML = '<p>Lỗi khi tải lịch hẹn.</p>';
         });
+});
+        
+        // Hiển thị thông báo
+        function showAlert(containerId, message, type) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+            
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
 
-        // Pet form submission
-        document.getElementById('petForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const petsList = document.getElementById('petsList');
-            const newPetInfo = document.createElement('div');
-            newPetInfo.className = 'profile-info';
-            newPetInfo.innerHTML = `
-                <p><strong>Tên:</strong> ${document.getElementById('newPetName').value}</p>
-                <p><strong>Loại:</strong> ${document.getElementById('newPetType').value}</p>
-                <p><strong>Tuổi:</strong> ${document.getElementById('newPetAge').value}</p>
-                <p><strong>Cân nặng:</strong> ${document.getElementById('newPetWeight').value}</p>
-            `;
-            
-            petsList.appendChild(newPetInfo);
-            
-            alert('Thêm thú cưng thành công!');
-            this.reset();
-            closeModal();
-        });
+        // Mở modal
+        function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  modal.style.display = 'block';
+  if (modalId === 'petModal') {
+    const editId = document.getElementById('editPetId').value;
+    if (!editId) {
+      document.getElementById('petForm').reset();
+      document.getElementById('petModalTitle').textContent = 'Thêm Thú Cưng Mới';
+    }
+  }
+}
+        // Đóng modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+            document.getElementById('editPetId').value = '';
+        }
 
-        // Close modal when clicking outside
+        // Đóng modal khi click bên ngoài
         window.onclick = function(event) {
             const modals = document.querySelectorAll('.modal');
             modals.forEach(modal => {
@@ -775,24 +1079,329 @@
                     modal.style.display = 'none';
                 }
             });
+        };
+
+// Hàm lấy CSRF token
+function getCSRFToken() {
+    const csrfCookie = document.cookie.split("; ").find(row => row.startsWith("csrftoken="));
+    return csrfCookie ? csrfCookie.split("=")[1] : "";
+}
+
+        // Các hàm helper
+        function getPetTypeText(type) {
+            const types = {
+                'dog': 'Chó',
+                'cat': 'Mèo',
+                'bird': 'Chim',
+                'rabbit': 'Thỏ',
+                'hamster': 'Chuột Hamster',
+                'other': 'Khác'
+            };
+            return types[type] || 'Không xác định';
         }
 
-        // Set minimum date for appointment booking
-        document.addEventListener('DOMContentLoaded', function() {
-            const now = new Date();
-            now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-            document.getElementById('appointmentDate').min = now.toISOString().slice(0, 16);
-        });
+        function getGenderText(gender) {
+            const genders = {
+                'male': 'Đực',
+                'female': 'Cái'
+            };
+            return genders[gender] || 'Không xác định';
+        }
 
-        // Add some interactive animations
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
+        function getServiceText(service) {
+            const services = {
+                'kham-benh': 'Khám Bệnh',
+                'lam-dep': 'Làm Đẹp',
+                'cu-tru': 'Cư Trú',
+                'tiem-vaccine': 'Tiêm Vaccine'
+            };
+            return services[service] || 'Không xác định';
+        }
+
+        function getStatusText(status) {
+            const statuses = {
+                'pending': 'Chờ xác nhận',
+                'completed': 'Hoàn thành',
+                'cancelled': 'Đã hủy'
+            };
+            return statuses[status] || 'Không xác định';
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'pending': '#f39c12',
+                'completed': '#27ae60',
+                'cancelled': '#e74c3c'
+            };
+            return colors[status] || '#333';
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN');
+        }
+
+
+//thú cưng crud từ đây//
+
+function loadPets() {
+  fetch('/pets/')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('petsContainer');
+      container.innerHTML = '';
+
+      if (data.length === 0) {
+        container.innerHTML = '<p>Chưa có thú cưng nào.</p>';
+        return;
+      }
+
+      data.forEach(pet => {
+        const petDiv = document.createElement('div');
+        petDiv.className = 'pet-item';
+        petDiv.setAttribute('data-id', pet.id);
+        petDiv.innerHTML = `
+          <h4>${pet.name}</h4>
+          <p><strong>Loài:</strong> ${pet.species}</p>
+          <p><strong>Giống:</strong> ${pet.breed || '-'}</p>
+          <p><strong>Tuổi:</strong> ${pet.age || 'Không xác định'}</p>
+          <p><strong>Giới tính:</strong> ${pet.gender_vi}</p>
+          <p><strong>Màu lông:</strong> ${pet.fur_color || '-'}</p>
+          ${pet.image_url ? `<img src="${pet.image_url}" alt="Hình thú cưng">` : ''}
+          <div class="pet-actions">
+            <button class="edit-btn">✏️ Chỉnh sửa</button>
+            <button class="delete-btn">🗑️ Xóa</button>
+          </div>
+        `;
+        container.appendChild(petDiv);
+      });
+
+      // Gán lại sự kiện cho các nút chỉnh sửa
+      container.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const petId = btn.closest('.pet-item').getAttribute('data-id');
+          openEditModal(petId);
+        });
+      });
+
+      // Gán lại sự kiện cho các nút xóa
+      container.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function () {
+          const petId = btn.closest('.pet-item').getAttribute('data-id');
+          if (confirm('Bạn có chắc chắn muốn xóa thú cưng này không?')) {
+            fetch(`/pets/${petId}/delete/`, {
+              method: 'DELETE',
+              headers: {
+                'X-CSRFToken': getCookie('csrftoken')
+              }
+            })
+              .then(res => {
+                if (res.ok) {
+                  loadPets();
+                } else {
+                  alert('Xóa không thành công');
+                }
+              });
+          }
+        });
+      });
+    })
+    .catch(error => {
+      console.error('Lỗi khi tải thú cưng:', error);
+      document.getElementById('petsContainer').innerHTML = '<p style="color:red;">Lỗi khi tải danh sách thú cưng.</p>';
+    });
+}
+
+//lịch sử cuộc hẹn crud//
+
+function loadAppointmentHistory() {
+  fetch('/appointments/history/')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('historyContainer');
+      container.innerHTML = '';
+
+      if (data.length === 0) {
+        container.innerHTML = '<p>Không có lịch sử dịch vụ nào.</p>';
+        return;
+      }
+
+      data.forEach(appointment => {
+        const item = document.createElement('div');
+        item.className = 'appointment-item';
+        item.innerHTML = `
+          <h4>Dịch vụ: ${appointment.service_name}</h4>
+          <p><strong>Thú cưng:</strong> ${appointment.pet_name}</p>
+          <p><strong>Ngày:</strong> ${appointment.date}</p>
+          <p><strong>Trạng thái:</strong> ${appointment.status_vi}</p>
+          <div class="pet-actions">
+            <button class="edit-btn"
+                    data-id="${appointment.id}"
+                    data-date="${appointment.date}"
+                    data-pet="${appointment.pet_name}"
+                    data-service="${appointment.service_name}">
+            ✏️ Chỉnh sửa
+            </button>
+            <button class="delete-btn">🗑️ Xóa</button>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    })
+    .catch(error => {
+      console.error('Lỗi khi tải lịch sử dịch vụ:', error);
+      document.getElementById('historyContainer').innerHTML = '<p style="color:red;">Lỗi khi tải lịch sử dịch vụ.</p>';
+    });
+}
+
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('edit-btn')) {
+    const btn = e.target;
+    const statusText = btn.closest('.appointment-item').querySelector('p:nth-child(4)').innerText;
+    if (!statusText.includes("PENDING")) {
+      alert("Chỉ được sửa lịch hẹn đang chờ.");
+      return;
+    }
+
+    document.getElementById('editId').value = btn.dataset.id;
+    document.getElementById('editDate').value = btn.dataset.date;
+    document.getElementById('editService').value = btn.dataset.service.toLowerCase();
+
+    // Tải danh sách thú cưng
+    fetch('/pets/')
+      .then(res => res.json())
+      .then(pets => {
+        const petSelect = document.getElementById('editPet');
+        petSelect.innerHTML = '';
+        pets.forEach(pet => {
+          const option = document.createElement('option');
+          option.value = pet.id;
+          option.textContent = pet.name;
+          if (pet.name === btn.dataset.pet) option.selected = true;
+          petSelect.appendChild(option);
+        });
+      });
+
+    document.getElementById('editModal').style.display = 'block';
+  }
+});
+
+const serviceMap = {
+    'Khám bệnh': 'medical',
+    'Tiêm Vaccine': 'vaccine',
+    'Chăm sóc làm đẹp': 'beauty',
+};
+document.getElementById('editForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  
+  const id = document.getElementById('editId').value;
+  const date = document.getElementById('editDate').value;
+  const pet_id = document.getElementById('editPet').value;
+  const service = document.getElementById('editService').value;
+
+  fetch(`/appointments/update/${id}/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCSRFToken()  // tự tạo hàm này nếu chưa có
+    },
+    body: JSON.stringify({ date, pet_id, service })
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Cập nhật thất bại");
+      return res.json();
+    })
+    .then(data => {
+      alert("Cập nhật thành công!");
+      closeEditModal();
+      loadAppointmentHistory();
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Đã có lỗi xảy ra.");
+    });
+});
+
+function closeEditModal() {
+  document.getElementById('editModal').style.display = 'none';
+}
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    loadPets();
+    loadAppointmentHistory();
+});
+
+// Gửi dữ liệu thêm/sửa thú cưng
+const petForm = document.getElementById('petForm');
+petForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  const payload = {
+    name: document.getElementById('petName').value,
+    species: document.getElementById('petSpecies').value,
+    breed: document.getElementById('petBreed').value,
+    birth_date: document.getElementById('petBirthDate').value,
+    gender: document.getElementById('petGender').value,
+    fur_color: document.getElementById('petFurColor').value,
+    image_url: document.getElementById('petImageUrl').value
+  };
+
+  const petId = document.getElementById('editPetId').value;
+  const isEditing = !!petId;
+  const method = isEditing ? 'PUT' : 'POST';
+  const url = isEditing ? `/pets/${petId}/update/` : '/pets/create/';
+
+  fetch(url, {
+    method: method,
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken')
+    },
+    body: JSON.stringify(payload)
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success || data.id) {
+        alert(isEditing ? 'Cập nhật thành công!' : 'Thêm thành công!');
+        closeModal('petModal');
+        loadPets();
+      } else {
+        alert(data.error || 'Thất bại.');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Lỗi kết nối.');
+    });
+});
+
+// Hàm mở modal chỉnh sửa
+function openEditModal(petId) {
+  fetch(`/pets/${petId}/`)
+    .then(res => res.json())
+    .then(pet => {
+      document.getElementById('editPetId').value = pet.id;
+      document.getElementById('petName').value = pet.name;
+      document.getElementById('petSpecies').value = pet.species;
+      document.getElementById('petBreed').value = pet.breed || '';
+      document.getElementById('petBirthDate').value = pet.birth_date || '';
+      document.getElementById('petFurColor').value = pet.fur_color || '';
+      document.getElementById('petGender').value = pet.gender || '';
+      document.getElementById('petImageUrl').value = pet.image_url || '';
+      document.getElementById('petModalTitle').textContent = 'Sửa Thú Cưng';
+      openModal('petModal');
+    });
+}
+
+        // Khởi tạo ứng dụng
+        document.addEventListener('DOMContentLoaded', function() {
+            //initializeData();
+            showSection('home');
+            // Đặt ngày tối thiểu là hôm nay
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('bookingDate').min = today;
+            document.getElementById('checkInDate').min = today;
+            document.getElementById('checkOutDate').min = today;
         });
     </script>
 </body>
