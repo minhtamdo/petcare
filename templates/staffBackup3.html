@@ -1691,10 +1691,12 @@
         }
 
         .chart-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: white;
             padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .chart-container h3 {
@@ -1740,61 +1742,11 @@
                 gap: 20px;
             }
         }
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columns */
-            gap: 20px; /* spacing between cards */
-            margin-top: 20px;
-        }
-        .service-card button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            font-size: 14px;
-            background-color: #007bff; /* Blue background */
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .service-card button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: scale(1.03);
-        }
 
-        .service-card button:active {
-            transform: scale(0.98);
-        }
-        .logout-btn {
-            display : block !important; 
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
-        .header {
-            position: relative;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
     </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <body>
-    <div style="position: absolute; top: 20px; right: 20px; z-index: 999;">
-        <form action="{% url 'logout_view' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">🚪 Đăng xuất</button>
-        </form>
-    </div>
     <div class="container">
         <div class="header">
             <h1>🐾 Hệ Thống Quản Lý Thú Cưng</h1>
@@ -1827,7 +1779,7 @@
                     <div class="stat-label">Lịch Hẹn Tháng Này</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="totalRevenue"></div>
+                    <div class="stat-number" id="totalRevenue">0</div>
                     <div class="stat-label">Doanh Thu (triệu VNĐ)</div>
                 </div>
             </div>
@@ -1839,21 +1791,62 @@
                     <div class="chart-legend" id="chartLegend"></div>
                 </div>
             </div>
-            <div>
-                <div class="chart-container">
-                    <canvas id="revenueChart" width="800" height="400"></canvas>
-                </div>
-            </div>
+
         </div>
 
         <!-- Tab Dịch Vụ -->
         <div id="services" class="tab-content">
             <h2>🏥 Dịch Vụ Chính</h2>
-            <div class="service-grid" id="serviceGrid">
-                <!-- Dynamic cards will be inserted here -->
+            <div class="service-grid">
+                <!-- Khám bệnh -->
+                <div class="service-card" id="medical">
+                    <h3>🩺 Khám Bệnh</h3>
+                    <p>Chẩn đoán và điều trị cơ bản</p>
+                    <p>⏰ Thời gian: 30-45 phút</p>
+                    <div class="price">
+                        <span id="exam-price">300.000 VNĐ</span>
+                        <input type="text" id="exam-input" value="300.000 VNĐ" style="display:none;" oninput="updatePrice('exam', this.value)">
+                    </div>
+                    <button onclick="toggleEdit('exam')">✏️ Sửa giá</button>
+                </div>
+
+                <!-- Tiêm phòng -->
+                <div class="service-card" id="vaccine">
+                    <h3>💉 Tiêm Phòng</h3>
+                    <p>Tiêm các loại vaccine thiết yếu</p>
+                    <p>⏰ Thời gian: 15-20 phút</p>
+                    <div class="price">
+                        <span id="vaccine-price">200.000 VNĐ</span>
+                        <input type="text" id="vaccine-input" value="200.000 VNĐ" style="display:none;" oninput="updatePrice('vaccine', this.value)">
+                    </div>
+                    <button onclick="toggleEdit('vaccine')">✏️ Sửa giá</button>
+                </div>
+
+                <!-- Làm đẹp -->
+                <div class="service-card" id="beauty">
+                    <h3>✂️ Làm Đẹp</h3>
+                    <p>Tắm gội, cắt tỉa lông chuyên nghiệp</p>
+                    <p>⏰ Thời gian: 60-90 phút</p>
+                    <div class="price">
+                        <span id="grooming-price">250.000 VNĐ</span>
+                        <input type="text" id="grooming-input" value="250.000 VNĐ" style="display:none;" oninput="updatePrice('grooming', this.value)">
+                    </div>
+                    <button onclick="toggleEdit('grooming')">✏️ Sửa giá</button>
+                </div>
+
+                <!-- Lưu trú -->
+                <div class="service-card" id="hotel">
+                    <h3>🏠 Lưu Trú</h3>
+                    <p>Dịch vụ giữ thú cưng qua đêm an toàn</p>
+                    <p>⏰ Thời gian: Theo ngày</p>
+                    <div class="price">
+                        <span id="boarding-price">100.000 VNĐ/ngày</span>
+                        <input type="text" id="boarding-input" value="100.000 VNĐ/ngày" style="display:none;" oninput="updatePrice('boarding', this.value)">
+                    </div>
+                    <button onclick="toggleEdit('boarding')">✏️ Sửa giá</button>
+                </div>
             </div>
         </div>
-
 
         <!-- Tab Thú Cưng -->
         <div id="pets" class="tab-content">
@@ -2065,7 +2058,6 @@
     </div>
 </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
         let sampleAppointments = [
             {% for appointment in appointments %}
@@ -2335,6 +2327,15 @@
                 buttonElement.classList.add('active');
             }
         }
+
+        const servicePrices = {
+            'checkup': 200000,
+            'vaccination': 150000,
+            'grooming': 300000,
+            'spa': 250000,
+            'dental': 400000,
+            'surgery': 1500000
+        };
 
         function openTab(tabName) {
             const contents = document.querySelectorAll('.pet-properties');
@@ -2811,216 +2812,44 @@
         }
 
         function drawPetChart() {
-            fetch('/api/pet-species-stats/')
-                .then(response => response.json())
-                .then(stats => {
-                    const labels = Object.keys(stats);
-                    const data = Object.values(stats);
+            const ctx = document.getElementById("petChart").getContext("2d");
 
-                    const ctx = document.getElementById("petChart").getContext("2d");
+            const petData = {
+                labels: ['Chó', 'Mèo', 'Thỏ', 'Chim'],
+                datasets: [{
+                    label: 'Số lượng',
+                    data: [10, 7, 3, 5],
+                    backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'],
+                }]
+            };
 
-                    const backgroundColors = [
-                        '#FF6384', // Pink
-                        '#36A2EB', // Blue
-                        '#FFCE56', // Yellow
-                        '#4BC0C0', // Teal
-                        '#9966FF', // Purple
-                        '#FF9F40', // Orange
-                        '#66CDAA', // Medium Aquamarine
-                        '#D2691E', // Chocolate
-                        '#8BC34A', // Light Green
-                        '#E91E63'  // Deep Pink
-                    ];
-
-                    const petChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Số lượng',
-                                data: data,
-                                backgroundColor: backgroundColors.slice(0, labels.length),
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            }
+            const petChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: petData,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false // Ẩn chú thích mặc định
                         }
-                    });
-
-                    // Create custom legend
-                    const legendContainer = document.getElementById("chartLegend");
-                    legendContainer.innerHTML = labels.map((label, i) => `
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                            <span style="display: inline-block; width: 20px; height: 20px; background-color: ${backgroundColors[i]}; border-radius: 4px; margin-right: 10px;"></span>
-                            ${label}
-                        </div>
-                    `).join('');
-                })
-                .catch(error => {
-                    console.error('Error fetching pet stats:', error);
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/services/')
-                .then(response => response.json())
-                .then(data => {
-                    const grid = document.getElementById('serviceGrid');
-                    grid.innerHTML = '';
-
-                    data.services.forEach(service => {
-                        const id = service.type.toLowerCase();
-                        const formattedPrice = service.price.toLocaleString('vi-VN') + ' VNĐ';
-
-                        grid.innerHTML += `
-                            <div class="service-card" id="${id}">
-                                <h3>${getIcon(service.type)} ${service.type}</h3>
-                                <p>${service.description}</p>
-                                <p>⏰ Thời gian: ${service.duration}</p>
-                                <div class="price">
-                                    <span id="${id}-price">${formattedPrice}</span>
-                                    <input type="text" 
-                                            id="${id}-input" 
-                                            value="${formattedPrice}" 
-                                            style="display:none;" 
-                                            onblur="handlePriceUpdate('${id}')" 
-                                            onkeydown="checkEnter(event, '${id}')">
-                                    </div>
-                                <button onclick="toggleEdit('${id}')">✏️ Sửa giá</button>
-                            </div>
-                        `;
-                    });
-                });
-        });
-
-        function getIcon(type) {
-            const lower = type.toLowerCase();
-            if (lower.includes('khám')) return '🩺';
-            if (lower.includes('tiêm')) return '💉';
-            if (lower.includes('làm') || lower.includes('đẹp')) return '✂️';
-            if (lower.includes('lưu')) return '🏠';
-            return '🔧';
-        }
-
-        function toggleEdit(serviceId) {
-            const input = document.getElementById(`${serviceId}-input`);
-            const span = document.getElementById(`${serviceId}-price`);
-            input.style.display = 'inline';
-            span.style.display = 'none';
-            input.focus();
-        }
-    
-        function handlePriceUpdate(serviceId) {
-            const input = document.getElementById(`${serviceId}-input`);
-            const newText = input.value;
-            const numberPrice = parseInt(newText.replace(/[^\d]/g, ''));
-
-            if (isNaN(numberPrice)) {
-                alert('❌ Giá không hợp lệ!');
-                return;
-            }
-
-            fetch('/api/update-service-price/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()
-                },
-                body: JSON.stringify({
-                    type: serviceId,
-                    price: numberPrice
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const priceSpan = document.getElementById(`${serviceId}-price`);
-                    const formatted = numberPrice.toLocaleString('vi-VN') + ' VNĐ';
-                    priceSpan.textContent = formatted;
-                    input.value = formatted;
-                    input.style.display = 'none';
-                    priceSpan.style.display = 'inline';
-                } else {
-                    alert('❌ ' + data.error);
+                    }
                 }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('❌ Lỗi mạng');
             });
-        }
-        function checkEnter(event, serviceId) {
-            if (event.key === 'Enter') {
-                event.target.blur(); // trigger blur to run update
-            }
+
+            // Tạo chú thích tùy chỉnh
+            const legendContainer = document.getElementById("chartLegend");
+            legendContainer.innerHTML = petData.labels.map((label, i) => `
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <span style="display: inline-block; width: 20px; height: 20px; background-color: ${petData.datasets[0].backgroundColor[i]}; border-radius: 4px; margin-right: 10px;"></span>
+                    ${label}
+                </div>
+            `).join('');
         }
 
         // Gọi hàm sau khi trang tải xong
         window.onload = drawPetChart;
 
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/monthly-revenue/')
-                .then(response => response.json())
-                .then(data => {
-                    const total = data.total_revenue || 0;
-                    // Convert to triệu VND (million VND)
-                    const millions = (total / 1_000_000);
-                    document.getElementById('totalRevenue').textContent = millions;
-                })
-                .catch(error => {
-                    console.error('Lỗi khi lấy doanh thu:', error);
-                    document.getElementById('totalRevenue').textContent = '0';
-                });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/monthly-revenue-chart/')
-                .then(response => response.json())
-                .then(data => {
-                    const revenues = data.monthly_revenue;
-                    const ctx = document.getElementById('revenueChart').getContext('2d');
-
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-                                    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                            datasets: [{
-                                label: 'Doanh thu (VND)',
-                                data: revenues,
-                                backgroundColor: '#4CAF50'
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: { display: false },
-                                title: {
-                                    display: true,
-                                    text: '📊 Doanh thu theo tháng trong năm'
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return value.toLocaleString('vi-VN') + ' ₫';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                });
-        });
-        
+    
 </script>
 </body>
 </html>

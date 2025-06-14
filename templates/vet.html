@@ -192,10 +192,9 @@
         }
 
         .pet-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ffd89b, #19547b);
+            width: 120px;
+            height: 90px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -399,7 +398,189 @@
             color: #666;
             font-size: 16px;
         }
+        /* Status Modal overlay - specific for status modal */
+        #status-modal {
+            position: fixed !important;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
 
+        #status-modal[style*="block"] {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Status Modal content container */
+        #status-modal .modal-content {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        #status-modal[style*="block"] .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Status Modal title */
+        #status-modal .modal-content h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* Select dropdown */
+        #new-status {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        #new-status:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        #new-status:hover {
+            border-color: #c6d0d7;
+        }
+
+        /* Status Modal buttons */
+        #status-modal .modal-content button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            min-width: 80px;
+        }
+
+        /* Status Modal Update button */
+        #status-modal .modal-content button[onclick="submitStatusChange()"] {
+            background-color: #28a745;
+            color: white;
+        }
+
+        #status-modal .modal-content button[onclick="submitStatusChange()"]:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+        }
+
+        /* Status Modal Cancel button */
+        #status-modal .modal-content button[onclick="closeStatusModal()"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #status-modal .modal-content button[onclick="closeStatusModal()"]:hover {
+            background-color: #545b62;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Status Modal Button active states */
+        #status-modal .modal-content button:active {
+            transform: translateY(0);
+        }
+
+        /* Status option colors (optional enhancement) */
+        #new-status option[value="pending"] {
+            color: #ffc107;
+        }
+
+        #new-status option[value="confirmed"] {
+            color: #17a2b8;
+        }
+
+        #new-status option[value="completed"] {
+            color: #28a745;
+        }
+
+        #new-status option[value="cancelled"] {
+            color: #dc3545;
+        }
+
+        /* Responsive design for status modal */
+        @media (max-width: 480px) {
+            #status-modal .modal-content {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            #status-modal .modal-content h3 {
+                font-size: 18px;
+            }
+            
+            #status-modal .modal-content button {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
+
+        /* Button container */
+        .modal-content button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            min-width: 80px;
+        }
+
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .modal-content {
+                padding: 20px;
+                margin: 20px;
+            }
+            
+            .modal-content h3 {
+                font-size: 18px;
+            }
+            
+            .modal-content button {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+            }
+        }
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -418,6 +599,299 @@
                 grid-template-columns: 1fr;
             }
         }
+        /* Edit Medical Modal overlay */
+        #edit-medical-modal {
+            position: fixed !important;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #edit-medical-modal[style*="block"] {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Edit Medical Modal content container */
+        #edit-medical-modal .modal-content {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        #edit-medical-modal[style*="block"] .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Edit Medical Modal title */
+        #edit-medical-modal .modal-content h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* Edit Medical Modal textareas */
+        #edit-medical-modal textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            background-color: #fff;
+            resize: vertical;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        #edit-medical-modal textarea:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        #edit-medical-modal textarea:hover {
+            border-color: #c6d0d7;
+        }
+
+        #edit-medical-modal textarea::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+
+        /* Edit Medical Modal buttons */
+        #edit-medical-modal .modal-content button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            min-width: 100px;
+        }
+
+        /* Edit Medical Modal Update button */
+        #edit-medical-modal .modal-content button[onclick="submitMedicalUpdate()"] {
+            background-color: #17a2b8;
+            color: white;
+        }
+
+        #edit-medical-modal .modal-content button[onclick="submitMedicalUpdate()"]:hover {
+            background-color: #138496;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+        }
+
+        /* Edit Medical Modal Cancel button */
+        #edit-medical-modal .modal-content button[onclick="closeMedicalModal()"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #edit-medical-modal .modal-content button[onclick="closeMedicalModal()"]:hover {
+            background-color: #545b62;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Edit Medical Modal Button active states */
+        #edit-medical-modal .modal-content button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive design for edit medical modal */
+        @media (max-width: 480px) {
+            #edit-medical-modal .modal-content {
+                padding: 20px;
+                margin: 20px;
+                max-width: 95%;
+            }
+            
+            #edit-medical-modal .modal-content h3 {
+                font-size: 18px;
+            }
+            
+            #edit-medical-modal .modal-content button {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            #edit-medical-modal textarea {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+        }
+        /* Edit Nutrition Modal overlay */
+        #edit-nutrition-modal {
+            position: fixed !important;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        #edit-nutrition-modal[style*="block"] {
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Edit Nutrition Modal content container */
+        #edit-nutrition-modal .modal-content {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        #edit-nutrition-modal[style*="block"] .modal-content {
+            transform: translateY(0);
+        }
+
+        /* Edit Nutrition Modal title */
+        #edit-nutrition-modal .modal-content h3 {
+            margin: 0 0 20px 0;
+            color: #333;
+            font-size: 20px;
+            font-weight: 600;
+            text-align: center;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* Edit Nutrition Modal textareas */
+        #edit-nutrition-modal textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #333;
+            background-color: #fff;
+            resize: vertical;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            font-family: inherit;
+            line-height: 1.5;
+            min-height: 60px;
+        }
+
+        #edit-nutrition-modal textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        #edit-nutrition-modal textarea:hover {
+            border-color: #c6d0d7;
+        }
+
+        #edit-nutrition-modal textarea::placeholder {
+            color: #6c757d;
+            opacity: 0.8;
+        }
+
+        /* Edit Nutrition Modal buttons */
+        #edit-nutrition-modal .modal-content button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            min-width: 100px;
+        }
+
+        /* Edit Nutrition Modal Update button */
+        #edit-nutrition-modal .modal-content button[onclick="submitEditNutrition()"] {
+            background-color: #ff6b35;
+            color: white;
+        }
+
+        #edit-nutrition-modal .modal-content button[onclick="submitEditNutrition()"]:hover {
+            background-color: #e55a2b;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 107, 53, 0.3);
+        }
+
+        /* Edit Nutrition Modal Cancel button */
+        #edit-nutrition-modal .modal-content button[onclick="closeEditNutrition()"] {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        #edit-nutrition-modal .modal-content button[onclick="closeEditNutrition()"]:hover {
+            background-color: #545b62;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+        }
+
+        /* Edit Nutrition Modal Button active states */
+        #edit-nutrition-modal .modal-content button:active {
+            transform: translateY(0);
+        }
+
+        /* Responsive design for edit nutrition modal */
+        @media (max-width: 480px) {
+            #edit-nutrition-modal .modal-content {
+                padding: 20px;
+                margin: 20px;
+                max-width: 95%;
+            }
+            
+            #edit-nutrition-modal .modal-content h3 {
+                font-size: 18px;
+            }
+            
+            #edit-nutrition-modal .modal-content button {
+                display: block;
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            #edit-nutrition-modal textarea {
+                font-size: 16px; /* Prevent zoom on iOS */
+            }
+        }
     </style>
 </head>
 <body>
@@ -426,6 +900,7 @@
             <div class="logo">
                 <h1>🐾 VetCare</h1>
                 <p>Hệ thống quản lý thú y</p>
+                <a href="{% url 'logout_view' %}" class="btn btn-danger">Đăng xuất</a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
@@ -443,13 +918,19 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-page="vaccination-schedule">
                         <span class="nav-icon">💉</span>
-                        Lịch tiêm phòng
+                        Lịch tiêm phòng của tôi
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-page="vaccination-history">
+                        <span class="nav-icon">📝</span>
+                        Lịch sử tiêm phòng
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-page="examinations">
                         <span class="nav-icon">🩺</span>
-                        Khám bệnh
+                        Lịch khám của tôi
                     </a>
                 </li>
                 <li class="nav-item">
@@ -462,12 +943,6 @@
                     <a href="#" class="nav-link" data-page="diet">
                         <span class="nav-icon">🍖</span>
                         Chế độ ăn uống
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-page="vaccination-history">
-                        <span class="nav-icon">📝</span>
-                        Lịch sử tiêm phòng
                     </a>
                 </li>
             </ul>
@@ -485,49 +960,31 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-number" id="today-appointments">{{ today_appointments }}</div>
-                        <div class="stat-label">Lịch hẹn hôm nay</div>
+                        <div class="stat-label">Lịch khám hôm nay</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-number" id="pending-vaccinations">3</div>
-                        <div class="stat-label">Cần tiêm phòng</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="sick-pets">2</div>
-                        <div class="stat-label">Đang điều trị</div>
+                        <div class="stat-number" id="pending-vaccinations">{{ vaccine_count }}</div>
+                        <div class="stat-label">Lịch tiêm phòng hôm nay</div>
                     </div>
                 </div>
 
                 <h3 style="margin-bottom: 20px;">Hoạt động gần đây</h3>
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Thời gian</th>
-                            <th>Thú cưng</th>
-                            <th>Hoạt động</th>
-                            <th>Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>10:30 - 13/06/2025</td>
-                            <td>Buddy (Chó Golden)</td>
-                            <td>Khám tổng quát</td>
-                            <td><span class="status-badge status-healthy">Hoàn thành</span></td>
-                        </tr>
-                        <tr>
-                            <td>09:15 - 13/06/2025</td>
-                            <td>Mimi (Mèo Ba Tư)</td>
-                            <td>Tiêm phòng rabies</td>
-                            <td><span class="status-badge status-healthy">Hoàn thành</span></td>
-                        </tr>
-                        <tr>
-                            <td>14:00 - 12/06/2025</td>
-                            <td>Max (Chó Husky)</td>
-                            <td>Điều trị da liễu</td>
-                            <td><span class="status-badge status-sick">Đang điều trị</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Thời gian</th>
+                                <th>Thú cưng</th>
+                                <th>Hoạt động</th>
+                                <th>Trạng thái</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-activities-body">
+                            <!-- Nội dung sẽ được chèn bằng JavaScript -->
+                            <tr>
+                                <td colspan="4" style="text-align: center;">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
             </div>
 
             <!-- Trang thông tin thú cưng -->
@@ -535,8 +992,8 @@
                 <h1 class="page-title">Thông tin thú cưng</h1>
                 
                 <div class="pet-search">
-                    <input type="text" class="search-input" placeholder="Tìm kiếm theo tên, loài, chủ sở hữu...">
-                    <button class="btn btn-primary">🔍 Tìm kiếm</button>
+                    <input type="text" class="search-input" id="pet-search-input" placeholder="Tìm kiếm theo tên, loài, chủ sở hữu...">
+                    <button class="btn btn-primary" onclick="searchPets()">🔍 Tìm kiếm</button>
                 </div>
 
                 <div class="pet-grid" id="pet-grid">
@@ -547,17 +1004,16 @@
             <!-- Trang lịch tiêm phòng -->
             <div id="vaccination-schedule" class="page">
                 <h1 class="page-title">Lịch tiêm phòng</h1>
-                
-                <div style="margin-bottom: 20px;">
-                    <button class="btn btn-success" onclick="showUpdateVaccinationModal()">+ Cập nhật lịch tiêm</button>
-                </div>
-
                 <table class="data-table">
                     <thead>
                         <tr>
                             <th>Thú cưng</th>
-                            <th>Loại vaccine</th>
-                            <th>Ngày hẹn</th>
+                            <th>Vaccine</th>
+                            <th>Ngày tiêm</th>
+                            <th>Lần tiêm tiếp theo</th>
+                            <th>Số liều</th>
+                            <th>Số lô</th>
+                            <th>Ghi chú</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
@@ -570,25 +1026,25 @@
 
             <!-- Trang khám bệnh -->
             <div id="examinations" class="page">
-                <h1 class="page-title">Khám bệnh</h1>
-                
+                <h1 class="page-title">Lịch khám của tôi</h1>
+
                 <div style="margin-bottom: 20px;">
                     <button class="btn btn-success" onclick="showAddExaminationModal()">+ Thêm lịch khám</button>
                 </div>
-
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th>Thời gian</th>
+                            <th>Ngày khám</th>
                             <th>Thú cưng</th>
                             <th>Chủ sở hữu</th>
+                            <th>Số điện thoại</th>
                             <th>Loại khám</th>
                             <th>Trạng thái</th>
                             <th>Thao tác</th>
                         </tr>
                     </thead>
                     <tbody id="examinations-tbody">
-                        <!-- Dữ liệu sẽ được tạo bằng JavaScript -->
+                        <!-- Dữ liệu sẽ được render tại đây -->
                     </tbody>
                 </table>
             </div>
@@ -596,16 +1052,6 @@
             <!-- Trang lịch sử bệnh án -->
             <div id="medical-history" class="page">
                 <h1 class="page-title">Lịch sử bệnh án</h1>
-                
-                <div style="margin-bottom: 20px;">
-                    <button class="btn btn-success" onclick="showAddMedicalRecordModal()">+ Thêm bệnh án mới</button>
-                </div>
-
-                <div class="pet-search">
-                    <input type="text" class="search-input" placeholder="Tìm kiếm bệnh án theo tên thú cưng...">
-                    <button class="btn btn-primary">🔍 Tìm kiếm</button>
-                </div>
-
                 <div id="medical-records-container">
                     <!-- Dữ liệu bệnh án sẽ được tạo bằng JavaScript -->
                 </div>
@@ -614,25 +1060,18 @@
             <!-- Trang chế độ ăn uống -->
             <div id="diet" class="page">
                 <h1 class="page-title">Chế độ ăn uống</h1>
-                
-                <div style="margin-bottom: 20px;">
-                    <button class="btn btn-success" onclick="showAddDietPlanModal()">+ Thêm chế độ ăn</button>
-                </div>
 
-                <div id="diet-plans-container">
-                    <!-- Dữ liệu chế độ ăn sẽ được tạo bằng JavaScript -->
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn-success" onclick="showAddNutritionModal()">+ Thêm chế độ ăn</button>
+                </div>
+                <div id="diet-container">
+                    <!-- Kết quả sẽ hiển thị ở đây -->
                 </div>
             </div>
 
-            <!-- Trang lịch sử tiêm phòng -->
+            <!-- Trang lịch sử tiêm phòng --> 
             <div id="vaccination-history" class="page">
                 <h1 class="page-title">Lịch sử tiêm phòng</h1>
-                
-                <div class="pet-search">
-                    <input type="text" class="search-input" placeholder="Tìm kiếm theo tên thú cưng...">
-                    <button class="btn btn-primary">🔍 Tìm kiếm</button>
-                </div>
-
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -649,8 +1088,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
 
     <!-- Modal thêm bệnh án mới -->
     <div id="addMedicalRecordModal" class="modal">
@@ -720,38 +1157,49 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Thú cưng</label>
-                        <select class="form-control" required>
-                            <option value="">Chọn thú cưng</option>
-                            <option value="buddy">Buddy (Chó Golden)</option>
-                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
-                            <option value="max">Max (Chó Husky)</option>
-                        </select>
+                        <input type="text" id="petInput" class="form-control" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Loại vaccine</label>
-                        <select class="form-control" required>
-                            <option value="">Chọn loại vaccine</option>
-                            <option value="rabies">Rabies</option>
-                            <option value="dhpp">DHPP</option>
-                            <option value="fvrcp">FVRCP</option>
-                            <option value="bordetella">Bordetella</option>
-                        </select>
+                        <input type="text" id="vaccineTypeInput" class="form-control" required>
                     </div>
                 </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">Ngày tiêm</label>
-                        <input type="date" class="form-control" required>
+                        <input type="date" id="dateInput" class="form-control" disabled>
                     </div>
                     <div class="form-group">
                         <label class="form-label">Lô vaccine</label>
-                        <input type="text" class="form-control" placeholder="Số lô vaccine...">
+                        <input type="text" id="batchInput" class="form-control" placeholder="Số lô vaccine...">
                     </div>
                 </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Số liều</label>
+                        <input type="number" id="dosesInput" class="form-control" min="1">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Lần tiêm tiếp theo</label>
+                        <input type="date" id="nextDueInput" class="form-control">
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label class="form-label">Ghi chú</label>
-                    <textarea class="form-control" rows="2" placeholder="Ghi chú..."></textarea>
+                    <textarea id="noteInput" class="form-control" rows="2" placeholder="Ghi chú..."></textarea>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-label">Trạng thái tiêm</label>
+                    <select id="isCompletedInput" class="form-control">
+                        <option value="false">Chưa tiêm</option>
+                        <option value="true">Đã tiêm</option>
+                    </select>
+                </div>
+
                 <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn" onclick="closeModal('updateVaccinationModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
                     <button type="submit" class="btn btn-success">Cập nhật</button>
@@ -768,43 +1216,36 @@
                 <button class="close-btn" onclick="closeModal('addExaminationModal')">&times;</button>
             </div>
             <form id="addExaminationForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Thú cưng</label>
-                        <select class="form-control" required>
-                            <option value="">Chọn thú cưng</option>
-                            <option value="buddy">Buddy (Chó Golden)</option>
-                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
-                            <option value="max">Max (Chó Husky)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Ngày khám</label>
-                        <input type="datetime-local" class="form-control" required>
-                    </div>
-                </div>
+                <!-- Chọn thú cưng -->
                 <div class="form-group">
-                    <label class="form-label">Loại khám</label>
-                    <select class="form-control" required>
-                        <option value="">Chọn loại khám</option>
-                        <option value="general">Khám tổng quát</option>
-                        <option value="emergency">Khám cấp cứu</option>
-                        <option value="followup">Khám tái khám</option>
-                        <option value="surgery">Phẫu thuật</option>
-                        <option value="dental">Khám răng miệng</option>
+                    <label class="form-label">Thú cưng</label>
+                    <select id="petSelect" class="form-control" required>
+                        <option value="">Chọn thú cưng</option>
+                        <!-- sẽ được load bằng JS -->
                     </select>
                 </div>
+
+                <!-- Ngày khám -->
+                <div class="form-group">
+                    <label class="form-label">Ngày khám</label>
+                    <input type="date" id="examinationDateInput" class="form-control" required>
+                </div>
+
+                <!-- Ghi chú -->
                 <div class="form-group">
                     <label class="form-label">Lý do khám</label>
-                    <textarea class="form-control" rows="3" placeholder="Mô tả lý do cần khám..."></textarea>
+                    <textarea id="examinationNoteInput" class="form-control" rows="3" placeholder="Mô tả lý do khám..."></textarea>
                 </div>
-                <div style="text-align: right; margin-top: 20px;">
+
+                <!-- Nút gửi -->
+                <div class="form-footer" style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn" onclick="closeModal('addExaminationModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
                     <button type="submit" class="btn btn-success">Thêm lịch khám</button>
                 </div>
             </form>
         </div>
     </div>
+
 
     <!-- Modal thêm chế độ ăn -->
     <div id="addDietPlanModal" class="modal">
@@ -814,50 +1255,66 @@
                 <button class="close-btn" onclick="closeModal('addDietPlanModal')">&times;</button>
             </div>
             <form id="addDietPlanForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Thú cưng</label>
-                        <select class="form-control" required>
-                            <option value="">Chọn thú cưng</option>
-                            <option value="buddy">Buddy (Chó Golden)</option>
-                            <option value="mimi">Mimi (Mèo Ba Tư)</option>
-                            <option value="max">Max (Chó Husky)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Loại thức ăn</label>
-                        <input type="text" class="form-control" placeholder="Tên thức ăn..." required>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Khẩu phần (gram/ngày)</label>
-                        <input type="number" class="form-control" placeholder="0" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Số bữa/ngày</label>
-                        <input type="number" class="form-control" placeholder="2" required>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">Thú cưng</label>
+                    <select class="form-control" id="dietPetSelect" required>
+                        <option value="">Chọn thú cưng</option>
+                        <!-- load bằng JS -->
+                    </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Hướng dẫn đặc biệt</label>
-                    <textarea class="form-control" rows="3" placeholder="Ghi chú về cách cho ăn, thời gian..."></textarea>
+                    <label class="form-label">Loại thức ăn</label>
+                    <input type="text" class="form-control" id="foodTypeInput" placeholder="Tên thức ăn..." required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label class="form-label">Thức ăn cấm</label>
-                        <input type="text" class="form-control" placeholder="Thức ăn không được cho ăn...">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">Ngày bắt đầu</label>
-                        <input type="date" class="form-control" required>
-                    </div>
+                <div class="form-group">
+                    <label class="form-label">Khẩu phần</label>
+                    <input type="text" class="form-control" id="portionInput" placeholder="VD: 100g/ngày" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Ghi chú (tuỳ chọn)</label>
+                    <textarea class="form-control" id="noteInputDiet" rows="3" placeholder="Ghi chú thêm..."></textarea>
                 </div>
                 <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn" onclick="closeModal('addDietPlanModal')" style="margin-right: 10px; background: #6c757d; color: white;">Hủy</button>
                     <button type="submit" class="btn btn-success">Lưu chế độ ăn</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div id="status-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Thay đổi trạng thái</h3>
+            <select id="new-status">
+            <option value="pending">Chờ xác nhận</option>
+            <option value="confirmed">Đã xác nhận</option>
+            <option value="completed">Hoàn thành</option>
+            <option value="cancelled">Đã hủy</option>
+            </select>
+            <br><br>
+            <button onclick="submitStatusChange()">Cập nhật</button>
+            <button onclick="closeStatusModal()">Hủy</button>
+        </div>
+    </div>
+    <div id="edit-medical-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Sửa bệnh án</h3>
+            <textarea id="edit-diagnosis" placeholder="Chẩn đoán" rows="2"></textarea><br>
+            <textarea id="edit-treatment" placeholder="Điều trị" rows="2"></textarea><br>
+            <textarea id="edit-notes" placeholder="Ghi chú" rows="2"></textarea><br>
+            <button onclick="submitMedicalUpdate()">Cập nhật</button>
+            <button onclick="closeMedicalModal()">Hủy</button>
+        </div>
+    </div>
+    <!-- modal sửa diet -->
+    <div id="edit-nutrition-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Chỉnh sửa chế độ ăn</h3>
+            <textarea id="edit-food-type" placeholder="Loại thức ăn"></textarea><br>
+            <textarea id="edit-portion" placeholder="Khẩu phần"></textarea><br>
+            <textarea id="edit-note" placeholder="Ghi chú"></textarea><br>
+            <button onclick="submitEditNutrition()">Cập nhật</button>
+            <button onclick="closeEditNutrition()">Hủy</button>
         </div>
     </div>
 
@@ -935,28 +1392,28 @@
             { time: "2025-06-14 10:30", pet: "Rocky", owner: "Hoàng Văn E", type: "Khám cấp cứu", status: "pending" }
         ];
 
-        const medicalRecordsData = [
-            {
-                pet: "Max (Chó Husky)",
-                date: "2025-06-10",
-                diagnosis: "Viêm da dị ứng",
-                symptoms: "Ngứa, rụng lông, da đỏ",
-                treatment: "Thuốc kháng histamin, dầu tắm đặc trị",
-                medication: "Cetirizine 10mg",
-                dosage: "1 viên/ngày",
-                notes: "Kiêng tiếp xúc với phấn hoa"
-            },
-            {
-                pet: "Rocky (Chó Bulldog)",
-                date: "2025-06-08",
-                diagnosis: "Rối loạn tiêu hóa",
-                symptoms: "Tiêu chảy, nôn mửa, mệt mỏi",
-                treatment: "Chế độ ăn đặc biệt, thuốc tiêu hóa",
-                medication: "Probiotics",
-                dosage: "1 gói/ngày",
-                notes: "Theo dõi trong 1 tuần"
-            }
-        ];
+        // const medicalRecordsData = [
+        //     {
+        //         pet: "Max (Chó Husky)",
+        //         date: "2025-06-10",
+        //         diagnosis: "Viêm da dị ứng",
+        //         symptoms: "Ngứa, rụng lông, da đỏ",
+        //         treatment: "Thuốc kháng histamin, dầu tắm đặc trị",
+        //         medication: "Cetirizine 10mg",
+        //         dosage: "1 viên/ngày",
+        //         notes: "Kiêng tiếp xúc với phấn hoa"
+        //     },
+        //     {
+        //         pet: "Rocky (Chó Bulldog)",
+        //         date: "2025-06-08",
+        //         diagnosis: "Rối loạn tiêu hóa",
+        //         symptoms: "Tiêu chảy, nôn mửa, mệt mỏi",
+        //         treatment: "Chế độ ăn đặc biệt, thuốc tiêu hóa",
+        //         medication: "Probiotics",
+        //         dosage: "1 gói/ngày",
+        //         notes: "Theo dõi trong 1 tuần"
+        //     }
+        // ];
 
         const dietPlansData = [
             {
@@ -986,6 +1443,14 @@
             { pet: "Luna", vaccine: "FVRCP", date: "2025-03-05", batch: "FVR2025003", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng" }
         ];
 
+        // biến toàn cục
+        let allPets = [];
+        let allVaccinationHistory = [];
+        let selectedAppointmentId = null;
+        let medicalRecordsData = [];
+        let selectedMedicalId = null;
+        let dietPlans = [];
+        let selectedNutritionId = null;
         // Chuyển đổi trang
         function showPage(pageId) {
             // Ẩn tất cả các trang
@@ -1002,151 +1467,595 @@
             });
             document.querySelector(`[data-page="${pageId}"]`).classList.add('active');
         }
+        // render các cuộc hẹn gần đây trong tổng quan
+        function convertStatus(status) {
+            switch (status) {
+                case 'pending': return 'Chờ xác nhận';
+                case 'confirmed': return 'Đã xác nhận';
+                case 'completed': return 'Hoàn thành';
+                case 'cancelled': return 'Đã hủy';
+                default: return 'Không rõ';
+            }
+        }
+
+        function loadRecentActivities() {
+            fetch('/appointments/recent/')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector('#recent-activities-body');
+                    tbody.innerHTML = '';
+
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(item => {
+                            const row = document.createElement('tr');
+                            row.innerHTML = `
+                                <td>${item.check_in}</td>
+                                <td>${item.pet_name}</td>
+                                <td>${item.type}</td>
+                                <td>${convertStatus(item.status)}</td>
+                            `;
+                            tbody.appendChild(row);
+                        });
+                    } else {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td colspan="4" style="text-align:center">Không có hoạt động gần đây</td>`;
+                        tbody.appendChild(row);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải hoạt động gần đây:', error);
+                });
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRecentActivities();
+            loadPets();
+            loadVaccinationSchedule(); 
+            loadVaccinationHistory();
+            loadExaminations();
+            loadMedicalRecords();
+            loadDietPlans();
+        });
+
 
         // Render danh sách thú cưng
-        function renderPets() {
+        function renderPets(petsData) {
+            if (!Array.isArray(petsData)) {
+                console.error("renderPets: dữ liệu không hợp lệ", petsData);
+                return;
+            }
+
             const petGrid = document.getElementById('pet-grid');
             petGrid.innerHTML = '';
-            
+
+            if (petsData.length === 0) {
+                petGrid.innerHTML = '<p>Không tìm thấy thú cưng nào.</p>';
+                return;
+            }
+
             petsData.forEach(pet => {
-                const statusClass = pet.status === 'healthy' ? 'status-healthy' : 'status-sick';
-                const statusText = pet.status === 'healthy' ? 'Khỏe mạnh' : 'Đang điều trị';
-                
                 const petCard = document.createElement('div');
                 petCard.className = 'pet-card';
                 petCard.innerHTML = `
-                    <div class="pet-avatar">${pet.avatar}</div>
+                    <div class="pet-avatar">
+                        <img src="${pet.avatar}" alt="${pet.name}" style="width: 120px; height: 90px; border-radius: 10px;">
+                    </div>
                     <div class="pet-info">
                         <h3>${pet.name}</h3>
                         <p><strong>Loài:</strong> ${pet.species} - ${pet.breed}</p>
                         <p><strong>Tuổi:</strong> ${pet.age}</p>
                         <p><strong>Chủ:</strong> ${pet.owner}</p>
                         <p><strong>SĐT:</strong> ${pet.phone}</p>
-                        <span class="status-badge ${statusClass}">${statusText}</span>
                     </div>
                 `;
                 petGrid.appendChild(petCard);
             });
         }
 
+        function loadPets() {
+            fetch('/pets/api/')
+                .then(response => response.json())
+                .then(petsData => {
+                    allPetsData = petsData;
+                    renderPets(petsData);  // ✅ truyền đúng tham số
+                })
+                .catch(error => {
+                    console.error("Lỗi khi tải danh sách thú cưng:", error);
+                });
+        }
+
+        //search thú cưng
+        function searchPets() {
+            console.log("Đã bấm nút tìm kiếm");  // kiểm tra đã gọi được chưa
+
+            const keyword = document.getElementById('pet-search-input').value.trim().toLowerCase();
+
+            if (!keyword) {
+                renderPets(allPetsData);
+                return;
+            }
+
+            const filteredPets = allPetsData.filter(pet =>
+                pet.name.toLowerCase().includes(keyword) ||
+                pet.species.toLowerCase().includes(keyword) ||
+                pet.owner.toLowerCase().includes(keyword)
+            );
+
+            renderPets(filteredPets);
+        }
+
+
         // Render lịch tiêm phòng
-        function renderVaccinationSchedule() {
-            const tbody = document.getElementById('vaccination-schedule-tbody');
-            tbody.innerHTML = '';
-            
-            vaccinationScheduleData.forEach(item => {
-                const statusClass = item.status === 'pending' ? 'status-sick' : 
-                                  item.status === 'overdue' ? 'status-sick' : 'status-healthy';
-                const statusText = item.status === 'pending' ? 'Chờ tiêm' :
-                                 item.status === 'overdue' ? 'Quá hạn' : 'Đã lên lịch';
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${item.pet}</td>
-                    <td>${item.vaccine}</td>
-                    <td>${item.date}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>
-                        <button class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">Cập nhật</button>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
+        function loadVaccinationSchedule() {
+            fetch('/api/vaccinations/')
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('vaccination-schedule-tbody');
+                    tbody.innerHTML = '';
+
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="9" style="text-align:center;">Không có lịch tiêm nào.</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(item => {
+                        const row = document.createElement('tr');
+
+                        const statusBadge = item.is_completed
+                            ? '<span class="status-badge status-healthy">Đã tiêm</span>'
+                            : '<span class="status-badge status-pending">Chưa tiêm</span>';
+
+                        row.innerHTML = `
+                            <td>${item.pet_name} (${item.pet_species})</td>
+                            <td>${item.vaccine_name}</td>
+                            <td>${item.vaccination_date}</td>
+                            <td>${item.next_due}</td>
+                            <td>${item.total_doses}</td>
+                            <td>${item.batch_number}</td>
+                            <td>${item.note}</td>
+                            <td>${statusBadge}</td>
+                            <td>
+                                <button class="btn btn-sm btn-primary" onclick='showUpdateVaccinationModal(${JSON.stringify(item)})'>✏️</button>
+                            </td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error("Lỗi khi tải lịch tiêm phòng:", error);
+                });
         }
 
         // Render lịch khám bệnh
-        function renderExaminations() {
+        function loadExaminations() {
+            fetch('/examinations/user/')
+                .then(response => {
+                    if (!response.ok) throw new Error("Lỗi khi tải: " + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        renderExaminations(data);
+                    } else {
+                        console.warn('Dữ liệu không hợp lệ:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu:', error);
+                });
+        }
+
+        function renderExaminations(examinationData) {
             const tbody = document.getElementById('examinations-tbody');
             tbody.innerHTML = '';
-            
+
             examinationData.forEach(item => {
-                const statusClass = item.status === 'completed' ? 'status-healthy' : 
-                                  item.status === 'pending' ? 'status-sick' : 'status-healthy';
-                const statusText = item.status === 'completed' ? 'Hoàn thành' :
-                                 item.status === 'pending' ? 'Chờ xử lý' : 'Đã lên lịch';
-                
+                let statusText = '';
+                let statusClass = '';
+
+                switch (item.status) {
+                    case 'pending':
+                        statusText = 'Chờ xác nhận';
+                        statusClass = 'status-pending';
+                        break;
+                    case 'confirmed':
+                        statusText = 'Đã xác nhận';
+                        statusClass = 'status-confirmed';
+                        break;
+                    case 'completed':
+                        statusText = 'Hoàn thành';
+                        statusClass = 'status-completed';
+                        break;
+                    case 'cancelled':
+                        statusText = 'Đã hủy';
+                        statusClass = 'status-cancelled';
+                        break;
+                    default:
+                        statusText = 'Không rõ';
+                        statusClass = 'status-unknown';
+                }
+
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${item.time}</td>
+                    <td>${item.check_in}</td>
                     <td>${item.pet}</td>
                     <td>${item.owner}</td>
+                    <td>${item.phonenumber}</td>
                     <td>${item.type}</td>
                     <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                     <td>
-                        <button class="btn btn-primary" style="padding: 5px 15px; font-size: 12px;">Chi tiết</button>
+                        <button class="btn btn-sm btn-warning" onclick="showStatusEdit('${item.id}', '${item.status}')">Sửa</button>
                     </td>
                 `;
                 tbody.appendChild(row);
             });
         }
+        function loadPetSelect() {
+            fetch('/api/pets/all/')
+                .then(response => response.json())
+                .then(data => {
+                    const petSelect = document.getElementById('petSelect');
+                    petSelect.innerHTML = '<option value="">Chọn thú cưng</option>';
+                    data.forEach(pet => {
+                        const option = document.createElement('option');
+                        option.value = pet.id;
+                        option.textContent = `${pet.name} (${pet.breed} - ${pet.species}) - ${pet.owner_name} - ${pet.owner_phone}`;
+                        petSelect.appendChild(option);
+                    });
+                })
+                .catch(err => console.error("Lỗi khi tải thú cưng:", err));
+        }
+
+        // Gửi form thêm lịch khám
+        document.getElementById('addExaminationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const pet_id = document.getElementById('petSelect').value;
+            const check_in = document.getElementById('examinationDateInput').value;
+            const notes = document.getElementById('examinationNoteInput').value;
+
+            fetch('/api/appointments/staff/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    pet_id,
+                    check_in,
+                    type: 'medical',
+                    notes
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Đã thêm lịch khám");
+                    closeModal('addExaminationModal');
+                    loadExaminations();
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
+            });
+        });
+
+
+        // Hàm lấy CSRF token từ cookie
+        function getCSRFToken() {
+            const cookie = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('csrftoken='));
+            return cookie ? cookie.split('=')[1] : '';
+        }
+        // sửa trạng thái sau khám
+        function showStatusEdit(appointmentId, currentStatus) {
+            selectedAppointmentId = appointmentId;
+            document.getElementById('new-status').value = currentStatus;
+            document.getElementById('status-modal').style.display = 'block';
+        }
+
+        function closeStatusModal() {
+            document.getElementById('status-modal').style.display = 'none';
+        }
+
+        function submitStatusChange() {
+            const newStatus = document.getElementById('new-status').value;
+            fetch(`/appointments/update-status/${selectedAppointmentId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()  // nếu có CSRF
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật thành công!");
+                    closeStatusModal();
+                    loadExaminations(); // reload lại danh sách
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
+            });
+        }
+
+        function getCSRFToken() {
+            return document.cookie.split('; ').find(row => row.startsWith('csrftoken=')).split('=')[1];
+        }
 
         // Render lịch sử bệnh án
+        function loadMedicalRecords() {
+            fetch('/api/medical-history/staff/')
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        medicalRecordsData = data;
+                        renderMedicalRecords();
+                    } else {
+                        console.error("Phản hồi không hợp lệ:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi tải bệnh án:", error);
+                });
+        }
         function renderMedicalRecords() {
             const container = document.getElementById('medical-records-container');
             container.innerHTML = '';
-            
+
             medicalRecordsData.forEach(record => {
                 const recordCard = document.createElement('div');
                 recordCard.className = 'pet-card';
                 recordCard.style.marginBottom = '20px';
                 recordCard.innerHTML = `
-                    <h3 style="color: #4a90e2; margin-bottom: 15px;">${record.pet}</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                    <h3 style="color: #4a90e2;">${record.pet}</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
                         <p><strong>Ngày khám:</strong> ${record.date}</p>
-                        <p><strong>Chẩn đoán:</strong> ${record.diagnosis}</p>
+                        <p><strong>Điện thoại chủ:</strong> ${record.owner_phone}</p>
                     </div>
-                    <p style="margin-bottom: 10px;"><strong>Triệu chứng:</strong> ${record.symptoms}</p>
-                    <p style="margin-bottom: 10px;"><strong>Điều trị:</strong> ${record.treatment}</p>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px;">
-                        <p><strong>Thuốc:</strong> ${record.medication}</p>
-                        <p><strong>Liều dùng:</strong> ${record.dosage}</p>
-                    </div>
-                    <p style="font-style: italic; color: #666;"><strong>Ghi chú:</strong> ${record.notes}</p>
+                    <p><strong>Chẩn đoán:</strong> ${record.diagnosis}</p>
+                    <p><strong>Điều trị:</strong> ${record.treatment}</p>
+                    <p><strong>Ghi chú:</strong> ${record.notes}</p>
+                    <button class="btn btn-warning" onclick="showEditMedicalRecord('${record.id}')">✏️ Sửa</button>
                 `;
                 container.appendChild(recordCard);
             });
         }
+        //tra cứu
+
+        //sửa bệnh án 
+        function showEditMedicalRecord(id) {
+            const record = medicalRecordsData.find(r => r.id === id);
+            if (!record) return;
+
+            selectedMedicalId = id;
+            document.getElementById('edit-diagnosis').value = record.diagnosis;
+            document.getElementById('edit-treatment').value = record.treatment;
+            document.getElementById('edit-notes').value = record.notes;
+
+            document.getElementById('edit-medical-modal').style.display = 'block';
+        }
+
+        function closeMedicalModal() {
+            document.getElementById('edit-medical-modal').style.display = 'none';
+        }
+
+        function submitMedicalUpdate() {
+            const updated = {
+                diagnosis: document.getElementById('edit-diagnosis').value,
+                treatment: document.getElementById('edit-treatment').value,
+                notes: document.getElementById('edit-notes').value
+            };
+
+            fetch(`/api/medical-history/${selectedMedicalId}/update/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify(updated)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Cập nhật thành công!');
+                    closeMedicalModal();
+                    loadMedicalRecords();
+                } else {
+                    alert('Lỗi: ' + data.error);
+                }
+            })
+            .catch(err => {
+                console.error("Lỗi khi cập nhật:", err);
+            });
+        }
 
         // Render chế độ ăn uống
+        function loadDietPlans() {
+            fetch('/api/nutrition-plans/user/')
+                .then(response => response.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        dietPlans = data;
+                        renderDietPlans();
+                    } else {
+                        console.error("Phản hồi không hợp lệ:", data);
+                    }
+                })
+                .catch(error => {
+                    console.error("Lỗi khi tải chế độ ăn:", error);
+                });
+        }
         function renderDietPlans() {
-            const container = document.getElementById('diet-plans-container');
+            const container = document.getElementById('diet-container');
             container.innerHTML = '';
-            
-            dietPlansData.forEach(diet => {
-                const dietCard = document.createElement('div');
-                dietCard.className = 'pet-card';
-                dietCard.style.marginBottom = '20px';
-                dietCard.innerHTML = `
-                    <h3 style="color: #28a745; margin-bottom: 15px;">${diet.pet}</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-                        <p><strong>Thức ăn:</strong> ${diet.food}</p>
-                        <p><strong>Khẩu phần:</strong> ${diet.amount}</p>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px;">
-                        <p><strong>Số bữa:</strong> ${diet.meals}</p>
-                        <p><strong>Ngày bắt đầu:</strong> ${diet.startDate}</p>
-                    </div>
-                    <p style="margin-bottom: 10px;"><strong>Hướng dẫn:</strong> ${diet.instructions}</p>
-                    <p style="color: #dc3545;"><strong>Thức ăn cấm:</strong> ${diet.forbidden}</p>
+
+            dietPlans.forEach(plan => {
+                const card = document.createElement('div');
+                card.className = 'pet-card';
+                card.style.marginBottom = '20px';
+                card.innerHTML = `
+                    <h3 style="color: #4a90e2;">${plan.pet_name} (${plan.species})</h3>
+                    <p><strong>Loại thức ăn:</strong> ${plan.food_type}</p>
+                    <p><strong>Khẩu phần:</strong> ${plan.portion}</p>
+                    <p><strong>Ghi chú:</strong> ${plan.note}</p>
+                    <p><em>Ngày tạo: ${plan.created_at}</em></p>
+                    <p><em>Lần sửa cuối: ${plan.updated_at}</em></p>
+                    <button class="btn btn-warning" onclick="showEditNutrition('${plan.id}')">✏️ Sửa</button>
+                    <button class="btn btn-danger" onclick="deleteNutrition('${plan.id}')">🗑️ Xóa</button>
                 `;
-                container.appendChild(dietCard);
+                container.appendChild(card);
+            });
+        }
+
+        //thêm diet 
+        function showAddNutritionModal() {
+            document.getElementById('addDietPlanModal').classList.add('active');
+            loadDietPetSelect(); // Load thú cưng cho dropdown chế độ ăn
+        }
+        function loadDietPetSelect() {
+            fetch('/api/pets/all/')
+                .then(response => response.json())
+                .then(data => {
+                    const petSelect = document.getElementById('dietPetSelect');
+                    petSelect.innerHTML = '<option value="">Chọn thú cưng</option>';
+                    data.forEach(pet => {
+                        const option = document.createElement('option');
+                        option.value = pet.id;
+                        option.textContent = `${pet.name} (${pet.breed} - ${pet.species}) - ${pet.owner_name} - ${pet.owner_phone}`;
+                        petSelect.appendChild(option);
+                    });
+                })
+                .catch(err => console.error("Lỗi khi load thú cưng:", err));
+        }
+
+        document.getElementById('addDietPlanForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const pet_id = document.getElementById('dietPetSelect').value;
+            const food_type = document.getElementById('foodTypeInput').value;
+            const portion = document.getElementById('portionInput').value;
+            const note = document.getElementById('noteInputDiet').value;
+
+            fetch('/api/nutrition-plans/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    pet_id,
+                    food_type,
+                    portion,
+                    note
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Đã thêm chế độ ăn!");
+                    closeModal('addDietPlanModal');
+                    loadDietPlans();
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
+            })
+            .catch(err => console.error("Lỗi khi thêm chế độ ăn:", err));
+        });
+
+        //sửa xoá chế độ ăn uống
+        function showEditNutrition(id) {
+            const plan = dietPlans.find(p => p.id === id);
+            if (!plan) return;
+
+            selectedNutritionId = id;
+            document.getElementById('edit-food-type').value = plan.food_type;
+            document.getElementById('edit-portion').value = plan.portion;
+            document.getElementById('edit-note').value = plan.note;
+
+            document.getElementById('edit-nutrition-modal').style.display = 'block';
+        }
+
+        function closeEditNutrition() {
+            document.getElementById('edit-nutrition-modal').style.display = 'none';
+        }
+
+        function submitEditNutrition() {
+            const updated = {
+                food_type: document.getElementById('edit-food-type').value,
+                portion: document.getElementById('edit-portion').value,
+                note: document.getElementById('edit-note').value
+            };
+
+            fetch(`/api/nutrition-plans/${selectedNutritionId}/update/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify(updated)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật thành công!");
+                    closeEditNutrition();
+                    loadDietPlans();
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
+            });
+        }
+        function deleteNutrition(id) {
+            if (!confirm("Bạn có chắc muốn xóa chế độ ăn này?")) return;
+
+            fetch(`/api/nutrition-plans/${id}/delete/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCSRFToken()
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert("Đã xóa!");
+                    loadDietPlans();
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
             });
         }
 
         // Render lịch sử tiêm phòng
-        function renderVaccinationHistory() {
+        function loadVaccinationHistory() {
+            fetch('/api/vaccinations/history/')
+                .then(response => response.json())
+                .then(data => {
+                    allVaccinationHistory = data;
+                    renderVaccinationHistory(data);
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải lịch sử tiêm phòng:', error);
+                });
+        }
+        function renderVaccinationHistory(historyList) {
             const tbody = document.getElementById('vaccination-history-tbody');
             tbody.innerHTML = '';
-            
-            vaccinationHistoryData.forEach(item => {
+
+            if (!Array.isArray(historyList) || historyList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">Không có dữ liệu lịch sử tiêm.</td></tr>';
+                return;
+            }
+
+            historyList.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${item.pet}</td>
-                    <td>${item.vaccine}</td>
-                    <td>${item.date}</td>
-                    <td>${item.batch}</td>
-                    <td>${item.doctor}</td>
-                    <td>${item.notes}</td>
+                    <td>${item.pet_name} (${item.pet_species})</td>
+                    <td>${item.vaccine_name}</td>
+                    <td>${item.vaccination_date}</td>
+                    <td>${item.batch_number}</td>
+                    <td>${item.staff_name}</td>
+                    <td>${item.note}</td>
                 `;
                 tbody.appendChild(row);
             });
@@ -1157,12 +2066,85 @@
             document.getElementById('addMedicalRecordModal').classList.add('active');
         }
 
-        function showUpdateVaccinationModal() {
-            document.getElementById('updateVaccinationModal').classList.add('active');
+        function showUpdateVaccinationModal(vaccineData) {
+            const modal = document.getElementById('updateVaccinationModal');
+
+            // Ghi lại ID để xử lý khi submit
+            modal.dataset.vaccinationId = vaccineData.id;
+
+            document.getElementById('vaccineTypeInput').value = vaccineData.vaccine_name;
+            document.getElementById('batchInput').value = vaccineData.batch_number;
+            document.getElementById('noteInput').value = vaccineData.note || '';
+            document.getElementById('dosesInput').value = vaccineData.total_doses || '';
+            document.getElementById('nextDueInput').value = vaccineData.next_due ? formatForInput(vaccineData.next_due) : '';
+
+            document.getElementById('isCompletedInput').value = vaccineData.is_completed ? 'true' : 'false';
+
+            document.getElementById('petInput').value = `${vaccineData.pet_name} (${vaccineData.pet_species})`;
+            document.getElementById('petInput').disabled = true;
+            document.getElementById('dateInput').value = convertDate(vaccineData.vaccination_date);
+            document.getElementById('dateInput').disabled = true;
+
+            modal.classList.add('active');
+        }
+
+        document.getElementById('updateVaccinationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = document.getElementById('updateVaccinationModal').dataset.vaccinationId;
+
+            const vaccine_name = document.getElementById('vaccineTypeInput').value;
+            const batch_number = document.getElementById('batchInput').value;
+            const note = document.getElementById('noteInput').value;
+            const total_doses = document.getElementById('dosesInput').value;
+            const next_due = document.getElementById('nextDueInput').value;
+            const is_completed = document.getElementById('isCompletedInput').value === 'true';
+
+            fetch(`/api/vaccinations/${id}/update/`, {  // ✔️ URL ĐÚNG
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()
+                },
+                body: JSON.stringify({
+                    vaccine_name,
+                    batch_number,
+                    note,
+                    total_doses,
+                    next_due,
+                    is_completed
+                })
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Lỗi khi cập nhật lịch tiêm.');
+                return res.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    alert("Cập nhật thành công!");
+                    closeModal('updateVaccinationModal');
+                    loadVaccinationSchedule();
+                } else {
+                    alert("Lỗi: " + data.error);
+                }
+            })
+            .catch(err => {
+                console.error("Lỗi cập nhật:", err);
+                alert("Có lỗi xảy ra khi cập nhật.");
+            });
+        });
+
+
+
+
+        function formatForInput(dateStr) {
+            const [day, month, year] = dateStr.split('/');
+            return `${year}-${month}-${day}`;
         }
 
         function showAddExaminationModal() {
             document.getElementById('addExaminationModal').classList.add('active');
+            loadPetSelect();
         }
 
         function showAddDietPlanModal() {
@@ -1173,12 +2155,16 @@
             document.getElementById(modalId).classList.remove('active');
         }
 
+        function convertDate(dateStr) {
+            const [day, month, year] = dateStr.split('/');
+            return `${year}-${month}-${day}`;
+        }
         // Event listeners
         document.addEventListener('DOMContentLoaded', function() {
             // Render dữ liệu ban đầu
-            renderPets();
-            renderVaccinationSchedule();
-            renderExaminations();
+            //renderPets();
+            //renderVaccinationSchedule();
+            //renderExaminations();
             renderMedicalRecords();
             renderDietPlans();
             renderVaccinationHistory();
@@ -1192,21 +2178,14 @@
                 });
             });
 
+            function getCSRFToken() {
+                return document.cookie.split('; ')
+                    .find(row => row.startsWith('csrftoken='))
+                    ?.split('=')[1];
+            }
             // Xử lý form submit
-            document.getElementById('addMedicalRecordForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Xử lý thêm bệnh án mới
-                alert('Thêm bệnh án thành công!');
-                closeModal('addMedicalRecordModal');
-            });
-
-            document.getElementById('updateVaccinationForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                // Xử lý cập nhật lịch tiêm phòng
-                alert('Cập nhật lịch tiêm phòng thành công!');
-                closeModal('updateVaccinationModal');
-            });
-
+            
+            
             document.getElementById('addExaminationForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 // Xử lý thêm lịch khám
