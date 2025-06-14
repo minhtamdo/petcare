@@ -10,6 +10,9 @@ from .serializers import AppointmentSerializer, AppointmentUpdateSerializer
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def approve_appointment(request, appointment_id):
+    """
+    Approve a pending appointment
+    """
     try:
         appointment = get_object_or_404(Appointment, id=appointment_id)
         
@@ -42,6 +45,9 @@ def approve_appointment(request, appointment_id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def reject_appointment(request, appointment_id):
+    """
+    Reject a pending appointment
+    """
     try:
         appointment = get_object_or_404(Appointment, id=appointment_id)
         
@@ -74,6 +80,9 @@ def reject_appointment(request, appointment_id):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_appointments(request):
+    """
+    Get all appointments with optional filtering
+    """
     try:
         appointments = Appointment.objects.select_related('pet', 'owner', 'staff', 'approver').all()
         
@@ -97,14 +106,3 @@ def get_appointments(request):
         return Response({
             'error': f'Có lỗi xảy ra: {str(e)}'
         }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    
-def pet_species_stats(request):
-    data = (
-        Pet.objects
-        .values('species')
-        .annotate(count=Count('id'))
-        .order_by('-count')
-    )
-    # Đưa về dict đơn giản: {'Chó': 12, 'Mèo': 7, ...}
-    stats = {item['species']: item['count'] for item in data}
-    return JsonResponse(stats)

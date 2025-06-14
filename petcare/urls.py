@@ -39,6 +39,7 @@ from django.utils.timezone import now
 import logging
 from django.views.decorators.http import require_POST
 from django.views.decorators.http import require_http_methods
+import io
 from collections import defaultdict
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
@@ -278,39 +279,6 @@ def medical_view(request, pet_id):
 
     return JsonResponse(data, safe=False)
 
-def pet_species_stats(request):
-    data = (
-        Pet.objects
-        .values('species')
-        .annotate(count=Count('id'))
-        .order_by('-count')
-    )
-    stats = {item['species']: item['count'] for item in data}
-    print('_-------------------------------------------------------------------------------------')
-    return JsonResponse(stats)
-
-
-def calculate_monthly_revenue_view(request):
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT
-                SUM(
-                    CASE 
-                        WHEN a.type = 'hotel' THEN s.price * GREATEST((a.check_out - a.check_in), 1)
-                        ELSE s.price
-                    END
-                ) AS total_revenue
-            FROM appointments a
-            JOIN services s ON a.type = s.type
-            WHERE a.status = 'completed'
-              AND EXTRACT(MONTH FROM a.check_in) = EXTRACT(MONTH FROM CURRENT_DATE)
-              AND EXTRACT(YEAR FROM a.check_in) = EXTRACT(YEAR FROM CURRENT_DATE);
-        """)
-        row = cursor.fetchone()
-    
-    total_revenue = row[0] if row[0] is not None else 0
-
-    return JsonResponse({'total_revenue': int(total_revenue)})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -318,7 +286,7 @@ urlpatterns = [
     path('vet/', vet_dashboard, name='vet_dashboard'),
     path('staff/', staff_dashboard, name='staff_dashboard'),
     path('owner/', owner_dashboard, name='owner_dashboard'),
-    path('logout/', logout_view, name='logout_view'),
+    path('logout/', logout_view, name='logout'),
     path('register/', register_page, name='register'),
     path('api/register/owner/', register_owner, name='register_owner'),
     path('nutrition/<uuid:pet_id>/', nutrition_view, name='get_nutrition_plan'),
@@ -330,9 +298,5 @@ urlpatterns = [
     path('api/get-pets/', views.get_pets_by_owner_phone, name='get_pets_by_phone'),
     path('api/get-users/', views.get_users_by_role, name='get_users_by_role'),
     path('api/create-appointment/', views.create_appointment, name='create_appointment'),
-    path('api/services/', views.get_services, name='get_services'),
-    path('api/update-service-price/', views.update_service_price, name='update_service_price'),
-    path('api/monthly-revenue/', calculate_monthly_revenue_view, name='monthly-revenue'),
-    path('api/monthly-revenue-chart/', views.monthly_revenue_chart_data),
-    path('api/pet-species-stats/', pet_species_stats, name='pet_species_stats'),
+
 ]

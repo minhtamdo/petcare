@@ -204,15 +204,3 @@ class VaccinationHistory(models.Model):
 
     def __str__(self):
         return f"{self.vaccine_name} on {self.vaccination_date}"
-    
-class Service(models.Model):
-    type = models.CharField(max_length=20, primary_key=True)
-    description = models.TextField()
-    duration = models.CharField(max_length=100)
-    price = models.IntegerField()
-
-    class Meta:
-        db_table = 'services'
-
-    def __str__(self):
-        return f"{self.type} - {self.price} VNĐ"

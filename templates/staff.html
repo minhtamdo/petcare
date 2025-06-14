@@ -209,6 +209,14 @@
             opacity: 0.9;
         }
 
+        .chart-container {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
         .delete-btn {
             background: #ff6b6b;
             color: white;
@@ -491,6 +499,16 @@
             border-bottom: 2px solid #007bff;
             font-weight: bold;
         }
+
+        /* .tab-content {
+            display: none;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        } */
 
         .tab-content {
             display: none;
@@ -950,329 +968,329 @@
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
         /* ========================================
-        APPOINTMENT LIST WINDOW STYLES
-        ======================================== */
+   APPOINTMENT LIST WINDOW STYLES
+   ======================================== */
 
-        /* Main Window Container */
-        #newAppointmentWindow {
-            padding: 20px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+/* Main Window Container */
+#newAppointmentWindow {
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#newAppointmentWindow h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Switch Button Styles */
+.form-group .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.form-group .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Main Content Container */
+#newAppointmentWindow > div[style*="background: #f8f9fa"] {
+    background: #ffffff !important;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    border: none !important;
+}
+
+#newAppointmentWindow h3 {
+    color: #34495e;
+    font-size: 24px;
+    margin-bottom: 25px;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+}
+
+/* ========================================
+   APPOINTMENT LIST CONTAINER
+   ======================================== */
+
+.list-appointments {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
+    padding: 25px !important;
+    border-radius: 12px !important;
+    border: 1px solid #2196f3;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
+}
+
+/* ========================================
+   INDIVIDUAL APPOINTMENT CARDS
+   ======================================== */
+
+.appointment {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border-left: 5px solid #3498db;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.appointment::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12);
+}
+
+.appointment:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.appointment:last-child {
+    margin-bottom: 0;
+}
+
+/* ========================================
+   APPOINTMENT HEADER
+   ======================================== */
+
+.appointment > div:first-child {
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 15px;
+    margin-bottom: 15px !important;
+}
+
+.appointment > div:first-child strong {
+    color: #2c3e50 !important;
+    font-size: 18px !important;
+    font-weight: 700;
+}
+
+.appointment > div:first-child span {
+    background: #3498db;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Status Color Variations */
+.appointment[ap-status="pending"] > div:first-child span {
+    background: #f39c12;
+}
+
+.appointment[ap-status="confirmed"] > div:first-child span {
+    background: #2ecc71;
+}
+
+.appointment[ap-status="completed"] > div:first-child span {
+    background: #95a5a6;
+}
+
+.appointment[ap-status="cancelled"] > div:first-child span {
+    background: #e74c3c;
+}
+
+/* ========================================
+   APPOINTMENT DETAILS GRID
+   ======================================== */
+
+.appointment > div[style*="display: grid"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 15px !important;
+    margin-bottom: 15px !important;
+}
+
+.appointment > div[style*="display: grid"] > div {
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid #3498db;
+    font-size: 14px;
+}
+
+.appointment > div[style*="display: grid"] > div strong {
+    color: #2c3e50;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+}
+
+/* ========================================
+   APPOINTMENT NOTES
+   ======================================== */
+
+.appointment > div[style*="font-style: italic"] {
+    background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%) !important;
+    border: 1px solid #ffeb3b;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    margin-top: 15px !important;
+    font-style: normal !important;
+    color: #f57f17;
+    font-weight: 500;
+    position: relative;
+}
+
+.appointment > div[style*="font-style: italic"]::before {
+    content: '💡';
+    margin-right: 8px;
+}
+
+/* ========================================
+   APPOINTMENT TIMESTAMPS
+   ======================================== */
+
+.appointment > div[style*="font-size: 12px"] {
+    background: #ecf0f1;
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-top: 15px !important;
+    font-size: 11px !important;
+    color: #7f8c8d !important;
+    border-top: 1px solid #bdc3c7;
+}
+
+/* ========================================
+   EMPTY STATE
+   ======================================== */
+
+.list-appointments p[style*="background: #fff3cd"] {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
+    border: 2px dashed #fdcb6e !important;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #d63031 !important;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+    #newAppointmentWindow {
+        padding: 15px;
+    }
+    
+    .appointment > div[style*="display: grid"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+    
+    .appointment {
+        padding: 15px;
+    }
+    
+    #newAppointmentWindow h2 {
+        font-size: 24px;
+    }
+    
+    .appointment > div:first-child {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 10px;
+    }
+    
+    .appointment > div:first-child span {
+        align-self: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .list-appointments {
+        padding: 15px !important;
+    }
+    
+    .appointment > div:first-child strong {
+        font-size: 16px !important;
+    }
+    
+    .form-group .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ========================================
+   ANIMATION CLASSES
+   ======================================== */
+
+.appointment {
+    animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================================
+   HOVER EFFECTS
+   ======================================== */
+
+.appointment > div[style*="display: grid"] > div:hover {
+    background: #e8f4f8;
+    transform: translateX(5px);
+    transition: all 0.2s ease;
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+
+@media print {
+    #newAppointmentWindow {
+        background: white;
+        padding: 0;
+    }
+    
+    .appointment {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .form-group .btn {
+        display: none;
+    }
+}
+body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        #newAppointmentWindow h2 {
-            color: #2c3e50;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 28px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        /* Switch Button Styles */
-        .form-group .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .form-group .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        }
-
-        /* Main Content Container */
-        #newAppointmentWindow > div[style*="background: #f8f9fa"] {
-            background: #ffffff !important;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            border: none !important;
-        }
-
-        #newAppointmentWindow h3 {
-            color: #34495e;
-            font-size: 24px;
-            margin-bottom: 25px;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 10px;
-        }
-
-        /* ========================================
-        APPOINTMENT LIST CONTAINER
-        ======================================== */
-
-        .list-appointments {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%) !important;
-            padding: 25px !important;
-            border-radius: 12px !important;
-            border: 1px solid #2196f3;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.06);
-        }
-
-        /* ========================================
-        INDIVIDUAL APPOINTMENT CARDS
-        ======================================== */
-
-        .appointment {
-            background: #ffffff;
-            border-radius: 12px;
+            margin: 0;
             padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-left: 5px solid #3498db;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background-color: #f5f5f5;
         }
-
-        .appointment::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #3498db, #2ecc71, #f39c12);
-        }
-
-        .appointment:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-        }
-
-        .appointment:last-child {
-            margin-bottom: 0;
-        }
-
-        /* ========================================
-        APPOINTMENT HEADER
-        ======================================== */
-
-        .appointment > div:first-child {
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 15px;
-            margin-bottom: 15px !important;
-        }
-
-        .appointment > div:first-child strong {
-            color: #2c3e50 !important;
-            font-size: 18px !important;
-            font-weight: 700;
-        }
-
-        .appointment > div:first-child span {
-            background: #3498db;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Status Color Variations */
-        .appointment[ap-status="pending"] > div:first-child span {
-            background: #f39c12;
-        }
-
-        .appointment[ap-status="confirmed"] > div:first-child span {
-            background: #2ecc71;
-        }
-
-        .appointment[ap-status="completed"] > div:first-child span {
-            background: #95a5a6;
-        }
-
-        .appointment[ap-status="cancelled"] > div:first-child span {
-            background: #e74c3c;
-        }
-
-        /* ========================================
-        APPOINTMENT DETAILS GRID
-        ======================================== */
-
-        .appointment > div[style*="display: grid"] {
-            display: grid !important;
-            grid-template-columns: 1fr 1fr !important;
-            gap: 15px !important;
-            margin-bottom: 15px !important;
-        }
-
-        .appointment > div[style*="display: grid"] > div {
-            background: #f8f9fa;
-            padding: 12px;
-            border-radius: 8px;
-            border-left: 3px solid #3498db;
-            font-size: 14px;
-        }
-
-        .appointment > div[style*="display: grid"] > div strong {
-            color: #2c3e50;
-            font-weight: 600;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        /* ========================================
-        APPOINTMENT NOTES
-        ======================================== */
-
-        .appointment > div[style*="font-style: italic"] {
-            background: linear-gradient(135deg, #fff9c4 0%, #fff59d 100%) !important;
-            border: 1px solid #ffeb3b;
-            border-radius: 8px !important;
-            padding: 12px !important;
-            margin-top: 15px !important;
-            font-style: normal !important;
-            color: #f57f17;
-            font-weight: 500;
-            position: relative;
-        }
-
-        .appointment > div[style*="font-style: italic"]::before {
-            content: '💡';
-            margin-right: 8px;
-        }
-
-        /* ========================================
-        APPOINTMENT TIMESTAMPS
-        ======================================== */
-
-        .appointment > div[style*="font-size: 12px"] {
-            background: #ecf0f1;
-            padding: 8px 12px;
-            border-radius: 6px;
-            margin-top: 15px !important;
-            font-size: 11px !important;
-            color: #7f8c8d !important;
-            border-top: 1px solid #bdc3c7;
-        }
-
-        /* ========================================
-        EMPTY STATE
-        ======================================== */
-
-        .list-appointments p[style*="background: #fff3cd"] {
-            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
-            border: 2px dashed #fdcb6e !important;
-            border-radius: 12px !important;
-            padding: 30px !important;
-            text-align: center;
-            font-size: 16px;
-            font-weight: 500;
-            color: #d63031 !important;
-        }
-
-        /* ========================================
-        RESPONSIVE DESIGN
-        ======================================== */
-
-        @media (max-width: 768px) {
-            #newAppointmentWindow {
-                padding: 15px;
-            }
-            
-            .appointment > div[style*="display: grid"] {
-                grid-template-columns: 1fr !important;
-                gap: 10px !important;
-            }
-            
-            .appointment {
-                padding: 15px;
-            }
-            
-            #newAppointmentWindow h2 {
-                font-size: 24px;
-            }
-            
-            .appointment > div:first-child {
-                flex-direction: column;
-                align-items: flex-start !important;
-                gap: 10px;
-            }
-            
-            .appointment > div:first-child span {
-                align-self: flex-start;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .list-appointments {
-                padding: 15px !important;
-            }
-            
-            .appointment > div:first-child strong {
-                font-size: 16px !important;
-            }
-            
-            .form-group .btn {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        /* ========================================
-        ANIMATION CLASSES
-        ======================================== */
-
-        .appointment {
-            animation: slideInUp 0.3s ease-out;
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ========================================
-        HOVER EFFECTS
-        ======================================== */
-
-        .appointment > div[style*="display: grid"] > div:hover {
-            background: #e8f4f8;
-            transform: translateX(5px);
-            transition: all 0.2s ease;
-        }
-
-        /* ========================================
-        PRINT STYLES
-        ======================================== */
-
-        @media print {
-            #newAppointmentWindow {
-                background: white;
-                padding: 0;
-            }
-            
-            .appointment {
-                break-inside: avoid;
-                box-shadow: none;
-                border: 1px solid #ddd;
-            }
-            
-            .form-group .btn {
-                display: none;
-            }
-        }
-        body {
-                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                    margin: 0;
-                    padding: 20px;
-                    background-color: #f5f5f5;
-                }
 
         .container {
             max-width: 1200px;
@@ -1689,112 +1707,9 @@
             50% { transform: translateY(-1px) scale(1.01); }
             100% { transform: translateY(-2px) scale(1); }
         }
-
-        .chart-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .chart-container h3 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        .chart-layout {
-            display: flex;
-            align-items: center;
-            gap: 30px;
-        }
-
-        #petChart {
-            max-width: 300px;
-            max-height: 300px;
-        }
-
-        .chart-legend {
-            flex: 1;
-        }
-
-        .chart-legend div {
-            display: flex;
-            align-items: center;
-            margin-bottom: 12px;
-            font-size: 16px;
-            color: #555;
-        }
-
-        .chart-legend span {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border-radius: 4px;
-            margin-right: 12px;
-        }
-
-        @media (max-width: 500px) {
-            .chart-layout {
-                flex-direction: column;
-                gap: 20px;
-            }
-        }
-        .service-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columns */
-            gap: 20px; /* spacing between cards */
-            margin-top: 20px;
-        }
-        .service-card button {
-            margin-top: 10px;
-            padding: 8px 16px;
-            font-size: 14px;
-            background-color: #007bff; /* Blue background */
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-        }
-        .service-card button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
-            transform: scale(1.03);
-        }
-
-        .service-card button:active {
-            transform: scale(0.98);
-        }
-        .logout-btn {
-            display : block !important; 
-            background-color: #dc3545;
-            color: white;
-            border: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background-color 0.3s;
-        }
-        .logout-btn:hover {
-            background-color: #c82333;
-        }
-        .header {
-            position: relative;
-            padding: 20px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-        }
     </style>
 </head>
 <body>
-    <div style="position: absolute; top: 20px; right: 20px; z-index: 999;">
-        <form action="{% url 'logout_view' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="logout-btn">🚪 Đăng xuất</button>
-        </form>
-    </div>
     <div class="container">
         <div class="header">
             <h1>🐾 Hệ Thống Quản Lý Thú Cưng</h1>
@@ -1827,49 +1742,75 @@
                     <div class="stat-label">Lịch Hẹn Tháng Này</div>
                 </div>
                 <div class="stat-card">
-                    <div class="stat-number" id="totalRevenue"></div>
+                    <div class="stat-number" id="totalRevenue">0</div>
                     <div class="stat-label">Doanh Thu (triệu VNĐ)</div>
                 </div>
             </div>
 
             <div class="chart-container">
                 <h3>📈 Biểu Đồ Thống Kê Loại Thú Cưng</h3>
-                <div class="chart-layout">
-                    <canvas id="petChart" width="400" height="300"></canvas>
-                    <div class="chart-legend" id="chartLegend"></div>
-                </div>
-            </div>
-            <div>
-                <div class="chart-container">
-                    <canvas id="revenueChart" width="800" height="400"></canvas>
-                </div>
+                <canvas id="petChart" width="400" height="200"></canvas>
             </div>
         </div>
 
         <!-- Tab Dịch Vụ -->
         <div id="services" class="tab-content">
-            <h2>🏥 Dịch Vụ Chính</h2>
-            <div class="service-grid" id="serviceGrid">
-                <!-- Dynamic cards will be inserted here -->
+            <h2>🏥 Dịch Vụ Chăm Sóc Thú Cưng</h2>
+            <div class="service-grid">
+                <div class="service-card">
+                    <h3>🩺 Khám Tổng Quát</h3>
+                    <p>Kiểm tra sức khỏe định kỳ, tư vấn chăm sóc</p>
+                    <p>⏰ Thời gian: 30-45 phút</p>
+                    <div class="price">200.000 VNĐ</div>
+                </div>
+                <div class="service-card">
+                    <h3>💉 Tiêm Phòng</h3>
+                    <p>Tiêm phòng đầy đủ các loại vaccine cần thiết</p>
+                    <p>⏰ Thời gian: 15-20 phút</p>
+                    <div class="price">150.000 VNĐ</div>
+                </div>
+                <div class="service-card">
+                    <h3>✂️ Cắt Tỉa Lông</h3>
+                    <p>Cắt tỉa, tạo kiểu lông chuyên nghiệp</p>
+                    <p>⏰ Thời gian: 60-90 phút</p>
+                    <div class="price">300.000 VNĐ</div>
+                </div>
+                <div class="service-card">
+                    <h3>🛁 Tắm Spa</h3>
+                    <p>Tắm gội, massage, chăm sóc da lông</p>
+                    <p>⏰ Thời gian: 45-60 phút</p>
+                    <div class="price">250.000 VNĐ</div>
+                </div>
+                <div class="service-card">
+                    <h3>🦷 Chăm Sóc Răng Miệng</h3>
+                    <p>Vệ sinh răng miệng, điều trị bệnh nha khoa</p>
+                    <p>⏰ Thời gian: 30-45 phút</p>
+                    <div class="price">400.000 VNĐ</div>
+                </div>
+                <div class="service-card">
+                    <h3>🏥 Phẫu Thuật</h3>
+                    <p>Phẫu thuật triệt sản, phẫu thuật khác</p>
+                    <p>⏰ Thời gian: 2-3 giờ</p>
+                    <div class="price">1.500.000 VNĐ</div>
+                </div>
             </div>
         </div>
 
-
         <!-- Tab Thú Cưng -->
         <div id="pets" class="tab-content">
-        <div class="pet-container">
-            <div class="pet-header">
-                <h2>🐾 Tổng số thú cưng: <span id="totalPets">{{ total_pets }}</span></h2>
-            </div>
-            <div class="pet-search" style="position: relative; margin-bottom: 16px;">
-                <input 
-                    type="text" 
-                    id="petSearchInput"
-                    placeholder="Tìm kiếm theo tên chủ nuôi hoặc tên thú cưng..." 
-                    onkeyup="filterPets()" 
-                >
-                <div class="search-icon"></div>
-            </div>
+    <div class="pet-container">
+        <div class="pet-header">
+            <h2>🐾 Tổng số thú cưng: <span id="totalPets">{{ total_pets }}</span></h2>
+        </div>
+        <div class="pet-search" style="position: relative; margin-bottom: 16px;">
+            <input 
+                type="text" 
+                id="petSearchInput"
+                placeholder="Tìm kiếm theo tên chủ nuôi hoặc tên thú cưng..." 
+                onkeyup="filterPets()" 
+            >
+            <div class="search-icon"></div>
+        </div>
 
         <div id="petList" class="pet-list">
             {% for pet in pets %}
@@ -2065,8 +2006,7 @@
     </div>
 </div>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
+    <script>
         let sampleAppointments = [
             {% for appointment in appointments %}
             {
@@ -2335,6 +2275,15 @@
                 buttonElement.classList.add('active');
             }
         }
+
+        const servicePrices = {
+            'checkup': 200000,
+            'vaccination': 150000,
+            'grooming': 300000,
+            'spa': 250000,
+            'dental': 400000,
+            'surgery': 1500000
+        };
 
         function openTab(tabName) {
             const contents = document.querySelectorAll('.pet-properties');
@@ -2657,6 +2606,7 @@
             }
         }
 
+        // Helper to get CSRF token from cookies
         function getCSRFToken() {
             let cookieValue = null;
             const name = 'csrftoken';
@@ -2673,6 +2623,8 @@
             return cookieValue;
         }
 
+
+        // Helper function to update appointment status in the UI
         function updateAppointmentStatus(appointmentId, newStatus) {
             event.preventDefault()
             const appointmentElement = document.querySelector(`[ap-id="${appointmentId}"]`);
@@ -2810,216 +2762,6 @@
             });
         }
 
-        function drawPetChart() {
-            fetch('/api/pet-species-stats/')
-                .then(response => response.json())
-                .then(stats => {
-                    const labels = Object.keys(stats);
-                    const data = Object.values(stats);
-
-                    const ctx = document.getElementById("petChart").getContext("2d");
-
-                    const backgroundColors = [
-                        '#FF6384', // Pink
-                        '#36A2EB', // Blue
-                        '#FFCE56', // Yellow
-                        '#4BC0C0', // Teal
-                        '#9966FF', // Purple
-                        '#FF9F40', // Orange
-                        '#66CDAA', // Medium Aquamarine
-                        '#D2691E', // Chocolate
-                        '#8BC34A', // Light Green
-                        '#E91E63'  // Deep Pink
-                    ];
-
-                    const petChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Số lượng',
-                                data: data,
-                                backgroundColor: backgroundColors.slice(0, labels.length),
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            }
-                        }
-                    });
-
-                    // Create custom legend
-                    const legendContainer = document.getElementById("chartLegend");
-                    legendContainer.innerHTML = labels.map((label, i) => `
-                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                            <span style="display: inline-block; width: 20px; height: 20px; background-color: ${backgroundColors[i]}; border-radius: 4px; margin-right: 10px;"></span>
-                            ${label}
-                        </div>
-                    `).join('');
-                })
-                .catch(error => {
-                    console.error('Error fetching pet stats:', error);
-                });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/services/')
-                .then(response => response.json())
-                .then(data => {
-                    const grid = document.getElementById('serviceGrid');
-                    grid.innerHTML = '';
-
-                    data.services.forEach(service => {
-                        const id = service.type.toLowerCase();
-                        const formattedPrice = service.price.toLocaleString('vi-VN') + ' VNĐ';
-
-                        grid.innerHTML += `
-                            <div class="service-card" id="${id}">
-                                <h3>${getIcon(service.type)} ${service.type}</h3>
-                                <p>${service.description}</p>
-                                <p>⏰ Thời gian: ${service.duration}</p>
-                                <div class="price">
-                                    <span id="${id}-price">${formattedPrice}</span>
-                                    <input type="text" 
-                                            id="${id}-input" 
-                                            value="${formattedPrice}" 
-                                            style="display:none;" 
-                                            onblur="handlePriceUpdate('${id}')" 
-                                            onkeydown="checkEnter(event, '${id}')">
-                                    </div>
-                                <button onclick="toggleEdit('${id}')">✏️ Sửa giá</button>
-                            </div>
-                        `;
-                    });
-                });
-        });
-
-        function getIcon(type) {
-            const lower = type.toLowerCase();
-            if (lower.includes('khám')) return '🩺';
-            if (lower.includes('tiêm')) return '💉';
-            if (lower.includes('làm') || lower.includes('đẹp')) return '✂️';
-            if (lower.includes('lưu')) return '🏠';
-            return '🔧';
-        }
-
-        function toggleEdit(serviceId) {
-            const input = document.getElementById(`${serviceId}-input`);
-            const span = document.getElementById(`${serviceId}-price`);
-            input.style.display = 'inline';
-            span.style.display = 'none';
-            input.focus();
-        }
-    
-        function handlePriceUpdate(serviceId) {
-            const input = document.getElementById(`${serviceId}-input`);
-            const newText = input.value;
-            const numberPrice = parseInt(newText.replace(/[^\d]/g, ''));
-
-            if (isNaN(numberPrice)) {
-                alert('❌ Giá không hợp lệ!');
-                return;
-            }
-
-            fetch('/api/update-service-price/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCSRFToken()
-                },
-                body: JSON.stringify({
-                    type: serviceId,
-                    price: numberPrice
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const priceSpan = document.getElementById(`${serviceId}-price`);
-                    const formatted = numberPrice.toLocaleString('vi-VN') + ' VNĐ';
-                    priceSpan.textContent = formatted;
-                    input.value = formatted;
-                    input.style.display = 'none';
-                    priceSpan.style.display = 'inline';
-                } else {
-                    alert('❌ ' + data.error);
-                }
-            })
-            .catch(error => {
-                console.error(error);
-                alert('❌ Lỗi mạng');
-            });
-        }
-        function checkEnter(event, serviceId) {
-            if (event.key === 'Enter') {
-                event.target.blur(); // trigger blur to run update
-            }
-        }
-
-        // Gọi hàm sau khi trang tải xong
-        window.onload = drawPetChart;
-
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/monthly-revenue/')
-                .then(response => response.json())
-                .then(data => {
-                    const total = data.total_revenue || 0;
-                    // Convert to triệu VND (million VND)
-                    const millions = (total / 1_000_000);
-                    document.getElementById('totalRevenue').textContent = millions;
-                })
-                .catch(error => {
-                    console.error('Lỗi khi lấy doanh thu:', error);
-                    document.getElementById('totalRevenue').textContent = '0';
-                });
-        });
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetch('/api/monthly-revenue-chart/')
-                .then(response => response.json())
-                .then(data => {
-                    const revenues = data.monthly_revenue;
-                    const ctx = document.getElementById('revenueChart').getContext('2d');
-
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-                                    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-                            datasets: [{
-                                label: 'Doanh thu (VND)',
-                                data: revenues,
-                                backgroundColor: '#4CAF50'
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            plugins: {
-                                legend: { display: false },
-                                title: {
-                                    display: true,
-                                    text: '📊 Doanh thu theo tháng trong năm'
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        callback: function(value) {
-                                            return value.toLocaleString('vi-VN') + ' ₫';
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    });
-                });
-        });
         
 </script>
 </body>
