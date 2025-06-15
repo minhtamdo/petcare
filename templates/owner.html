@@ -581,6 +581,7 @@
                 <button class="nav-tab" onclick="showSection('account')">Tài Khoản</button>
                 <button class="nav-tab" onclick="showSection('pets')">Thú Cưng</button>
                 <button class="nav-tab" onclick="showSection('history')">Lịch Sử</button>
+                <a href="{% url 'logout_view' %}" class="btn btn-danger">Đăng xuất</a>
             </div>
         </header>
 
@@ -824,20 +825,20 @@
     });
 }
 
-        // Booking form
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+        // // Booking form
+        // document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        //     e.preventDefault();
+
+        //     const petName = document.getElementById('petName').value;
+        //     const service = document.getElementById('service').value;
+        //     const date = document.getElementById('appointmentDate').value;
             
-            const petName = document.getElementById('petName').value;
-            const service = document.getElementById('service').value;
-            const date = document.getElementById('appointmentDate').value;
-            
-            if (petName && service && date) {
-                alert(`Đặt lịch thành công!\n\nThú cưng: ${petName}\nDịch vụ: ${getServiceName(service)}\nThời gian: ${new Date(date).toLocaleString('vi-VN')}`);
-                addToHistory(petName, service, date);
-                this.reset();
-            }
-        });
+        //     if (petName && service && date) {
+        //         alert(`Đặt lịch thành công!`);
+        //         addToHistory(petName, service, date);
+        //         this.reset();
+        //     }
+        // });
 
     // Nút chỉnh sửa
 document.getElementById('editBtn').addEventListener('click', () => {
@@ -1157,24 +1158,59 @@ function loadPets() {
       }
 
       data.forEach(pet => {
-        const petDiv = document.createElement('div');
-        petDiv.className = 'pet-item';
-        petDiv.setAttribute('data-id', pet.id);
-        petDiv.innerHTML = `
-          <h4>${pet.name}</h4>
-          <p><strong>Loài:</strong> ${pet.species}</p>
-          <p><strong>Giống:</strong> ${pet.breed || '-'}</p>
-          <p><strong>Tuổi:</strong> ${pet.age || 'Không xác định'}</p>
-          <p><strong>Giới tính:</strong> ${pet.gender_vi}</p>
-          <p><strong>Màu lông:</strong> ${pet.fur_color || '-'}</p>
-          ${pet.image_url ? `<img src="${pet.image_url}" alt="Hình thú cưng">` : ''}
-          <div class="pet-actions">
-            <button class="edit-btn">✏️ Chỉnh sửa</button>
-            <button class="delete-btn">🗑️ Xóa</button>
-          </div>
-        `;
-        container.appendChild(petDiv);
-      });
+    const petDiv = document.createElement('div');
+    petDiv.className = 'pet-item';
+    petDiv.setAttribute('data-id', pet.id);
+    petDiv.innerHTML = `
+      <h4>${pet.name}</h4>
+      <p><strong>Loài:</strong> ${pet.species}</p>
+      <p><strong>Giống:</strong> ${pet.breed || '-'}</p>
+      <p><strong>Tuổi:</strong> ${pet.age || 'Không xác định'}</p>
+      <p><strong>Giới tính:</strong> ${pet.gender_vi}</p>
+      <p><strong>Màu lông:</strong> ${pet.fur_color || '-'}</p>
+      ${pet.image_url ? `<img src="${pet.image_url}" alt="Hình thú cưng">` : ''}
+      <div class="pet-actions">
+        <button class="edit-btn" id="edit-pet-${pet.id}">✏️ Chỉnh sửa</button>
+        <button class="delete-btn" id="delete-pet-${pet.id}">🗑️ Xóa</button>
+      </div>
+    `;
+    container.appendChild(petDiv);
+
+    // Gán sự kiện chỉnh sửa
+    document.getElementById(`edit-pet-${pet.id}`).addEventListener('click', function() {
+        openEditModal(pet.id);
+    });
+
+    // Gán sự kiện xóa thông qua hàm riêng
+    assignDeletePetEvent(pet.id);
+});
+
+function assignDeletePetEvent(petId) {
+    const deleteBtn = document.getElementById(`delete-pet-${petId}`);
+    if (deleteBtn) {
+        deleteBtn.addEventListener('click', function() {
+            if (confirm('Bạn có chắc chắn muốn xóa thú cưng này không?')) {
+                fetch(`/pets/${petId}/delete/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                })
+                .then(res => {
+                    if (res.ok) {
+                        loadPets();
+                    } else {
+                        alert('Xóa không thành công');
+                    }
+                })
+                .catch(err => {
+                    console.error('Lỗi:', err);
+                });
+            }
+        });
+    }
+}
+
 
       // Gán lại sự kiện cho các nút chỉnh sửa
       container.querySelectorAll('.edit-btn').forEach(btn => {
@@ -1185,32 +1221,12 @@ function loadPets() {
       });
 
       // Gán lại sự kiện cho các nút xóa
-      container.querySelectorAll('.delete-btn').forEach(btn => {
-        btn.addEventListener('click', function () {
-          const petId = btn.closest('.pet-item').getAttribute('data-id');
-          if (confirm('Bạn có chắc chắn muốn xóa thú cưng này không?')) {
-            fetch(`/pets/${petId}/delete/`, {
-              method: 'DELETE',
-              headers: {
-                'X-CSRFToken': getCookie('csrftoken')
-              }
-            })
-              .then(res => {
-                if (res.ok) {
-                  loadPets();
-                } else {
-                  alert('Xóa không thành công');
-                }
-              });
-          }
-        });
-      });
-    })
+                    })
     .catch(error => {
       console.error('Lỗi khi tải thú cưng:', error);
       document.getElementById('petsContainer').innerHTML = '<p style="color:red;">Lỗi khi tải danh sách thú cưng.</p>';
-    });
-}
+                    });
+                }
 
 //lịch sử cuộc hẹn crud//
 
@@ -1266,6 +1282,32 @@ document.addEventListener('click', function (e) {
     document.getElementById('editId').value = btn.dataset.id;
     document.getElementById('editDate').value = btn.dataset.date;
     document.getElementById('editService').value = btn.dataset.service.toLowerCase();
+
+// Chỉ xử lý khi nút delete nằm trong #historyContainer
+document.getElementById('historyContainer').addEventListener('click', function(e) {
+    if (e.target.classList.contains('delete-btn')) {
+        const appointmentId = e.target.closest('.appointment-item').querySelector('.edit-btn').dataset.id;
+        if (confirm('Bạn có chắc chắn muốn xóa lịch hẹn này không?')) {
+            fetch(`/appointments/delete/${appointmentId}/`, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(res => {
+                if (res.ok) {
+                    loadAppointmentHistory();
+                } else {
+                    alert('Xóa lịch hẹn không thành công');
+                }
+            })
+            .catch(err => {
+                console.error('Lỗi:', err);
+            });
+        }
+    }
+});
+
 
     // Tải danh sách thú cưng
     fetch('/pets/')

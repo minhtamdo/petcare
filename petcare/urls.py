@@ -981,6 +981,18 @@ def calculate_monthly_revenue_view(request):
 
     return JsonResponse({'total_revenue': int(total_revenue)})
 
+@csrf_exempt  # Nếu dùng fetch() từ JS mà không kèm CSRF token
+def delete_appointment(request, appointment_id):
+    if request.method == 'DELETE':
+        try:
+            appointment = Appointment.objects.get(id=appointment_id)
+            appointment.delete()
+            return JsonResponse({'success': True})
+        except Appointment.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Lịch hẹn không tồn tại'}, status=404)
+    else:
+        return JsonResponse({'success': False, 'error': 'Phương thức không hợp lệ'}, status=400)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_view, name='login'),
@@ -1031,4 +1043,5 @@ urlpatterns = [
     path('api/nutrition-plans/<uuid:id>/delete/', delete_nutrition_plan, name='delete_nutrition_plan'),
     path('api/appointments/staff/create/', create_appointment_by_staff, name='create_appointment_by_staff'),
     path('api/pets/all/', list_all_pets, name='list_all_pets'),
+    path('appointments/delete/<uuid:appointment_id>/', delete_appointment, name='delete_appointment'),
 ]
