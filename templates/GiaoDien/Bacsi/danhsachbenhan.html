@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trung tâm thú y</title>
+  <style>
+/* --- Reset & Font --- */
+* {
+  box-sizing: border-box;
+}
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f8faff;
+  color: #000;
+}
+
+/* --- App Layout --- */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+.main-container {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* --- Topbar --- */
+.topbar {
+  height: 50px;
+  background: #f0f5ff;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  color: #003f87;
+  font-weight: 700;
+  font-size: 18px;
+  user-select: none;
+}
+.circle-logo {
+  width: 18px;
+  height: 18px;
+  background: #003f87;
+  border-radius: 50%;
+  margin-right: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* --- Sidebar --- */
+.sidebar {
+  width: 220px;
+  background: #f0f5ff;
+  border-right: 1px solid #d9d9d9;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  color: #003f87;
+  user-select: none;
+}
+.menu-section {
+  margin-bottom: 20px;
+}
+.menu-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #003f87;
+  user-select: none;
+}
+.menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #003f87;
+  margin-bottom: 8px;
+  user-select: none;
+  transition: background 0.3s;
+}
+.menu-item:hover {
+  background: #a5cef5;
+}
+.menu-item.active {
+  background: #87cefa;
+  font-weight: 600;
+}
+.user-info {
+  margin-top: auto;
+  color: #003f87;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  user-select: none;
+}
+.user-icon {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+/* --- Dropdown User Role --- */
+.user-dropdown {
+  position: relative;
+  display: inline-block;
+}
+#user-role-btn {
+  background-color: transparent;
+  border: none;
+  font-weight: bold;
+  color: #003f87;
+  cursor: pointer;
+}
+#dropdown-menu {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 6px;
+  padding: 8px;
+}
+#dropdown-menu button {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  padding: 8px;
+  text-align: left;
+  cursor: pointer;
+}
+#dropdown-menu button:hover {
+  background-color: #f0f0f0;
+}
+.show {
+  display: block !important;
+}
+
+/* --- Content Layout --- */
+.content {
+  flex-grow: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+h2 {
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 20px;
+}
+h3 {
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 16px;
+  color: #000;
+}
+
+/* --- Form & Inputs --- */
+input[type="text"], input[type="date"], textarea {
+  padding: 8px 12px;
+  font-size: 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  resize: vertical;
+}
+input[type="text"] {
+  width: 300px;
+  height: 36px;
+}
+textarea {
+  min-height: 80px;
+  border-radius: 8px;
+}
+
+/* --- Button Styles --- */
+button {
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.3s;
+  margin: 0;
+  height: 36px;
+  flex-shrink: 0;
+}
+button:focus {
+  outline: none;
+}
+.btn-primary {
+  background-color: #09a8ff;
+  color: white;
+}
+.btn-primary:hover {
+  background-color: #007acc;
+}
+.btn-view {
+  background-color: #09a8ff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+  margin-right: 6px;
+}
+.btn-delete {
+  background-color: #db2222;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 15px;
+}
+.btn-delete:hover {
+  background-color: #a30f0f;
+}
+.btn-cancel {
+  background-color: #7a7a7a;
+  color: white;
+}
+.btn-cancel:hover {
+  background-color: #5e5e5e;
+}
+
+/* --- Table --- */
+.record-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 1px 3px 8px rgb(0 0 0 / 0.1);
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.record-table th, .record-table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 14px;
+}
+.record-table th {
+  background-color: #9ac5fc;
+  font-weight: 700;
+}
+
+/* --- Form Layout --- */
+.search-add-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.thongtinbenhan-va-chedodinhduong {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  max-width: 900px;
+  margin: 20px auto 0 auto;
+}
+.thongtinbenhan,
+.chedodinhduong {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 300px;
+}
+.thongtinbenhan h3,
+.chedodinhduong h3 {
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.form-grid-2col {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 20px;
+}
+.form-grid-2col label {
+  flex: 1 1 calc(50% - 10px);
+  display: flex;
+  flex-direction: column;
+  font-style: italic;
+  font-size: 14px;
+  color: #444;
+}
+.form-grid-2col label.full-width {
+  flex: 1 1 100%;
+}
+.form-grid-2col input,
+.form-grid-2col textarea {
+  margin-top: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Button Group --- */
+.detail-btn-group {
+  max-width: 900px;
+  margin: 20px auto 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .thongtinbenhan-va-chedodinhduong {
+        flex-direction: column;
+      }
+      .form-grid-2col label {
+        flex: 1 1 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="topbar">
+      <div><span class="circle-logo"></span> Trung tâm thú cưng</div>
+      <div class="user-dropdown">
+        <button id="user-role-btn">%Username Bác sĩ%</button>
+          <div id="dropdown-menu" class="hidden">
+            <button id="logout-btn">Đăng xuất</button>
+          </div>
+      </div>
+    </header>
+
+    <div class="main-container">
+      <aside class="sidebar">
+        <nav>
+          <div class="menu-section">
+            <div class="menu-title">Bệnh án</div>
+            <div class="menu-item" id="menu-list">Danh sách bệnh án</div>
+            <div class="menu-item active" id="menu-tiemphong">Lịch sử tiêm phòng</div>
+            <div class="menu-item" id="giaodienlich">Giao diện lịch</div>        
+          </div>
+        </nav>
+        <div class="user-info"><span class="user-icon">👤</span><span id="user-role">Bác sĩ</span></div>
+      </aside>
+
+      <main class="content" id="content">
+        <!-- Nội dung sẽ được js đẩy vào đây -->
+      </main>
+    </div>
+  </div>
+
+  <script>
+      const userBtn = document.getElementById("user-role-btn");
+      const dropdown = document.getElementById("dropdown-menu");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      userBtn.addEventListener("click", function () {
+        dropdown.classList.toggle("show");
+      });
+
+      logoutBtn.addEventListener("click", function () {
+        // Gửi request logout hoặc redirect
+        window.location.href = "/logout/";
+      });
+
+      // Ẩn dropdown khi click ra ngoài
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest(".user-dropdown")) {
+          dropdown.classList.remove("show");
+        }
+      });
+
+    document.getElementById("giaodienlich").addEventListener("click", function() {
+    window.location.href = "giaodienlich.html";
+    });
+
+    document.getElementById("menu-list").addEventListener("click", function() {
+    window.location.href = "danhsachbenhan.html";
+    });
+
+    document.getElementById("menu-tiemphong").addEventListener("click", function() {
+    window.location.href = "danhsachtiemphong.html";
+    });
+
+    const content = document.getElementById('content');
+    const menuList = document.getElementById('menu-list');
+    const menuNutrition = document.getElementById('menu-nutrition');
+    const userRoleSpan = document.getElementById('user-role');
+    const topbarUserRole = document.getElementById('user-role-btn');
+
+
+    let userRole = "Bác sĩ";
+    userRoleSpan.textContent = userRole;
+    topbarUserRole.textContent = userRole + ": Nguyễn Văn A";
+
+    let records = [
+      { record_ID: 15454546, owner: "Nguyen Van A", pet_ID: "P001", date: "2023-05-28", note: "Bệnh nhẹ", nutrition: { foodType: "Thức ăn hạt", portion: "100g", lastUpdate: "2023-05-20", note: "Ăn 2 lần/ngày" } },
+      { record_ID: 15454547, owner: "Tran Thi B", pet_ID: "P002", date: "2023-05-27", note: "Bệnh nặng", nutrition: { foodType: "Thức ăn ướt", portion: "150g", lastUpdate: "2023-05-18", note: "Ăn 3 lần/ngày" } },
+      { record_ID: 15454548, owner: "Lê Quang D", pet_ID: "P002", date: "2025-05-29", note: "chó bị táo bón", nutrition: { foodType: "thức ăn hạt bổ sung rau", portion: "100g", lastUpdate: "2025-05-30", note: "2 lần/ngày" } }
+    ];
+
+    function setActiveMenu(activeMenu) {
+      menuList.classList.remove('active');
+      // menuNutrition.classList.remove('active');
+      activeMenu.classList.add('active');
+    }
+
+    function renderRecordList() {
+      setActiveMenu(menuList);
+      content.innerHTML = `
+        <h2>Danh sách bệnh án</h2>
+        <div class="search-add-container">
+          <input type="text" class="search-box" id="searchInput" placeholder="Tìm kiếm...">
+          <button class="btn btn-primary" id="btnAddRecord">Thêm bệnh án</button>
+          
+        <table class="record-table">
+          <thead>
+            <tr>
+              <th>record_ID</th>
+              <th>Tên chủ</th>
+              <th>pet_ID</th>
+              <th>Ngày thăm khám</th>
+              <th>Ghi chú</th>
+              <th>Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="recordTableBody"></tbody>
+        </table>
+      `;
+
+      const tbody = document.getElementById('recordTableBody');
+      const searchInput = document.getElementById('searchInput');
+      const btnAddRecord = document.getElementById('btnAddRecord');
+
+
+      function renderRows(filter="") {
+        tbody.innerHTML = "";
+        let filtered = records.filter(r => 
+          r.owner.toLowerCase().includes(filter.toLowerCase()) ||
+          r.pet_ID.toLowerCase().includes(filter.toLowerCase()) ||
+          r.record_ID.toString().includes(filter)
+        );
+        if(filtered.length === 0){
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;">Không có dữ liệu</td></tr>`;
+          return;
+        }
+        filtered.forEach(rec => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${rec.record_ID}</td>
+            <td>${rec.owner}</td>
+            <td>${rec.pet_ID}</td>
+            <td>${rec.date}</td>
+            <td>${rec.note}</td>
+            <td>
+              <button class="btn btn-view" data-id="${rec.record_ID}">Sửa hồ sơ</button>
+              <button class="btn btn-delete" data-id="${rec.record_ID}">Xóa</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        tbody.querySelectorAll('.btn-view').forEach(btn => {
+          btn.onclick = () => renderRecordDetail(Number(btn.dataset.id));
+        });
+        tbody.querySelectorAll('.btn-delete').forEach(btn => {
+          btn.onclick = () => {
+            if(confirm("Bạn có chắc muốn xóa bản ghi này?")) {
+              const id = Number(btn.dataset.id);
+              records = records.filter(r => r.record_ID !== id);
+              renderRows(searchInput.value);
+            }
+          };
+        });
+      }
+      renderRows();
+
+      searchInput.addEventListener('input', () => {
+        renderRows(searchInput.value);
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const btnAddRecord = document.getElementById("btnAddRecord");
+      if (btnAddRecord) {
+        btnAddRecord.onclick = () => {
+          content.innerHTML = `
+            <h2>Thêm bệnh án mới</h2>
+            <div class="thongtinbenhan-va-chedodinhduong">
+              <div class="thongtinbenhan">
+                <h3>Thông tin bệnh án</h3>
+                <div class="form-grid-2col">
+                  <label>Mã bệnh án
+                    <input type="text" id="new-record-id" />
+                  </label>
+                  <label>Tên chủ nuôi
+                    <input type="text" id="new-owner" />
+                  </label>
+                  <label>Mã thú cưng
+                    <input type="text" id="new-pet-id" />
+                  </label>
+                  <label>Ngày khám
+                    <input type="date" id="new-date" />
+                  </label>
+                  <label class="full-width">Ghi chú
+                    <textarea id="new-note"></textarea>
+                  </label>
+                </div>
+              </div>
+
+            
+            <div class="detail-btn-group">
+              <button class="btn-cancel" onclick="window.location.reload()">Huỷ</button>
+              <button class="btn-primary" onclick="saveNewRecord()">Lưu</button>
+            </div>
+          `;
+        };
+      }
+    });
+
+    function saveNewRecord() {
+      const newRecord = {
+        record_ID: document.getElementById("new-record-id").value,
+        owner: document.getElementById("new-owner").value,
+        pet_ID: document.getElementById("new-pet-id").value,
+        date: document.getElementById("new-date").value,
+        note: document.getElementById("new-note").value,
+        nutrition: {
+          foodType: document.getElementById("new-food-type").value,
+          portion: document.getElementById("new-portion").value,
+          lastUpdate: document.getElementById("new-nutrition-date").value,
+          note: document.getElementById("new-nutrition-note").value
+        }
+      };
+
+      records.push(newRecord);
+      alert("Đã thêm bệnh án mới!");
+      window.location.reload(); // reload lại để xem danh sách mới
+    }
+
+    // Hàm xử lý lưu form
+      function handleSaveForm() {
+        // Lấy dữ liệu từ các input trong form (bạn cần thay đổi selector nếu form khác cấu trúc)
+        const recordData = {
+          owner: document.getElementById('owner')?.value || '',
+          pet_ID: document.getElementById('pet_ID')?.value || '',
+          date: document.getElementById('date')?.value || '',
+          note: document.getElementById('note')?.value || '',
+          foodType: document.getElementById('foodType')?.value || '',
+          portion: document.getElementById('portion')?.value || '',
+          nutritionNote: document.getElementById('nutritionNote')?.value || '',
+          lastUpdate: document.getElementById('lastUpdate')?.value || '',
+        };
+
+        console.log("Dữ liệu đã lưu:", recordData);
+        alert("Đã lưu thành công!");
+
+        // Quay lại trang danh sách
+        renderRecordList();
+        setActiveMenu(menuList);
+      }
+
+      // Hàm xử lý khi nhấn nút Hủy
+      function handleCancelForm() {
+        if (confirm("Bạn có chắc chắn muốn hủy bỏ không? Mọi thay đổi sẽ không được lưu.")) {
+          renderRecordList();
+          setActiveMenu(menuList);
+        }
+      }
+
+    function renderRecordDetail(id) {
+        setActiveMenu(menuList);
+        const rec = records.find(r => r.record_ID === id);
+        if (!rec) {
+          alert("Không tìm thấy hồ sơ");
+          renderRecordList();
+          return;
+        }
+
+        content.innerHTML = `
+          <h2>
+            Sửa hồ sơ <br> 
+            ID:${rec.record_ID}<br> 
+          </h2>
+
+          <h3>Thông tin cập nhật lúc
+              <span id="lastUpdate"></span>
+          </h3>
+
+          <form id="detailForm">
+            <div class="thongtinbenhan-va-chedodinhduong">
+              <div class="thongtinbenhan">
+                <h3>Thông tin bệnh án</h3>
+                <div class="form-grid-2col">
+                  <label>Họ và tên khách hàng
+                      <input type="text" id="owner" value="${rec.owner}" />
+                  </label>
+                  <label>Pet_ID
+                      <input type="text" id="petID" value="${rec.pet_ID}" />
+                  </label>
+                  <label>Ngày thăm khám
+                      <input type="date" id="date" value="${rec.date}" />
+                  </label>
+                  <label>Vet_ID
+                      <input type="text" id="vetID" value="" />
+                  </label>
+                  <label>Chẩn đoán
+                      <input type="text" id="diagnosis" value="" />
+                  </label>
+                  <label> Phương pháp điều trị
+                      <input type="text" id="treatment" value="" />
+                  </label>
+                  <label class="full-width">Ghi chú
+                      <textarea id="note">${rec.note}</textarea>
+                  </label>
+                </div>
+              </div>
+
+              <div class="chedodinhduong">
+                <h3>Thông tin chế độ dinh dưỡng</h3>
+                <div class="form-grid-2col">
+                  <label class="full-width">Food Type
+                    <input type="text" id="foodType" value="${rec.nutrition?.foodType || ''}" />
+                  </label>
+                  <label class="full-width">Portion
+                    <input type="text" id="portion" value="${rec.nutrition?.portion || ''}" />
+                  </label>
+                  <label class="full-width">Ghi chú
+                    <textarea id="nutritionNote">${rec.nutrition?.note || ''}</textarea>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="detail-btn-group">
+              <button class="btn-cancel" onclick="handleCancelForm()">Hủy</button>
+              <button class="btn-primary" onclick="handleSaveForm()">Lưu</button>
+            </div>
+          </form>
+        `;
+
+        // 👇 Thêm đoạn này để gán giá trị cho lastUpdate
+        function updateDateTime() {
+          const now = new Date();
+          const dd = String(now.getDate()).padStart(2, '0');
+          const mm = String(now.getMonth() + 1).padStart(2, '0');
+          const yyyy = now.getFullYear();
+
+          const hh = String(now.getHours()).padStart(2, '0');
+          const min = String(now.getMinutes()).padStart(2, '0');
+          const ss = String(now.getSeconds()).padStart(2, '0');
+
+          document.getElementById('lastUpdate').textContent = `${dd}/${mm}/${yyyy} ${hh}:${min}:${ss}`;
+        }
+        updateDateTime();
+
+        document.getElementById('btnBack').onclick = () => renderRecordList();
+      }
+
+
+    menuList.onclick = () => renderRecordList();
+    renderRecordList();
+
+  
+  </script>
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Thú Cưng</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f2f5; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+            width: 90%;
+            max-width: 900px; 
+            text-align: center;
+            overflow-y: auto; 
+        }
+
+        .container h2 {
+            font-size: 36px; 
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #1a202c; 
+            text-transform: uppercase;
+        }
+
+        .pet-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #ffffff; 
+            transition: box-shadow 0.3s ease; 
+        }
+
+        .pet-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); 
+        }
+
+        .pet-info p {
+            margin: 8px 0;
+            font-size: 16px; 
+            color: #2d3748;
+        }
+
+        .pet-info p strong {
+            color: #2b6cb0; 
+        }
+
+        .pet-actions {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #4a5568;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #2b6cb0; 
+            outline: none;
+        }
+
+        .form-group input[type="file"] {
+            width: 100%;
+        }
+
+        .form-group input::placeholder {
+            color: #a0aec0;
+        }
+
+        .edit-button,
+        .save-button,
+        .cancel-button,
+        .delete-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .edit-button {
+            background-color: #f6ad55; 
+            color: white;
+        }
+
+        .edit-button:hover {
+            background-color: #ed8936;
+            transform: translateY(-2px); 
+        }
+
+        .save-button {
+            background-color: #38a169; 
+            color: white;
+        }
+
+        .save-button:hover {
+            background-color: #2f855a;
+            transform: translateY(-2px);
+        }
+
+        .cancel-button {
+            background-color: #e53e3e; 
+            color: white;
+        }
+
+        .cancel-button:hover {
+            background-color: #c53030;
+            transform: translateY(-2px);
+        }
+
+        .delete-button {
+            background-color: #e53e3e;
+            color: white;
+        }
+
+        .delete-button:hover {
+            background-color: #c53030;
+            transform: translateY(-2px);
+        }
+
+        .links {
+            margin-top: 25px;
+        }
+
+        .links a {
+            color: #2b6cb0;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+            color: #2c5282;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Thông Tin Thú Cưng</h2>
+        <div id="pet-list"></div>
+        <div class="links">
+            <p><a href="HomePage.html">Quay lại trang chủ</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Lấy danh sách thú cưng từ localStorage
+        let pets = JSON.parse(localStorage.getItem('pets')) || [];
+        function displayPetList() {
+            const petList = document.getElementById('pet-list');
+            petList.innerHTML = '';
+
+            if (pets.length === 0) {
+                petList.innerHTML = '<p>Chưa có thông tin thú cưng nào.</p>';
+                return;
+            }
+
+            pets.forEach((pet, index) => {
+                const petCard = document.createElement('div');
+                petCard.classList.add('pet-card');
+                petCard.innerHTML = `
+                    <div class="pet-info" id="pet-info-${index}">
+                        <p><strong>Tên thú cưng:</strong> <span id="pet-name-${index}">${pet.name}</span></p>
+                        <p><strong>Giống loài:</strong> <span id="pet-type-${index}">${pet.type}</span></p>
+                        <p><strong>Giới tính:</strong> <span id="pet-gender-${index}">${pet.gender || ''}</span></p>
+                        <p><strong>Ngày sinh:</strong> <span id="pet-birthdate-${index}">${pet.birthdate || ''}</span></p>
+                        <p><strong>Màu sắc:</strong> <span id="pet-color-${index}">${pet.color || ''}</span></p>
+                        <p><strong>Hình ảnh:</strong> <span id="pet-image-${index}">${pet.image || 'No image'}</span></p>
+                    </div>
+                    <div class="pet-actions">
+                        <button class="edit-button" onclick="editPet(${index})">Chỉnh sửa</button>
+                        <button class="delete-button" onclick="deletePet(${index})">Xóa</button>
+                    </div>
+                `;
+                petList.appendChild(petCard);
+            });
+        }
+
+        // Chỉnh sửa thông tin thú cưng
+        function editPet(index) {
+            const petInfoDiv = document.getElementById(`pet-info-${index}`);
+            const pet = pets[index];
+            petInfoDiv.innerHTML = `
+                <div class="form-group">
+                    <label for="edit-pet-name-${index}">TÊN THÚ CƯNG</label>
+                    <input type="text" id="edit-pet-name-${index}" value="${pet.name}">
+                </div>
+                <div class="form-group">
+                    <label for="edit-pet-type-${index}">GIỐNG LOÀI</label>
+                    <input type="text" id="edit-pet-type-${index}" value="${pet.type}">
+                </div>
+                <div class="form-group">
+                    <label for="edit-pet-gender-${index}">GIỚI TÍNH</label>
+                    <input type="text" id="edit-pet-gender-${index}" value="${pet.gender || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="edit-pet-birthdate-${index}">NGÀY SINH</label>
+                    <input type="date" id="edit-pet-birthdate-${index}" value="${pet.birthdate || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="edit-pet-color-${index}">MÀU SẮC</label>
+                    <input type="text" id="edit-pet-color-${index}" value="${pet.color || ''}">
+                </div>
+                <div class="form-group">
+                    <label for="edit-pet-image-${index}">HÌNH ẢNH</label>
+                    <input type="file" id="edit-pet-image-${index}" accept="image/*">
+                    <p>Hình ảnh hiện tại: ${pet.image || 'No image'}</p>
+                </div>
+                <div class="pet-actions">
+                    <button class="save-button" onclick="savePet(${index})">Lưu</button>
+                    <button class="cancel-button" onclick="displayPetList()">Hủy</button>
+                </div>
+            `;
+        }
+
+        // Lưu thông tin sau khi chỉnh sửa
+        function savePet(index) {
+            const petName = document.getElementById(`edit-pet-name-${index}`).value;
+            const petType = document.getElementById(`edit-pet-type-${index}`).value;
+            const petGender = document.getElementById(`edit-pet-gender-${index}`).value;
+            const petBirthdate = document.getElementById(`edit-pet-birthdate-${index}`).value;
+            const petColor = document.getElementById(`edit-pet-color-${index}`).value;
+            const petImage = document.getElementById(`edit-pet-image-${index}`).files[0];
+
+            if (petName && petType) {
+                pets[index] = {
+                    name: petName,
+                    type: petType,
+                    gender: petGender,
+                    birthdate: petBirthdate,
+                    color: petColor,
+                    image: petImage ? petImage.name : pets[index].image
+                };
+                localStorage.setItem('pets', JSON.stringify(pets));
+                alert('Đã lưu thông tin thú cưng!');
+                displayPetList();
+            } else {
+                alert('Vui lòng nhập đầy đủ thông tin thú cưng (Tên và Giống loài)!');
+            }
+        }
+
+        function deletePet(index) {
+            if (confirm('Bạn có chắc chắn muốn xóa thông tin thú cưng này?')) {
+                pets.splice(index, 1); 
+                localStorage.setItem('pets', JSON.stringify(pets)); 
+                alert('Đã xóa thông tin thú cưng!');
+                displayPetList(); 
+            }
+        }
+
+        // Hiển thị danh sách khi tải trang
+        window.onload = displayPetList;
+    </script>
+</body>
+</html>

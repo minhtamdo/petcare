@@ -2084,21 +2084,21 @@
             {% for appointment in appointments %}
             {
                 id: "{{ appointment.id }}",
-                pet: { name: "{{ appointment.pet.name|escapejs }}" },
-                owner: { fullname: "{{ appointment.owner.fullname|escapejs }}" },
+                pet: { name: "{% if appointment.pet %}{{ appointment.pet.name|escapejs }}{% else %}null{% endif %}" },
+                owner: { fullname: "{% if appointment.owner %}{{ appointment.owner.fullname|escapejs }}{% else %}null{% endif %}" },
                 type: "{{ appointment.type|escapejs }}",
                 check_in: "{{ appointment.check_in }}",
                 check_out: "{{ appointment.check_out }}",
-                staff: { fullname: "{{ appointment.staff.fullname|default:'NULL'|escapejs }}" },
+                staff: { fullname: "{% if appointment.staff %}{{ appointment.staff.fullname|escapejs }}{% else %}null{% endif %}" },
                 status: "{{ appointment.status|escapejs }}",
-                approver: { fullname: "{{ appointment.approver.fullname|default:'NULL'|escapejs }}" },
-                notes: "{{ appointment.notes|default:'NULL'|escapejs }}",
+                approver: { fullname: "{% if appointment.approver %}{{ appointment.approver.fullname|escapejs }}{% else %}null{% endif %}" },
+                notes: "{% if appointment.notes %}{{ appointment.notes|escapejs }}{% else %}{% endif %}",
                 created_at: "{{ appointment.created_at }}",
                 updated_at: "{{ appointment.updated_at }}"
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
         ];
-            
+
         
         let currentPage = 1;
         let itemsPerPage = 10;

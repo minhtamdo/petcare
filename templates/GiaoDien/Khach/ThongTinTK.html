@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông Tin Tài Khoản</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .profile-container {
+            background-color: #ffffff;
+            padding: 32px 36px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .profile-container:hover {
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .profile-container h2 {
+            text-align: center;
+            margin-bottom: 28px;
+            font-size: 26px;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .profile-container label {
+            display: block;
+            margin: 14px 0 6px;
+            color: #444;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .profile-container input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #dcdcdc;
+            border-radius: 10px;
+            background-color: #fefefe;
+            transition: border-color 0.3s, background-color 0.3s;
+            font-size: 15px;
+        }
+
+        .profile-container input:focus {
+            border-color: #0066ff;
+            background-color: #fff;
+            outline: none;
+        }
+
+        .profile-container button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 13px;
+            background-color: #0066ff;
+            border: none;
+            color: white;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .profile-container button:hover {
+            background-color: #0052cc;
+            transform: translateY(-1px);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Thông Tin Tài Khoản</h2>
+
+        <label for="name">Tên</label>
+        <input type="text" id="name" readonly>
+
+        <label for="fullname">Họ và Tên</label>
+        <input type="text" id="fullname" readonly>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" readonly>
+
+        <label for="phone">Số điện thoại</label>
+        <input type="text" id="phone" readonly>
+
+        <label for="created">Ngày tạo tài khoản</label>
+        <input type="text" id="created" readonly>
+
+        <button id="edit-btn">Chỉnh sửa</button>
+        <button id="logout-btn">Trang chủ</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+        const user = {
+            name: "jdoe",
+            fullname: "John Doe",
+            email: "jdoe@example.com",
+            phone: "0123456789",
+            created: "2024-12-01"
+        };
+
+        document.getElementById("name").value = user.name;
+        document.getElementById("fullname").value = user.fullname;
+        document.getElementById("email").value = user.email;
+        document.getElementById("phone").value = user.phone;
+        document.getElementById("created").value = user.created;
+
+        const editBtn = document.getElementById("edit-btn");
+        let isEditing = false;
+
+        editBtn.addEventListener("click", () => {
+            isEditing = !isEditing;
+            document.querySelectorAll("input").forEach(input => {
+                input.readOnly = !isEditing;
+                input.style.backgroundColor = isEditing ? "#ffffff" : "#f9f9f9";
+            });
+            editBtn.textContent = isEditing ? "Lưu" : "Chỉnh sửa";
+
+            if (!isEditing) {
+                alert("Thông tin đã được cập nhật!");
+            }
+        });
+
+        document.getElementById("logout-btn").addEventListener("click", () => {
+        alert("Bạn đã quay lại trang chủ");
+        window.location.href = "HomePage.html";
+    });
+    });
+
+    </script>
+</body>
+</html>
