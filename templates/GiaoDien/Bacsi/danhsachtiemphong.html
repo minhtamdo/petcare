@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trung tâm thú y</title>
+  <style>
+    * { box-sizing: border-box; }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8faff; color: #000;
+    }
+
+    .app-container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 50px;
+      background: #f0f5ff;
+      border-bottom: 1px solid #d9d9d9;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: #003f87;
+      font-weight: 700;
+      font-size: 18px;
+    }
+
+    .circle-logo {
+      width: 18px; height: 18px;
+      background: #003f87;
+      border-radius: 50%;
+      margin-right: 8px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .main-container {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 220px;
+      background: #f0f5ff;
+      border-right: 1px solid #d9d9d9;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      color: #003f87;
+    }
+
+    .menu-section {
+      margin-bottom: 20px;
+    }
+
+    .menu-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #003f87;
+    }
+
+    .menu-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 6px;
+      color: #003f87;
+      margin-bottom: 8px;
+      transition: background 0.3s;
+    }
+
+    .menu-item:hover {
+      background: #a5cef5;
+    }
+
+    .menu-item.active {
+      background: #87cefa;
+      font-weight: 600;
+    }
+
+    .user-info {
+      margin-top: auto;
+      color: #003f87;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .user-icon {
+      margin-right: 8px;
+      font-size: 20px;
+    }
+
+    .content {
+      flex-grow: 1;
+      padding: 30px 40px;
+      overflow-y: auto;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h2 {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .search-add-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+      width: 300px;
+      height: 36px;
+    }
+
+    button {
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.3s;
+      height: 36px;
+    }
+
+    .btn-primary {
+      background-color: #09a8ff;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #007acc;
+    }
+
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .record-table th, .record-table td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .record-table th {
+      background-color: #9ac5fc;
+      font-weight: 700;
+    }
+
+    /* Form styling - ban đầu ẩn đi */
+    #addFormContainer {
+      display: none; /* Ẩn form ban đầu */
+      max-width: 600px;
+      margin: 30px auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+    }
+
+    /* Close button */
+    .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: #ff4757;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-btn:hover {
+      background: #ff3742;
+    }
+
+    h3 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .form-group input, .form-group textarea {
+      padding: 15px;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: rgba(255, 255, 255, 0.9);
+      font-family: inherit;
+    }
+
+    .form-group input:focus, .form-group textarea:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px auto 0;
+      min-width: 150px;
+    }
+
+    .form-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .form-btn-primary:active {
+      transform: translateY(-1px);
+    }
+
+    /* Animation cho form khi xuất hiện */
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #addFormContainer.show {
+      animation: slideInUp 0.6s ease-out;
+    }
+
+    /* Custom styling cho date inputs */
+    input[type="date"] {
+      color: #555;
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23667eea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>') no-repeat;
+      background-size: 16px;
+      cursor: pointer;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      #addFormContainer {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+      
+      h3 {
+        font-size: 24px;
+      }
+
+      .search-add-container {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="topbar">
+      <div><span class="circle-logo"></span> Trung tâm thú cưng</div>
+      <div id="topbar-user-role">Bác sĩ: Nguyễn Văn A</div>
+    </header>
+
+    <div class="main-container">
+      <aside class="sidebar">
+        <nav>
+          <div class="menu-section">
+            <div class="menu-title">Bệnh án</div>
+            <div class="menu-item" id="menu-list">Danh sách bệnh án</div>
+            <div class="menu-item active" id="menu-tiemphong">Lịch sử tiêm phòng</div>
+            <div class="menu-item" id="giaodienlich">Giao diện lịch</div>        
+          </div>
+        </nav>
+        <div class="user-info"><span class="user-icon">👤</span><span id="user-role"> Bác sĩ</span></div>
+      </aside>
+
+      <main class="content" id="content">
+        <h2>Lịch sử tiêm phòng</h2>
+
+        <div class="search-add-container">
+          <input type="text" id="searchInput" placeholder="Tìm kiếm theo Pet ID, Vaccine ID..." />
+          <button class="btn-primary" onclick="showAddForm()">➕ Thêm tiêm phòng</button>
+        </div>
+
+        <table class="record-table" id="vaccineTable">
+          <thead>
+            <tr>
+              <th>vaccine ID</th>
+              <th>Pet ID</th>
+              <th>Loại vắc xin</th>
+              <th>Nhân viên</th>
+              <th>Ngày tiêm</th>
+              <th>Ngày hẹn tiếp theo</th>
+              <th>Ghi chú</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>V001</td>
+              <td>P001</td>
+              <td>Dại</td>
+              <td>Nguyễn Văn A</td>
+              <td>31/5/2025</td>
+              <td>01/6/2025</td>
+              <td>Tiêm phòng định kỳ</td>
+            </tr>
+            <tr>
+              <td>V002</td>
+              <td>P003</td>
+              <td>Dại</td>
+              <td>Lê Quang D</td>
+              <td>23/4/2025</td>
+              <td>23/4/2026</td>
+              <td>Tiêm phòng định kỳ</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Form thêm tiêm phòng - ban đầu ẩn -->
+        <div id="addFormContainer">
+          <button class="close-btn" onclick="hideAddForm()">×</button>
+          <h3>🐾 Thêm Tiêm Phòng Mới</h3>
+          <form id="addForm" onsubmit="event.preventDefault(); addVaccination();">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="vaccineId">💉 Vaccine ID</label>
+                <input type="text" id="vaccineId" placeholder="Nhập ID vaccine" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="petId">🐕 Pet ID</label>
+                <input type="text" id="petId" placeholder="Nhập ID thú cưng" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="vaccineType">🔬 Loại Vắc Xin</label>
+                <input type="text" id="vaccineType" placeholder="Nhập loại vắc xin" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="staff">👨‍⚕️ Nhân Viên</label>
+                <input type="text" id="staff" placeholder="Tên nhân viên thực hiện" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="injectDate">📅 Ngày Tiêm</label>
+                <input type="date" id="injectDate" required />
+              </div>
+              
+              <div class="form-group">
+                <label for="nextDate">📅 Ngày Tiêm Tiếp Theo</label>
+                <input type="date" id="nextDate" required />
+              </div>
+              
+              <div class="form-group full-width">
+                <label for="note">📝 Ghi Chú</label>
+                <textarea id="note" placeholder="Nhập ghi chú về việc tiêm phòng..."></textarea>
+              </div>
+            </div>
+            
+            <button type="submit" class="form-btn-primary">
+              💾 Lưu Thông Tin
+            </button>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+
+<script>
+  // Hiển thị form thêm tiêm phòng
+  function showAddForm() {
+    const formContainer = document.getElementById("addFormContainer");
+    formContainer.style.display = "block";
+    formContainer.classList.add("show");
+    
+    // Scroll đến form
+    formContainer.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Ẩn form thêm tiêm phòng
+  function hideAddForm() {
+    const formContainer = document.getElementById("addFormContainer");
+    formContainer.style.display = "none";
+    formContainer.classList.remove("show");
+  }
+
+  // Thêm tiêm phòng mới
+  function addVaccination() {
+    const vaccineId = document.getElementById("vaccineId").value;
+    const petId = document.getElementById("petId").value;
+    const vaccineType = document.getElementById("vaccineType").value;
+    const staff = document.getElementById("staff").value;
+    const injectDate = document.getElementById("injectDate").value;
+    const nextDate = document.getElementById("nextDate").value;
+    const note = document.getElementById("note").value;
+
+    // Format ngày để hiển thị
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('vi-VN');
+    };
+
+    const table = document.getElementById("vaccineTable").querySelector("tbody");
+    const newRow = table.insertRow();
+    newRow.innerHTML = `
+      <td>${vaccineId}</td>
+      <td>${petId}</td>
+      <td>${vaccineType}</td>
+      <td>${staff}</td>
+      <td>${formatDate(injectDate)}</td>
+      <td>${formatDate(nextDate)}</td>
+      <td>${note}</td>
+    `;
+
+    // Reset form và ẩn
+    document.getElementById("addForm").reset();
+    hideAddForm();
+    
+    // Thông báo thành công
+    alert("Đã thêm lịch sử tiêm phòng thành công!");
+  }
+
+  // Tìm kiếm trong bảng
+  document.getElementById("searchInput").addEventListener("input", function() {
+    const searchTerm = this.value.toLowerCase();
+    const table = document.getElementById("vaccineTable");
+    const rows = table.getElementsByTagName("tr");
+
+    for (let i = 1; i < rows.length; i++) { // Bỏ qua header
+      const cells = rows[i].getElementsByTagName("td");
+      let found = false;
+      
+      for (let j = 0; j < cells.length; j++) {
+        if (cells[j].textContent.toLowerCase().includes(searchTerm)) {
+          found = true;
+          break;
+        }
+      }
+      
+      rows[i].style.display = found ? "" : "none";
+    }
+  });
+
+  // Sự kiện chuyển nội dung theo menu
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuItems = document.querySelectorAll(".menu-item");
+
+    menuItems.forEach(item => {
+      item.addEventListener("click", () => {
+        menuItems.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+
+        const id = item.id;
+        if (id === "giaodienlich") {
+          window.location.href = "giaodienlich.html";
+        } else if (id === "menu-list") {
+          window.location.href = "danhsachbenhan.html";
+        } else if (id === "menu-tiemphong"){
+          window.location.href = "danhsachtiemphong.html"
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>

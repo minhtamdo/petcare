@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lịch Hẹn Tuần</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0; padding: 0; height: 100%;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f8faff;
+      color: #000;
+    }
+
+    .app-container {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      flex-direction: column;
+    }
+
+    .topbar {
+        height: 110px; 
+        background: #f0f5ff;
+        border-bottom: 1px solid #d9d9d9;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        color: #003f87;
+        font-weight: 700;
+        font-size: 18px;
+        user-select: none;
+    }
+
+    .circle-logo {
+      width: 18px;
+      height: 18px;
+      background: #003f87;
+      border-radius: 50%;
+      margin-right: 8px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .main-container {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+    .sidebar {
+      width: 220px;
+      background: #f0f5ff;
+      border-right: 1px solid #d9d9d9;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+    }
+    .logo {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      color: #003f87;
+      user-select: none;
+    }
+    .menu-section {
+      margin-bottom: 20px;
+    }
+    .menu-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #003f87;
+      user-select: none;
+    }
+    .menu-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 6px;
+      color: #003f87;
+      margin-bottom: 8px;
+      user-select: none;
+      transition: background 0.3s;
+    }
+    .menu-item:hover {
+      background: #a5cef5;
+    }
+    .menu-item.active {
+      background: #87cefa;
+      font-weight: 600;
+    }
+    .user-info {
+      margin-top: auto;
+      color: #003f87;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      user-select: none;
+    }
+    .user-icon {
+      margin-right: 8px;
+      font-size: 20px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 30px 40px;
+      overflow-y: auto;
+      background: #ffffff;
+    }
+
+    h1 {
+      margin-top: 0;
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-size: 26px;
+    }
+
+    #searchBar {
+      width: 100%;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .day {
+      margin-bottom: 25px;
+    }
+
+    .day h2 {
+      color: #003f87;
+      font-size: 20px;
+      margin-bottom: 12px;
+    }
+
+    .appointment {
+      padding: 12px 16px;
+      background: #f0f5ff;
+      border-left: 5px solid #3c8dde;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      transition: transform 0.2s;
+    }
+
+    .appointment:hover {
+      transform: scale(1.02);
+      background: #e1edff;
+    }
+
+    .appointment strong {
+      display: inline-block;
+      width: 100px;
+      color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .thongtinbenhan-va-chedodinhduong {
+        flex-direction: column;
+      }
+      .form-grid-2col label {
+        flex: 1 1 100% !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <header class="topbar">
+      <div><span class="circle-logo"></span> Trung tâm thú cưng</div>
+      <div id="topbar-user-role">Bác sĩ: Nguyễn Văn A</div>
+    </header>
+
+    <div class="main-container">
+      <aside class="sidebar">
+        <div class="menu-title">Bệnh án</div>
+        <div class="menu-item" id="menu-list">Danh sách bệnh án</div>
+        <div class="menu-item active" id="giaodienlich">Giao diện lịch</div>
+        <div class="user-info">👤 Bác sĩ</div>
+      </aside>
+
+      <div class="content">
+        <h1>Lịch Hẹn Trong Tuần</h1>
+        <input type="text" id="searchBar" placeholder="Tìm theo pet_id, record_id hoặc thời gian...">
+        <div id="schedule"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("giaodienlich").addEventListener("click", function() {
+    window.location.href = "giaodienlich.html";
+    });
+
+    document.getElementById("menu-list").addEventListener("click", function() {
+    window.location.href = "danhsachbenhan.html";
+    });
+
+
+    const appointments = [
+      { day: "Thứ Hai", time: "09:00", record_id: "R001", pet_id: "P123" },
+      { day: "Thứ Hai", time: "14:00", record_id: "R002", pet_id: "P234" },
+      { day: "Thứ Ba", time: "10:30", record_id: "R003", pet_id: "P345" },
+      { day: "Thứ Tư", time: "13:00", record_id: "R004", pet_id: "P456" },
+      { day: "Thứ Năm", time: "08:00", record_id: "R005", pet_id: "P567" },
+      { day: "Thứ Sáu", time: "11:30", record_id: "R006", pet_id: "P678" },
+      { day: "Thứ Bảy", time: "16:00", record_id: "R007", pet_id: "P789" },
+      { day: "Chủ Nhật", time: "09:30", record_id: "R008", pet_id: "P890" },
+    ];
+
+    const scheduleDiv = document.getElementById("schedule");
+    const searchBar = document.getElementById("searchBar");
+
+    function renderAppointments(filter = "") {
+      scheduleDiv.innerHTML = "";
+      const days = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"];
+
+      days.forEach(day => {
+        const filteredApps = appointments.filter(app =>
+          app.day === day &&
+          (app.record_id.toLowerCase().includes(filter) ||
+           app.pet_id.toLowerCase().includes(filter) ||
+           app.time.toLowerCase().includes(filter))
+        );
+
+        if (filteredApps.length > 0) {
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "day";
+          const dayTitle = document.createElement("h2");
+          dayTitle.textContent = day;
+          dayDiv.appendChild(dayTitle);
+
+          filteredApps.forEach(app => {
+            const appDiv = document.createElement("div");
+            appDiv.className = "appointment";
+            appDiv.innerHTML = `
+              <strong>Giờ:</strong> ${app.time}<br>
+              <strong>Record ID:</strong> ${app.record_id}<br>
+              <strong>Pet ID:</strong> ${app.pet_id}
+            `;
+            dayDiv.appendChild(appDiv);
+          });
+
+          scheduleDiv.appendChild(dayDiv);
+        }
+      });
+    }
+
+    searchBar.addEventListener("input", () => {
+      const keyword = searchBar.value.trim().toLowerCase();
+      renderAppointments(keyword);
+    });
+
+    renderAppointments();
+  </script>
+</body>
+</html>

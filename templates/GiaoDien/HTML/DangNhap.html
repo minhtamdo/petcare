@@ -23,6 +23,15 @@
                     <label for="password">MẬT KHẨU</label>
                     <input type="password" id="password" placeholder="Mật khẩu">
                 </div>
+                <div class="form-group">
+                    <label for="role">VAI TRÒ</label>
+                    <select id="role">
+                        <option value="" disabled selected>Chọn vai trò</option>
+                        <option value="customer">Khách hàng</option>
+                        <option value="staff">Nhân viên</option>
+                        <option value="doctor">Bác sĩ</option>
+                    </select>
+                </div>
                 <div class="options">
                     <div class="remember">
                         <input type="checkbox" id="remember">
@@ -116,13 +125,20 @@
         function login() {
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            if (email && password) {
-                localStorage.setItem('isLoggedIn', 'true'); 
-                localStorage.setItem('username', email.split('@')[0]); 
-                alert(`Đăng nhập thành công với email: ${email}`);
-                window.location.href = 'HomePage.html'; 
+            const role = document.getElementById('role').value;
+            if (email && password && role) {
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', email.split('@')[0]);
+                // Điều hướng theo vai trò
+                if (role === 'customer') {
+                    window.location.href = 'HomePage.html';
+                } else if (role === 'staff') {
+                    window.location.href = 'NhanVien.html';
+                } else if (role === 'doctor') {
+                    window.location.href = 'BacSi.html';
+                }
             } else {
-                alert('Vui lòng nhập đầy đủ thông tin!');
+                alert('Vui lòng nhập đầy đủ thông tin và chọn vai trò!');
             }
         }
 
@@ -134,10 +150,10 @@
             const confirmPassword = document.getElementById('confirm-password').value;
             if (firstName && fullName && email && password && confirmPassword) {
                 if (password === confirmPassword) {
-                    localStorage.setItem('isLoggedIn', 'true'); 
-                    localStorage.setItem('username', firstName); 
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('username', firstName);
                     alert(`Đăng ký thành công với email: ${email}`);
-                    window.location.href = 'HomePage.html'; 
+                    window.location.href = 'HomePage.html';
                 } else {
                     alert('Mật khẩu và xác nhận mật khẩu không khớp!');
                 }
@@ -166,7 +182,7 @@
             const petGender = document.getElementById('pet-gender').value;
             const petBirthdate = document.getElementById('pet-birthdate').value;
             const petColor = document.getElementById('pet-color').value;
-            const petImage = document.getElementById('pet-image').files[0]; 
+            const petImage = document.getElementById('pet-image').files[0];
 
             if (petName && petType) {
                 if (petImage) {
@@ -178,16 +194,16 @@
                             gender: petGender,
                             birthdate: petBirthdate,
                             color: petColor,
-                            image: e.target.result 
+                            image: e.target.result
                         };
                         let pets = JSON.parse(localStorage.getItem('pets')) || [];
                         pets.push(petInfo);
                         localStorage.setItem('pets', JSON.stringify(pets));
                         alert('Đăng ký thành công');
-                        document.getElementById('pet-info-modal').style.display = 'none'; 
-                        showSignIn(); 
+                        document.getElementById('pet-info-modal').style.display = 'none';
+                        showSignIn();
                     };
-                    reader.readAsDataURL(petImage); 
+                    reader.readAsDataURL(petImage);
                 } else {
                     const petInfo = {
                         name: petName,
@@ -195,14 +211,14 @@
                         gender: petGender,
                         birthdate: petBirthdate,
                         color: petColor,
-                        image: '' 
+                        image: ''
                     };
                     let pets = JSON.parse(localStorage.getItem('pets')) || [];
                     pets.push(petInfo);
                     localStorage.setItem('pets', JSON.stringify(pets));
                     alert('Đăng ký thành công');
-                    document.getElementById('pet-info-modal').style.display = 'none'; 
-                    showSignIn(); 
+                    document.getElementById('pet-info-modal').style.display = 'none';
+                    showSignIn();
                 }
             } else {
                 alert('Vui lòng nhập đầy đủ thông tin thú cưng (Tên và Giống loài)!');

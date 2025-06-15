@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông Tin Tài Khoản</title>
+    <link rel="stylesheet" href="../CSS/ThongTinTK.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Thông Tin Tài Khoản</h2>
+
+        <div class="profile-field">
+            <label for="name">Tên</label>
+            <input type="text" id="name" readonly autocomplete="off">
+        </div>
+
+        <div class="profile-field">
+            <label for="fullname">Họ và Tên</label>
+            <input type="text" id="fullname" readonly autocomplete="off">
+        </div>
+
+        <div class="profile-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" readonly autocomplete="off">
+        </div>
+
+        <div class="profile-field">
+            <label for="phone">Số điện thoại</label>
+            <input type="text" id="phone" readonly autocomplete="off">
+        </div>
+
+        <div class="profile-field">
+            <label for="created">Ngày tạo tài khoản</label>
+            <input type="text" id="created" readonly autocomplete="off">
+        </div>
+
+        <div class="profile-actions">
+            <button id="edit-btn" type="button">Chỉnh sửa</button>
+            <button id="logout-btn" type="button">Trang chủ</button>
+        </div>
+    </div>
+    <script src="../JavaScript/ThongTinTK.js"></script>
+</body>
+</html>

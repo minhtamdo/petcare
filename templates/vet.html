@@ -1072,6 +1072,10 @@
             <!-- Trang lịch sử tiêm phòng --> 
             <div id="vaccination-history" class="page">
                 <h1 class="page-title">Lịch sử tiêm phòng</h1>
+                <div class="pet-search">
+                    <input type="text" class="search-input" id="vaccination-history-search" placeholder="Tìm kiếm theo thú cưng, vaccine...">
+                    <button class="btn btn-primary" onclick="searchVaccinationHistory()">🔍 Tìm kiếm</button>
+                </div>
                 <table class="data-table">
                     <thead>
                         <tr>
@@ -1320,77 +1324,77 @@
 
     <script>
         // Dữ liệu mẫu
-        const petsData = [
-            {
-                id: 1,
-                name: "Buddy",
-                species: "Chó",
-                breed: "Golden Retriever",
-                age: "3 tuổi",
-                owner: "Nguyễn Văn A",
-                phone: "0901234567",
-                status: "healthy",
-                avatar: "🐕"
-            },
-            {
-                id: 2,
-                name: "Mimi",
-                species: "Mèo",
-                breed: "Mèo Ba Tư",
-                age: "2 tuổi",
-                owner: "Trần Thị B",
-                phone: "0902345678",
-                status: "healthy",
-                avatar: "🐱"
-            },
-            {
-                id: 3,
-                name: "Max",
-                species: "Chó",
-                breed: "Husky",
-                age: "4 tuổi",
-                owner: "Lê Văn C",
-                phone: "0903456789",
-                status: "sick",
-                avatar: "🐺"
-            },
-            {
-                id: 4,
-                name: "Luna",
-                species: "Mèo",
-                breed: "Mèo Anh lông ngắn",
-                age: "1 tuổi",
-                owner: "Phạm Thị D",
-                phone: "0904567890",
-                status: "healthy",
-                avatar: "🐈"
-            },
-            {
-                id: 5,
-                name: "Rocky",
-                species: "Chó",
-                breed: "Bulldog",
-                age: "5 tuổi",
-                owner: "Hoàng Văn E",
-                phone: "0905678901",
-                status: "sick",
-                avatar: "🐶"
-            }
-        ];
+        // const petsData = [
+        //     {
+        //         id: 1,
+        //         name: "Buddy",
+        //         species: "Chó",
+        //         breed: "Golden Retriever",
+        //         age: "3 tuổi",
+        //         owner: "Nguyễn Văn A",
+        //         phone: "0901234567",
+        //         status: "healthy",
+        //         avatar: "🐕"
+        //     },
+        //     {
+        //         id: 2,
+        //         name: "Mimi",
+        //         species: "Mèo",
+        //         breed: "Mèo Ba Tư",
+        //         age: "2 tuổi",
+        //         owner: "Trần Thị B",
+        //         phone: "0902345678",
+        //         status: "healthy",
+        //         avatar: "🐱"
+        //     },
+        //     {
+        //         id: 3,
+        //         name: "Max",
+        //         species: "Chó",
+        //         breed: "Husky",
+        //         age: "4 tuổi",
+        //         owner: "Lê Văn C",
+        //         phone: "0903456789",
+        //         status: "sick",
+        //         avatar: "🐺"
+        //     },
+        //     {
+        //         id: 4,
+        //         name: "Luna",
+        //         species: "Mèo",
+        //         breed: "Mèo Anh lông ngắn",
+        //         age: "1 tuổi",
+        //         owner: "Phạm Thị D",
+        //         phone: "0904567890",
+        //         status: "healthy",
+        //         avatar: "🐈"
+        //     },
+        //     {
+        //         id: 5,
+        //         name: "Rocky",
+        //         species: "Chó",
+        //         breed: "Bulldog",
+        //         age: "5 tuổi",
+        //         owner: "Hoàng Văn E",
+        //         phone: "0905678901",
+        //         status: "sick",
+        //         avatar: "🐶"
+        //     }
+        // ];
 
-        const vaccinationScheduleData = [
-            { pet: "Buddy (Chó Golden)", vaccine: "DHPP", date: "2025-06-20", status: "pending" },
-            { pet: "Mimi (Mèo Ba Tư)", vaccine: "FVRCP", date: "2025-06-25", status: "pending" },
-            { pet: "Max (Chó Husky)", vaccine: "Rabies", date: "2025-06-18", status: "overdue" },
-            { pet: "Luna (Mèo Anh)", vaccine: "FVRCP", date: "2025-07-01", status: "scheduled" }
-        ];
+        // const vaccinationScheduleData = [
+        //     { pet: "Buddy (Chó Golden)", vaccine: "DHPP", date: "2025-06-20", status: "pending" },
+        //     { pet: "Mimi (Mèo Ba Tư)", vaccine: "FVRCP", date: "2025-06-25", status: "pending" },
+        //     { pet: "Max (Chó Husky)", vaccine: "Rabies", date: "2025-06-18", status: "overdue" },
+        //     { pet: "Luna (Mèo Anh)", vaccine: "FVRCP", date: "2025-07-01", status: "scheduled" }
+        // ];
 
-        const examinationData = [
-            { time: "2025-06-13 14:30", pet: "Buddy", owner: "Nguyễn Văn A", type: "Khám tổng quát", status: "scheduled" },
-            { time: "2025-06-13 15:00", pet: "Mimi", owner: "Trần Thị B", type: "Tiêm phòng", status: "completed" },
-            { time: "2025-06-14 09:00", pet: "Max", owner: "Lê Văn C", type: "Tái khám", status: "scheduled" },
-            { time: "2025-06-14 10:30", pet: "Rocky", owner: "Hoàng Văn E", type: "Khám cấp cứu", status: "pending" }
-        ];
+        // const examinationData = [
+        //     { time: "2025-06-13 14:30", pet: "Buddy", owner: "Nguyễn Văn A", type: "Khám tổng quát", status: "scheduled" },
+        //     { time: "2025-06-13 15:00", pet: "Mimi", owner: "Trần Thị B", type: "Tiêm phòng", status: "completed" },
+        //     { time: "2025-06-14 09:00", pet: "Max", owner: "Lê Văn C", type: "Tái khám", status: "scheduled" },
+        //     { time: "2025-06-14 10:30", pet: "Rocky", owner: "Hoàng Văn E", type: "Khám cấp cứu", status: "pending" }
+        // ];
 
         // const medicalRecordsData = [
         //     {
@@ -1415,33 +1419,33 @@
         //     }
         // ];
 
-        const dietPlansData = [
-            {
-                pet: "Buddy (Chó Golden)",
-                food: "Royal Canin Golden Retriever Adult",
-                amount: "400g/ngày",
-                meals: "2 bữa",
-                instructions: "Chia đều sáng và chiều, uống đủ nước",
-                forbidden: "Chocolate, nho, hành tây",
-                startDate: "2025-06-01"
-            },
-            {
-                pet: "Mimi (Mèo Ba Tư)",
-                food: "Hill's Science Diet Indoor Cat",
-                amount: "60g/ngày",
-                meals: "2 bữa",
-                instructions: "Thức ăn khô, luôn có nước sạch",
-                forbidden: "Cá ngừ, sữa bò",
-                startDate: "2025-05-15"
-            }
-        ];
+        // const dietPlansData = [
+        //     {
+        //         pet: "Buddy (Chó Golden)",
+        //         food: "Royal Canin Golden Retriever Adult",
+        //         amount: "400g/ngày",
+        //         meals: "2 bữa",
+        //         instructions: "Chia đều sáng và chiều, uống đủ nước",
+        //         forbidden: "Chocolate, nho, hành tây",
+        //         startDate: "2025-06-01"
+        //     },
+        //     {
+        //         pet: "Mimi (Mèo Ba Tư)",
+        //         food: "Hill's Science Diet Indoor Cat",
+        //         amount: "60g/ngày",
+        //         meals: "2 bữa",
+        //         instructions: "Thức ăn khô, luôn có nước sạch",
+        //         forbidden: "Cá ngừ, sữa bò",
+        //         startDate: "2025-05-15"
+        //     }
+        // ];
 
-        const vaccinationHistoryData = [
-            { pet: "Buddy", vaccine: "Rabies", date: "2025-01-15", batch: "RAB2025001", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng phụ" },
-            { pet: "Mimi", vaccine: "FVRCP", date: "2025-02-20", batch: "FVR2025002", doctor: "BS. Trần Thị Y", notes: "Phản ứng nhẹ, hết sau 1 ngày" },
-            { pet: "Max", vaccine: "DHPP", date: "2024-12-10", batch: "DHP2024050", doctor: "BS. Lê Văn Z", notes: "Bình thường" },
-            { pet: "Luna", vaccine: "FVRCP", date: "2025-03-05", batch: "FVR2025003", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng" }
-        ];
+        // const vaccinationHistoryData = [
+        //     { pet: "Buddy", vaccine: "Rabies", date: "2025-01-15", batch: "RAB2025001", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng phụ" },
+        //     { pet: "Mimi", vaccine: "FVRCP", date: "2025-02-20", batch: "FVR2025002", doctor: "BS. Trần Thị Y", notes: "Phản ứng nhẹ, hết sau 1 ngày" },
+        //     { pet: "Max", vaccine: "DHPP", date: "2024-12-10", batch: "DHP2024050", doctor: "BS. Lê Văn Z", notes: "Bình thường" },
+        //     { pet: "Luna", vaccine: "FVRCP", date: "2025-03-05", batch: "FVR2025003", doctor: "BS. Nguyễn Văn X", notes: "Không có phản ứng" }
+        // ];
 
         // biến toàn cục
         let allPets = [];
@@ -1655,23 +1659,18 @@
                 switch (item.status) {
                     case 'pending':
                         statusText = 'Chờ xác nhận';
-                        statusClass = 'status-pending';
                         break;
                     case 'confirmed':
                         statusText = 'Đã xác nhận';
-                        statusClass = 'status-confirmed';
                         break;
                     case 'completed':
                         statusText = 'Hoàn thành';
-                        statusClass = 'status-completed';
                         break;
                     case 'cancelled':
                         statusText = 'Đã hủy';
-                        statusClass = 'status-cancelled';
                         break;
                     default:
                         statusText = 'Không rõ';
-                        statusClass = 'status-unknown';
                 }
 
                 const row = document.createElement('tr');
@@ -1681,7 +1680,7 @@
                     <td>${item.owner}</td>
                     <td>${item.phonenumber}</td>
                     <td>${item.type}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td><span>${statusText}</span></td>
                     <td>
                         <button class="btn btn-sm btn-warning" onclick="showStatusEdit('${item.id}', '${item.status}')">Sửa</button>
                     </td>
@@ -2059,6 +2058,24 @@
                 `;
                 tbody.appendChild(row);
             });
+        }
+
+        function searchVaccinationHistory() {
+            const keyword = document.getElementById('vaccination-history-search').value.trim().toLowerCase();
+
+            // Nếu không nhập gì, render lại toàn bộ
+            if (!keyword) {
+                renderVaccinationHistory(allVaccinationHistory);
+                return;
+            }
+
+            const filtered = allVaccinationHistory.filter(item => {
+                return Object.values(item).some(val => 
+                    String(val).toLowerCase().includes(keyword)
+                );
+            });
+
+            renderVaccinationHistory(filtered);
         }
 
         // Xử lý modal

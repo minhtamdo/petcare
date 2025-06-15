@@ -2027,8 +2027,21 @@
             <div class="pagination-controls">
                 <div class="search-box">
                     <input type="text" id="searchInput" placeholder="🔍 Tìm kiếm theo tên thú cưng, chủ..." oninput="searchAppointments()">
+                    <div class="filter-box">
+                        <select
+                            id="statusFilter"
+                            class="form-select"
+                            onchange="filterByAppointmentStatus()"
+                        >
+                            <option value="">-- Tất cả trạng thái --</option>
+                            <option value="confirmed">✅ Đã duyệt</option>
+                            <option value="pending">⏳ Chưa duyệt</option>
+                            <option value="completed">✔️ Hoàn tất</option>
+                            <option value="cancelled">❌ Đã hủy</option>
+                        </select>
+                    </div>
                 </div>
-                
+ 
                 <div class="items-per-page">
                     <label>Hiển thị:</label>
                     <select id="itemsPerPage" onchange="changeItemsPerPage()">
@@ -2809,6 +2822,22 @@
                 alert('❌ Lỗi: ' + error.message);
             });
         }
+        function filterByAppointmentStatus() {
+            const selectedStatus = document.getElementById("statusFilter").value;
+
+            if (selectedStatus === "") {
+                // Show all if no filter selected
+                filteredAppointments = [...sampleAppointments];
+            } else {
+                // Filter by selected status
+                filteredAppointments = sampleAppointments.filter(app => app.status === selectedStatus);
+            }
+
+            currentPage = 1; // Reset to first page after filtering
+            renderAppointments();
+        }
+
+
 
         function drawPetChart() {
             fetch('/api/pet-species-stats/')
