@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập</title>
+    <style>
+        /* Reset mặc định */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f8f8f8;
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    max-width: 1000px;
+    height: 600px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.left-side {
+    flex: 1;
+    background-color: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-side .cat-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.right-side {
+    flex: 1;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Form containers */
+.form-container {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-container.active {
+    display: flex;
+}
+
+.form-container h2 {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    outline: none;
+}
+
+button {
+    padding: 12px;
+    background-color: #23a7ff;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0088e2;
+}
+
+.pet-info-button {
+    background-color: #2196F3;
+}
+
+.pet-info-button:hover {
+    background-color: #1976D2;
+}
+
+.links {
+    text-align: center;
+}
+
+.links a {
+    color: #2196F3;
+    text-decoration: none;
+}
+
+.links a:hover {
+    text-decoration: underline;
+}
+
+/* Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.modal-content h3 {
+    margin-bottom: 10px;
+    text-align: center;
+    color: #333;
+}
+
+.modal-button {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background-color: #23a7ff;
+    color: white;
+    margin-top: 10px;
+}
+
+.cancel-button {
+    background-color: #f44336;
+}
+
+.cancel-button:hover {
+    background-color: #d32f2f;
+}
+
+.modal-button:hover {
+    background-color: #0099ff;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <img src="../static/images/login.jpg" class="cat-image">
+        </div>
+        <div class="right-side">
+            <!-- Form Đăng Nhập -->
+            <div class="form-container sign-in-form active">
+                <h2 style="text-align: center;">Đăng Nhập</h2>
+                <div class="form-group">
+                    <input type="email" id="email" placeholder="Nhập email">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="password" placeholder="Nhập mật khẩu">
+                </div>
+                <button onclick="handleSignIn()">ĐĂNG NHẬP</button>
+                <div class="links">
+                    <p>Chưa có tài khoản? <a onclick="showSignUpForm()">Tạo tài khoản</a></p>
+                </div>
+                <div class="links">
+                    <p><a onclick="goBack()">Quay lại trang web</a></p>
+                </div>
+            </div>
+
+            <!-- Form Đăng Ký Tài khoản khách-->
+            <div class="form-container sign-up-form">
+                <h2 style="text-align: center;">Đăng Ký</h2>
+                <p style="text-align: center;">Tạo tài khoản khách hàng mới</p>
+                <div class="form-group">
+                    <input type="text" id="full-name" placeholder="Họ và tên của bạn">
+                </div>
+                <div class="form-group">
+                    <input type="text" id="username-signup" placeholder="Nhập username">
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email-signup" placeholder="Nhập email">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signup-password" placeholder="Nhập mật khẩu">
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirm-password" placeholder="Nhập lại mật khẩu để xác nhận">
+                </div>
+                <button class="signup-button" onclick="handleSignUp()">Tạo tài khoản</button>
+                <div class="links">
+                    <p>Đã có tài khoản? <a href="#" onclick="showSignInForm()">Quay lại Đăng Nhập</a></p>
+                    <p><a href="#" onclick="goBack()">Quay lại trang web</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        function showSignUpForm() {
+            document.querySelector('.sign-in-form').classList.remove('active');
+            document.querySelector('.sign-up-form').classList.add('active');
+        }
+
+        function showSignInForm() {
+            document.querySelector('.sign-up-form').classList.remove('active');
+            document.querySelector('.sign-in-form').classList.add('active');
+        }
+
+        function getCookie(name) {
+    const cookieValue = document.cookie
+        .split('; ')
+        .find(row => row.startsWith(name + '='));
+    return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
+}
+
+        function handleSignIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = 'owner';
+
+            if (!email || !password) {
+                alert('❗ Vui lòng nhập đầy đủ email và mật khẩu.');
+                return;
+            }
+
+            fetch('/login/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ email, password, role })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert('✅ Đăng nhập thành công!');
+                    window.location.href = data.redirect_url;
+                } else if (data.status === 'fail') {
+                    alert('❌ ' + data.message);
+                } else {
+                    alert('⚠️ Đã xảy ra lỗi: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('⛔ Lỗi kết nối: ' + error);
+            });
+        }
+
+
+            function handleSignUp() {
+                // Lấy dữ liệu form đăng ký
+                const fullname = document.getElementById('full-name').value;
+                const username = document.getElementById('username-signup').value;
+                const email = document.getElementById('email-signup').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+
+                if (password !== confirmPassword) {
+                    alert("Mật khẩu không khớp");
+                    return;
+                }
+
+                // Gọi API đăng ký
+                fetch('http://localhost:8000/api/register/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({fullname: fullname, username: username, email: email, password: password })
+                })
+                .then(res => res.json().then(data => ({status: res.status, body: data})))
+                .then(({status, body}) => {
+                    if (status === 201) {
+                        alert(body.message);
+                        window.location.href = 'Khach/HomePage.html';
+                    } else {
+                        alert(body.error);
+                    }
+                })
+                .catch(err => alert('Lỗi kết nối: ' + err));
+            }
+
+    </script>
+</body>
+</html>

@@ -58,11 +58,8 @@ from django.views.decorators.http import require_http_methods
 from django.utils.dateparse import parse_date
 from django.utils.timezone import make_aware
 
-@csrf_exempt
-def login_view(request):
-    if request.method == 'GET':
-        return render(request, 'login.html')
 
+def login_view(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -972,8 +969,8 @@ def calculate_monthly_revenue_view(request):
             FROM appointments a
             JOIN services s ON a.type = s.type
             WHERE a.status = 'completed'
-              AND EXTRACT(MONTH FROM a.check_in) = EXTRACT(MONTH FROM CURRENT_DATE)
-              AND EXTRACT(YEAR FROM a.check_in) = EXTRACT(YEAR FROM CURRENT_DATE);
+                AND EXTRACT(MONTH FROM a.check_in) = EXTRACT(MONTH FROM CURRENT_DATE)
+                AND EXTRACT(YEAR FROM a.check_in) = EXTRACT(YEAR FROM CURRENT_DATE);
         """)
         row = cursor.fetchone()
     
@@ -981,54 +978,28 @@ def calculate_monthly_revenue_view(request):
 
     return JsonResponse({'total_revenue': int(total_revenue)})
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', login_view, name='login'),
-    path('vet/', vet_dashboard, name='vet_dashboard'),
-    path('staff/', staff_dashboard, name='staff_dashboard'),
-    path('owner/', owner_dashboard, name='owner_dashboard'),
-    path('logout/', logout_view, name='logout_view'),
-    path('register/', register_page, name='register'),
-    path('api/register/owner/', register_owner, name='register_owner'),
-    path('nutrition/<uuid:pet_id>/', nutrition_view, name='get_nutrition_plan'),
-    path('vaccinations/<uuid:pet_id>/', vaccination_view, name='get_vaccination_history'),
-    path('services/<uuid:pet_id>/', service_view, name='get_service_history'),
-    path('medical/<uuid:pet_id>/', medical_view, name='get_medical_history'),
+    path('login/', views.login_view, name='login'),
+    path('vet/', views.vet_dashboard, name='vet_dashboard'),
+    path('staff/', views.staff_dashboard, name='staff_dashboard'),
+    path('owner/', views.owner_dashboard, name='owner_dashboard'),
+    path('logout/', views.logout_view, name='logout_view'),
+    path('register/', views.register_page, name='register'),
+    path('api/register/owner/', views.register_owner, name='register_owner'),
+    path('nutrition/<uuid:pet_id>/', views.nutrition_view, name='get_nutrition_plan'),
+    path('vaccinations/<uuid:pet_id>/', views.vaccination_view, name='get_vaccination_history'),
+    path('services/<uuid:pet_id>/', views.service_view, name='get_service_history'),
+    path('medical/<uuid:pet_id>/', views.medical_view, name='get_medical_history'),
     path('appointment/<uuid:appointment_id>/update/', views.update_appointment_status, name='update_status'),
-    path('', redirect_to_login),
+    path('', views.redirect_to_login),
     path('api/get-pets/', views.get_pets_by_owner_phone, name='get_pets_by_phone'),
     path('api/get-users/', views.get_users_by_role, name='get_users_by_role'),
     path('api/create-appointment/', views.create_appointment, name='create_appointment'),
     path('api/services/', views.get_services, name='get_services'),
     path('api/update-service-price/', views.update_service_price, name='update_service_price'),
-    path('api/monthly-revenue/', calculate_monthly_revenue_view, name='monthly-revenue'),
+    path('api/monthly-revenue/', views.calculate_monthly_revenue_view, name='monthly-revenue'),
     path('api/monthly-revenue-chart/', views.monthly_revenue_chart_data),
-    path('api/pet-species-stats/', pet_species_stats, name='pet_species_stats'),
-    path('api/pets/', get_owner_pets, name='get_owner_pets'),
-    path('api/appointments/create/', create_appointment, name='create_appointment'),
-    path('account/info/', get_account_info, name='account-info'),
-    path('account/update/', update_account_info, name='account-update'),
-    path('appointments/upcoming/', upcoming_appointments, name='upcoming-appointments'),
-    path('pets/', pets_list_view, name='pets_list'),
-    path('pets/<uuid:pet_id>/delete/', delete_pet_view, name='delete_pet'),
-    path('pets/create/', create_pet),
-    path('pets/<uuid:pet_id>/update/', update_pet),
-    path('pets/<uuid:pet_id>/', pet_detail_view),
-    path('appointments/history/', appointment_history_view),
-    path('appointments/update/<uuid:appointment_id>/', update_appointment, name='update_appointment'),
-    path('appointments/recent/', recent_activities, name='recent_activities'),
-    path('pets/api/', pet_list, name='pet_list'),
-    path('api/vaccinations/', vaccination_schedule_list, name='vaccination_schedule_list'),
-    path('api/vaccinations/<uuid:id>/update/', update_vaccination, name='update_vaccination'),
-    path('api/vaccinations/history/', vaccination_history_all, name='vaccination_history_all'),
-    path('examinations/user/', user_examinations_view, name='user_examinations'),
-    path('appointments/update-status/<uuid:appointment_id>/', update_status_view, name='update_status'),
-    path('api/medical-history/staff/', medical_history_by_staff, name='medical_history_by_staff'),
-    path('api/medical-history/<uuid:id>/update/', update_medical_record, name='update_medical_record'),
-    path('api/nutrition-plans/user/', nutrition_plan_by_user, name='nutrition_plan_by_user'),
-    path('api/nutrition-plans/create/', create_nutrition_plan, name='create_nutrition_plan'),
-    path('api/nutrition-plans/<uuid:id>/update/', update_nutrition_plan, name='update_nutrition_plan'),
-    path('api/nutrition-plans/<uuid:id>/delete/', delete_nutrition_plan, name='delete_nutrition_plan'),
-    path('api/appointments/staff/create/', create_appointment_by_staff, name='create_appointment_by_staff'),
-    path('api/pets/all/', list_all_pets, name='list_all_pets'),
+    path('api/pet-species-stats/', views.pet_species_stats, name='pet_species_stats'),
 ]
